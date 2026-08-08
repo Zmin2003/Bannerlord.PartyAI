@@ -71,8 +71,7 @@ public class SubModule : MBSubModuleBase
         PartySettingsManager = new PartyAIClanPartySettingsManager();
         campaignGameStarter.AddBehavior(PartySettingsManager);
 
-        campaignGameStarter.AddBehavior(new PartyAITroopRecruiter(ControlAssumptionBehavior));
-
+        campaignGameStarter.AddBehavior(new PartyAITroopRecruiter());
         campaignGameStarter.AddBehavior(new FallbackOrderBehavior());
         campaignGameStarter.AddBehavior(new PartyAutoCreationBehavior());
         campaignGameStarter.AddBehavior(new RecruitmentBehavior());

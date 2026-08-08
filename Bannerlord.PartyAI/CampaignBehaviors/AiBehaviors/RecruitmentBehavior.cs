@@ -24,6 +24,19 @@ internal class RecruitmentBehavior : PartyOrderBehaviorBase
         CampaignEvents.DailyTickEvent.AddNonSerializedListener(this, OnDailyTick);
         CampaignEvents.OnTroopRecruitedEvent.AddNonSerializedListener(this, OnTroopRecruited);
         CampaignEvents.AiHourlyTickEvent.AddNonSerializedListener(this, OnAiHourlyTick);
+        CampaignEvents.DailyTickPartyEvent.AddNonSerializedListener(this, OnDailyTickParty);
+    }
+
+    private void OnDailyTickParty(MobileParty party)
+    {
+        var hero = party?.LeaderHero;
+        if (!SubModule.PartySettingsManager.IsHeroManageable(hero))
+        {
+            return;
+        }
+
+        var settings = SubModule.PartySettingsManager.Settings(hero);
+        TrySetAutoRecruitmentOrder(settings, party);
     }
 
     public override void SyncData(IDataStore dataStore)
@@ -48,6 +61,7 @@ internal class RecruitmentBehavior : PartyOrderBehaviorBase
     private void OnDailyTick()
     {
         _recentlyRecruitedFromSettlements.RemoveAll(l => l.Visited.ElapsedDaysUntilNow > RecruitmentSettlementCooldownDays);
+
     }
 
     private void OnAiHourlyTick(MobileParty party, PartyThinkParams thinkParams)
@@ -139,18 +153,6 @@ internal class RecruitmentBehavior : PartyOrderBehaviorBase
             return false;
         }
 
-        // if we're going to convert the troop anyway, it doesn't matter
-        if (SubModule.PartySettingsManager.AllowTroopConversion && settings.PartyTemplate != null)
-        {
-            return true;
-        }
-
-        var template = settings.PartyTemplate;
-        if (template is not null && !template.TroopCultures.Contains(settlement.Culture))
-        {
-            return false;
-        }
-
         var eligibleVolunteers = Recruitment.CollectEligibleVolunteers(party, settlement, settings, partyComposition);
         if (eligibleVolunteers.Count == 0)
         {
@@ -186,6 +188,31 @@ internal class RecruitmentBehavior : PartyOrderBehaviorBase
         }
 
         return true;
+    }
+
+    private void TrySetAutoRecruitmentOrder(PartyAiEntitySettings settings, MobileParty party)
+    {
+        if (ShouldAutoRecruit(settings, party)
+            && CanUseRecruitOrderAutomatically(settings))
+        {
+            settings.SetOrder(PartyAiOrderType.RecruitFromTemplate);
+        }
+    }
+
+    private bool CanUseRecruitOrderAutomatically(PartyAiEntitySettings settings)
+    {
+        var isFree = !settings.HasActiveOrder;
+        var hasRecruitmentOrder = settings.Order?.Behavior == PartyAiOrderType.RecruitFromTemplate
+            || settings.OrderQueue.Any(o => o.Behavior == PartyAiOrderType.RecruitFromTemplate);
+
+        return isFree || !hasRecruitmentOrder;
+    }
+
+    private bool ShouldAutoRecruit(PartyAiEntitySettings settings, MobileParty party)
+    {
+        return settings.AutoRecruitment
+            && party.PartySizeRatio < settings.AutoRecruitmentPercentage
+            && party.Army == null;
     }
 
     public class PAISettlementVisitLog

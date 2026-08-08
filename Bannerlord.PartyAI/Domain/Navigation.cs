@@ -6,7 +6,7 @@ using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.Map;
 using TaleWorlds.CampaignSystem.Party;
 using TaleWorlds.CampaignSystem.Settlements;
-using TaleWorlds.Library;
+using TaleWorlds.Core;
 
 namespace Bannerlord.PartyAI.Domain;
 
@@ -148,6 +148,7 @@ public static class Navigation
                     settlement,
                     sanitizedNavType,
                     out _))
+            .Skip(MBRandom.RandomInt(5))
             .FirstOrDefault();
     }
 }

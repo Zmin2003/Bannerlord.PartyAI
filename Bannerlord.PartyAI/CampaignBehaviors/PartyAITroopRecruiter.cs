@@ -15,14 +15,7 @@ namespace Bannerlord.PartyAI.CampaignBehaviors;
 
 internal class PartyAITroopRecruiter : CampaignBehaviorBase
 {
-    private readonly ControlAssumptionBehavior _controlAssumptionBehavior;
-
     private bool _firingEvent = false;
-
-    public PartyAITroopRecruiter(ControlAssumptionBehavior controlAssumptionBehavior)
-    {
-        _controlAssumptionBehavior = controlAssumptionBehavior;
-    }
 
     public override void SyncData(IDataStore dataStore)
     {
@@ -47,7 +40,6 @@ internal class PartyAITroopRecruiter : CampaignBehaviorBase
 
         var settings = SubModule.PartySettingsManager.Settings(hero);
         DismissUnwantedTroops(settings, party);
-        SetAutoRecruitmentOrder(settings, party);
     }
 
     private void OnLootDistributedToParty(PartyBase winnerParty, PartyBase defeatedParty, ItemRoster lootedItems)
@@ -404,29 +396,5 @@ internal class PartyAITroopRecruiter : CampaignBehaviorBase
         }
 
         return replacement;
-    }
-
-    private void SetAutoRecruitmentOrder(PartyAiEntitySettings settings, MobileParty party)
-    {
-        if (ShouldAutoRecruit(settings, party)
-            && CanUseRecruitOrderAutomatically(settings))
-        {
-            settings.SetOrder(PartyAiOrderType.RecruitFromTemplate);
-        }
-    }
-
-    private bool CanUseRecruitOrderAutomatically(PartyAiEntitySettings settings)
-    {
-        return !settings.HasActiveOrder
-            || (settings.Order.Behavior != PartyAiOrderType.RecruitFromTemplate
-            && !settings.OrderQueue.Any(o => o.Behavior == PartyAiOrderType.RecruitFromTemplate));
-    }
-
-    private bool ShouldAutoRecruit(PartyAiEntitySettings settings, MobileParty party)
-    {
-        return settings.AutoRecruitment
-            && party.PartySizeRatio < settings.AutoRecruitmentPercentage
-            && !_controlAssumptionBehavior.IsUnderControlAssumption(party)
-            && party.Army == null;
     }
 }

@@ -20,6 +20,11 @@ public static class Recruitment
 
     public static bool ShouldRecruit(PartyComposition comp, PartyAiEntitySettings heroSettings, CharacterObject troop, PartyBase party, bool mustBeOnePlus = true)
     {
+        if (SubModule.PartySettingsManager.AllowTroopConversion && heroSettings.PartyTemplate != null)
+        {
+            return true;
+        }
+
         var upgradeTargets = UpgradeTargets(troop, true, heroSettings.PartyTemplate);
         var formationClasses = upgradeTargets
             .ConvertAll(c => c.DefaultFormationClass.FallbackClass())
@@ -227,8 +232,7 @@ public static class Recruitment
                     continue;
                 }
 
-                if ((SubModule.PartySettingsManager.AllowTroopConversion && settings.PartyTemplate != null)
-                    || !ShouldRecruit(partyComposition, settings, troop, mobileParty.Party))
+                if (!ShouldRecruit(partyComposition, settings, troop, mobileParty.Party))
                 {
                     continue;
                 }

@@ -86,12 +86,6 @@ internal class RecruitmentCampaignBehaviorPatches
             return true;
         }
 
-        // if we're going to convert the troop anyway, it doesn't matter
-        if (SubModule.PartySettingsManager.AllowTroopConversion && settings.PartyTemplate != null)
-        {
-            return true;
-        }
-
         PartyComposition partyComposition = Recruitment.GetPartyComposition(mobileParty.Party, settings);
         var eligibleVolunteers = Recruitment.CollectEligibleVolunteers(mobileParty, settlement, settings, partyComposition);
 
