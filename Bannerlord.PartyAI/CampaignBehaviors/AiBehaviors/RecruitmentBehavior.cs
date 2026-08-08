@@ -107,7 +107,7 @@ internal class RecruitmentBehavior : PartyOrderBehaviorBase
 
         var settlementRecentlyVisited = _recentlyRecruitedFromSettlements.Any(l => l.Settlement == currentSettlement && l.Party == party);
         var volunteersAvailable = Recruitment.CollectEligibleVolunteers(party, currentSettlement, settings, partyComposition).Count > 0;
-        var canVisitSettlement = CanVisitSettlement(party, currentSettlement);
+        var canVisitSettlement = IsSettlementSuitableForVisiting(party, currentSettlement);
 
         return settlementRecentlyVisited || !volunteersAvailable || !canVisitSettlement;
     }
@@ -123,7 +123,7 @@ internal class RecruitmentBehavior : PartyOrderBehaviorBase
             return false;
         }
 
-        if (!CanVisitSettlement(party, settlement))
+        if (!IsSettlementSuitableForVisiting(party, settlement))
         {
             return false;
         }
@@ -160,16 +160,32 @@ internal class RecruitmentBehavior : PartyOrderBehaviorBase
         return true;
     }
 
-    private bool CanVisitSettlement(MobileParty mobileParty, Settlement settlement)
+    private static bool IsSettlementSuitableForVisiting(MobileParty mobileParty, Settlement settlement)
     {
-        if (mobileParty.HasLandNavigationCapability)
+        if (settlement.Party.MapEvent != null)
         {
-            return !settlement.IsUnderSiege && settlement.Party.MapEvent == null;
+            return false;
         }
-        else
+
+        if (settlement.Party.SiegeEvent != null)
         {
-            return settlement.SiegeEvent == null || !settlement.SiegeEvent.IsBlockadeActive;
+            if (settlement.Party.SiegeEvent.IsBlockadeActive)
+            {
+                return false;
+            }
+
+            if (!mobileParty.HasNavalNavigationCapability)
+            {
+                return false;
+            }
         }
+
+        if (settlement.IsVillage && settlement.Village.VillageState != Village.VillageStates.Normal)
+        {
+            return false;
+        }
+
+        return true;
     }
 
     public class PAISettlementVisitLog
