@@ -42,11 +42,13 @@ internal class PatrolAroundSettlementBehavior : PartyOrderBehaviorBase
             return;
         }
 
+#if LOWER_THAN_1_5
         if (party.Objective != MobileParty.PartyObjective.Defensive)
         {
             settings.CachedPartyObjective = party.Objective;
             party.SetPartyObjective(MobileParty.PartyObjective.Defensive);
         }
+#endif
     }
 
     private bool ShouldContinueExecutingOrder(

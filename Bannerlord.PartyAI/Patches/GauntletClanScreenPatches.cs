@@ -10,11 +10,14 @@ internal class GauntletClanScreenPatches
 {
     public static void Apply(Harmony harmony)
     {
+#if LOWER_THAN_1_5
         harmony.Patch<GauntletClanScreen>()
             .Method("OnActivate")
                 .Postfix(OnActivatePrefix);
+#endif
     }
 
+#if LOWER_THAN_1_5
     private static void OnActivatePrefix(GauntletClanScreen __instance)
     {
         if (ClanPartyItemVMMixin.SelectedParty != null)
@@ -24,4 +27,5 @@ internal class GauntletClanScreenPatches
             ClanPartyItemVMMixin.SelectedParty = null;
         }
     }
+#endif
 }

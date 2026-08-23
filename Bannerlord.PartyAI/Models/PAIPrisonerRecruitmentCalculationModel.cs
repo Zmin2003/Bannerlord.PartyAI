@@ -23,7 +23,11 @@ internal class PAIPrisonerRecruitmentCalculationModel : PrisonerRecruitmentCalcu
         return BaseModel.GetConformityNeededToRecruitPrisoner(character);
     }
 
+#if LOWER_THAN_1_5
     public override int GetPrisonerRecruitmentMoraleEffect(PartyBase party, CharacterObject character, int num)
+#else
+    public override float GetPrisonerRecruitmentMoraleEffect(PartyBase party, CharacterObject character, int num)
+#endif
     {
         return BaseModel.GetPrisonerRecruitmentMoraleEffect(party, character, num);
     }

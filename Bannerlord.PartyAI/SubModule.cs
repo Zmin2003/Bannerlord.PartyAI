@@ -154,6 +154,10 @@ public class SubModule : MBSubModuleBase
         RecruitmentCampaignBehaviorPatches.Apply(harmony);
         TakePrisonerActionPatches.Apply(harmony);
 
+#if !LOWER_THAN_1_5
+        GarrisonTroopsCampaginBehaviorPatches.Apply(harmony);
+#endif
+
 #if DEBUG
         AiHourlyTickPatches.PatchAll(harmony);
 #endif
@@ -164,7 +168,9 @@ public class SubModule : MBSubModuleBase
         AddModel<PartyTroopUpgradeModel, PAITroopUpgradeModel>(starter);
         AddModel<ArmyManagementCalculationModel, PAIArmyManagementCalculationModel>(starter);
         AddModel<PrisonerRecruitmentCalculationModel, PAIPrisonerRecruitmentCalculationModel>(starter);
+#if LOWER_THAN_1_5
         AddModel<SettlementGarrisonModel, PAISettlementGarrisonModel>(starter);
+#endif
         AddModel<PartyFoodBuyingModel, PAIPartyFoodBuyingModel>(starter);
     }
 

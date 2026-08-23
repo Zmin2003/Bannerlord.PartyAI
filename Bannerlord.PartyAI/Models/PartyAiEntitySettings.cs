@@ -122,11 +122,18 @@ public class PartyAiEntitySettings
 
     internal void ClearOrder()
     {
-        if (Settlement != null) { return; }
+        if (Settlement != null)
+        {
+            return;
+        }
+
+#if LOWER_THAN_1_5
         if (Hero.IsPartyLeader && Hero.PartyBelongedTo != null && HasActiveOrder)
         {
             Hero.PartyBelongedTo.SetPartyObjective(CachedPartyObjective);
         }
+#endif
+
         Hero.PartyBelongedTo?.Ai.SetDoNotMakeNewDecisions(false);
 
         Order = null;

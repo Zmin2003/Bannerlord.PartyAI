@@ -1,4 +1,5 @@
-﻿using Bannerlord.PartyAI.CampaignBehaviors;
+﻿#if LOWER_THAN_1_5
+using Bannerlord.PartyAI.CampaignBehaviors;
 using Bannerlord.PartyAI.Domain.Models;
 using Bannerlord.PartyAI.Models;
 using Bannerlord.PartyAI.ViewModels.Components;
@@ -200,3 +201,4 @@ internal class ClanPartyItemVMMixin : BaseViewModelMixin<ClanPartyItemVM>
         OnPropertyChanged("ToggleShowOptionsText");
     }
 }
+#endif

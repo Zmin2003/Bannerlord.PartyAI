@@ -1,4 +1,5 @@
-﻿using TaleWorlds.CampaignSystem;
+﻿#if LOWER_THAN_1_5
+using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.ComponentInterfaces;
 using TaleWorlds.CampaignSystem.GameComponents;
 using TaleWorlds.CampaignSystem.Party;
@@ -66,3 +67,4 @@ internal class PAISettlementGarrisonModel : SettlementGarrisonModel
         return result;
     }
 }
+#endif
