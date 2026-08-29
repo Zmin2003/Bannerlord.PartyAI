@@ -32,11 +32,15 @@ public class PartyAIClanPartySettingsManager : CampaignBehaviorBase
     internal PartyAiEntitySettings _defaultKingdomGarrisonSettings = new((Hero)null);
     internal bool AggressivePatrols = false;
     internal bool AIRecruitCulture = false;
+    internal bool AutoDelegateBattleCommand = true;
+    internal bool EnhancedBattleAi = false;
     internal InputKey ControlPanelModiferKey = InputKey.LeftControl;
     internal InputKey ControlPanelKey = InputKey.P;
     internal InputKey CommandedPartiesModiferKey = InputKey.LeftAlt;
     internal InputKey CommandedPartiesKey = InputKey.X;
     internal InputKey CommandPartiesKey = InputKey.LeftAlt;
+    internal InputKey BattleCommanderModifierKey = InputKey.LeftControl;
+    internal InputKey BattleCommanderKey = InputKey.M;
 
     public override void RegisterEvents()
     {
@@ -366,6 +370,16 @@ public class PartyAIClanPartySettingsManager : CampaignBehaviorBase
             AIRecruitCulture = false;
         }
 
+        if (!dataStore.SyncData("AutoDelegateBattleCommand", ref AutoDelegateBattleCommand) && dataStore.IsLoading)
+        {
+            AutoDelegateBattleCommand = true;
+        }
+
+        if (!dataStore.SyncData("EnhancedBattleAi", ref EnhancedBattleAi) && dataStore.IsLoading)
+        {
+            EnhancedBattleAi = false;
+        }
+
         if (!dataStore.SyncData("ControlPanelModiferKey", ref ControlPanelModiferKey) && dataStore.IsLoading)
         {
             ControlPanelModiferKey = InputKey.LeftControl;
@@ -389,6 +403,16 @@ public class PartyAIClanPartySettingsManager : CampaignBehaviorBase
         if (!dataStore.SyncData("CommandPartiesKey", ref CommandPartiesKey) && dataStore.IsLoading)
         {
             CommandPartiesKey = InputKey.LeftAlt;
+        }
+
+        if (!dataStore.SyncData("BattleCommanderModifierKey", ref BattleCommanderModifierKey) && dataStore.IsLoading)
+        {
+            BattleCommanderModifierKey = InputKey.LeftControl;
+        }
+
+        if (!dataStore.SyncData("BattleCommanderKey", ref BattleCommanderKey) && dataStore.IsLoading)
+        {
+            BattleCommanderKey = InputKey.M;
         }
     }
 }

@@ -3,6 +3,7 @@ using Bannerlord.PartyAI.CampaignBehaviors.AiBehaviors;
 using Bannerlord.PartyAI.CampaignBehaviors.AiBehaviors.ControlAssumption;
 using Bannerlord.PartyAI.Domain;
 using Bannerlord.PartyAI.Models;
+using Bannerlord.PartyAI.MissionBehaviors;
 using Bannerlord.PartyAI.Patches;
 using Bannerlord.UIExtenderEx;
 using HarmonyLib;
@@ -61,6 +62,19 @@ public class SubModule : MBSubModuleBase
         AddGameModels(campaignGameStarter);
 
         InformationManager = new();
+    }
+
+    public override void OnMissionBehaviorInitialize(Mission mission)
+    {
+        if (!GameNetwork.IsSessionActive)
+        {
+            var settings = Game.Current?.GameType is Campaign
+                ? PartySettingsManager
+                : null;
+            mission.AddMissionBehavior(new BattleAICommanderBehavior(settings));
+        }
+
+        base.OnMissionBehaviorInitialize(mission);
     }
 
     private static void RegisterBehaviors(CampaignGameStarter campaignGameStarter)

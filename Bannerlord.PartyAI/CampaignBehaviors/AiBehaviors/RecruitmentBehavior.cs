@@ -87,7 +87,10 @@ internal class RecruitmentBehavior : PartyOrderBehaviorBase
                 s => IsGoodTargetForRecruiting(s, party, settings, partyComposition),
                 party);
 
-            settings.Order?.Target = newTarget;
+            if (settings.Order != null)
+            {
+                settings.Order.Target = newTarget;
+            }
             targetSettlement = newTarget;
         }
 

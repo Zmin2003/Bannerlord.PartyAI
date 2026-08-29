@@ -122,7 +122,7 @@ public class PartyAIPartyOptionsVM : ViewModel
 
     public void EditBuyHorsesBudget()
     {
-        string titleText = new TextObject("{=PAID8JkoxK0}Buy Horses Budget").ToString();
+        string titleText = new TextObject("{=PAI_BUY_HORSES_BUDGET_TITLE}Buy Horses Budget").ToString();
         SubModule.InformationManager.ShowNumberPickerInquiry(_buyHorsesBudget, 0, 50000, titleText, string.Empty, (int value) =>
         {
             _buyHorsesBudget = value;

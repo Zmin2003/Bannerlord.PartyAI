@@ -10,6 +10,11 @@ public class CompositionSliderRowVM : ViewModel
     public event Action<CompositionSliderRowVM>? UserChangedValue;
 
     private bool _isProgrammatic;
+    private int _value;
+    private bool _isLocked;
+    private bool _isSliderEnabled;
+    private bool _isLockToggleable;
+    private HintViewModel _lockHint;
 
     public CompositionSliderRowVM(int initialValue, bool enabled, string icon)
     {
@@ -31,12 +36,12 @@ public class CompositionSliderRowVM : ViewModel
     [DataSourceProperty]
     public int Value
     {
-        get;
+        get => _value;
         set
         {
-            if (value != field)
+            if (value != _value)
             {
-                field = value;
+                _value = value;
                 OnPropertyChangedWithValue(value, nameof(Value));
                 OnPropertyChanged(nameof(Percentage));
                 if (!_isProgrammatic)
@@ -50,14 +55,14 @@ public class CompositionSliderRowVM : ViewModel
     [DataSourceProperty]
     public bool IsLocked
     {
-        get;
+        get => _isLocked;
         set
         {
             IsSliderEnabled = !value;
 
-            if (value != field)
+            if (value != _isLocked)
             {
-                field = value;
+                _isLocked = value;
                 OnPropertyChangedWithValue(value, nameof(IsLocked));
             }
         }
@@ -66,12 +71,12 @@ public class CompositionSliderRowVM : ViewModel
     [DataSourceProperty]
     public bool IsSliderEnabled
     {
-        get;
+        get => _isSliderEnabled;
         set
         {
-            if (value != field)
+            if (value != _isSliderEnabled)
             {
-                field = value;
+                _isSliderEnabled = value;
                 OnPropertyChangedWithValue(value, nameof(IsSliderEnabled));
             }
         }
@@ -80,7 +85,7 @@ public class CompositionSliderRowVM : ViewModel
     [DataSourceProperty]
     public bool IsLockToggleable
     {
-        get;
+        get => _isLockToggleable;
         set
         {
             if (!value)
@@ -88,9 +93,9 @@ public class CompositionSliderRowVM : ViewModel
                 IsLocked = true;
             }
 
-            if (value != field)
+            if (value != _isLockToggleable)
             {
-                field = value;
+                _isLockToggleable = value;
                 OnPropertyChangedWithValue(value, nameof(IsLockToggleable));
             }
         }
@@ -102,12 +107,12 @@ public class CompositionSliderRowVM : ViewModel
     [DataSourceProperty]
     public HintViewModel LockHint
     {
-        get;
+        get => _lockHint;
         set
         {
-            if (value != field)
+            if (value != _lockHint)
             {
-                field = value;
+                _lockHint = value;
                 OnPropertyChangedWithValue(value, nameof(LockHint));
             }
         }

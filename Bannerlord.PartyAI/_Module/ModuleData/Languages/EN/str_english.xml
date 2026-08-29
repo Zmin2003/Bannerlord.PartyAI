@@ -210,5 +210,43 @@
 	<string id="PAI9084MrFx" text="Percentage must be less than 99"/>
 	<string id="PAI5AWANWod" text="You must enter a number"/>
 	<string id="PAIxE5LIta2" text="Fine Tune Template"/>
+	<string id="PAI_AUTO_BATTLE_COMMANDER" text="Automatic Battle Commander"/>
+	<string id="PAI_AUTO_BATTLE_COMMANDER_HINT" text="Automatically hand all player formations to the native tactical AI after deployment. Your character remains under your control, and the battle commander key toggles command at any time."/>
+	<string id="PAI_BATTLE_COMMANDER_KEY" text="Battle Commander: "/>
+	<string id="PAI_BATTLE_COMMANDER_KEY_HINT" text="Toggle between native AI command and your previous formation control state during battle."/>
+	<string id="PAI_BATTLE_COMMANDER_ENABLED" text="The battle AI now commands your formations. You still control your character. Press {KEYBIND} to resume command."/>
+	<string id="PAI_BATTLE_COMMANDER_DISABLED" text="You have resumed command of your formations."/>
+	<string id="PAI_BATTLE_COMMANDER_UNAVAILABLE" text="Battle AI command is unavailable in this mission."/>
+	<string id="PAI_locked_formation" text="This formation class is not used by this party's template."/>
+	<string id="PAI_order_stopped_invalid_target" text="{PARTY} is no longer {ORDER} because their target is invalid."/>
+	<string id="PAI_order_stopped_no_valid_targets" text="{PARTY} is no longer {ORDER} because no suitable target could be found."/>
+	<string id="PAI_order_stopped_peace" text="{PARTY} is no longer {ORDER} because the target's faction is no longer an enemy."/>
+	<string id="PAI_order_stopped_siege" text="{PARTY} is no longer {ORDER} because the target is under siege."/>
+	<string id="PAI_order_stopped_unreachable" text="{PARTY} is no longer {ORDER} because their target is not reachable."/>
+	<string id="PAI_order_stopped_war" text="{PARTY} is no longer {ORDER} because the target's faction became an enemy."/>
+	<string id="PAI0m3MyqBm" text="You must load a save game to use this menu."/>
+	<string id="PAI4nxGNBim" text="Edit"/>
+	<string id="PAIFq36oGcZ" text=" - Daily Budget: "/>
+	<string id="PAIGHyxwrgx" text="Patrol Radius"/>
+	<string id="PAIGsrQyFUm" text="This feature is not compatible with Realm of Thrones, which already incorporates a version of it."/>
+	<string id="PAIh3IMyAgt" text="It doesn't make sense to dismiss troops when troop conversion is enabled--they can be converted into whatever troop you want."/>
+	<string id="PAIhtLyrJ96" text="Patrol Radius: {PERCENTAGE}%"/>
+	<string id="PAIi6it5mnL" text="Enter Dismiss Unwanted Troops Percentage"/>
+	<string id="PAIJugGVraS" text="AI Recruit Culture"/>
+	<string id="PAIJZdGLEmg" text="Not implemented yet"/>
+	<string id="PAIkYqZ80Dt" text="Value must be greater than {MINVALUE}"/>
+	<string id="PAIMaf6ECHe" text="Change radius for patrol orders. Adjust it until it produces the result you want. The percentage is relative to the default radius."/>
+	<string id="PAIQVkiTiSf" text="Dismiss unwanted troops when above "/>
+	<string id="PAIRCSZxGNl" text="Allow this party to take troops from your garrisons."/>
+	<string id="PAIrFBBz1kW" text="Dismiss troops that do not fit the party template or the chosen composition percentages. This only happens above the specified party-size percentage so the party does not leave itself vulnerable."/>
+	<string id="PAItU2CGhot" text="The party starts dismissing troops that do not fit its template once it exceeds this percentage of its maximum size."/>
+	<string id="PAIu0g5Z5Yk" text="Allow this party to recruit troops from enemy settlements. This can help parties operating behind enemy lines, but is risky."/>
+	<string id="PAIY2oX1c1Y" text="Recruit From Enemy Settlements"/>
+	<string id="PAIZX2CAEyH" text="Value must be less than {MAXVALUE}"/>
+	<string id="PAhQoukaUbN" text="May Take Troops From Settlements"/>
+	<string id="PAI_BUY_HORSES_BUDGET_TITLE" text="Buy Horses Budget"/>
+	<string id="PAI_ENHANCED_BATTLE_AI" text="Experimental Enhanced Battle AI"/>
+	<string id="PAI_ENHANCED_BATTLE_AI_HINT" text="Optionally replace the native field-battle tactic with cautious infantry advances, protected ranged formations, cavalry flanking, mounted skirmishing, and effective-range fire discipline. Results vary by army and map, so native delegation remains the default. Unit stats are not changed, and Realistic Battle AI takes priority when detected."/>
+	<string id="PAI_BATTLE_COMMANDER_CANNOT_RESUME" text="You cannot resume formation command while your character is incapacitated."/>
 </strings>
 </base>

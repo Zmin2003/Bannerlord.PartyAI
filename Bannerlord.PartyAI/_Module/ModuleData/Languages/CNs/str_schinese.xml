@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<base xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" type="string">
+  <tags>
+    <tag language="简体中文"/>
+  </tags>
+  <strings>
+    <string id="PAIZZ1tGdbA" text="无执行中命令"/>
+    <string id="PAIdTWGYLu0" text="驻留于 {TARGET_SETTLEMENT}"/>
+    <string id="PAI0oBFsSJO" text="正在巡逻家族领地"/>
+    <string id="PAIImuFNGIe" text="正在招募士兵"/>
+    <string id="PAIzp4R8TTM" text="正在前往 {SETTLEMENT}"/>
+    <string id="PAISXYCwfO9" text="命令队列为空"/>
+    <string id="PAIpc5Yu18Z" text="巡逻 {TARGET_SETTLEMENT} 周边"/>
+    <string id="PAIPMS0nSSq" text="围攻 {TARGET_SETTLEMENT}"/>
+    <string id="PAITOricrPO" text="防守 {TARGET_SETTLEMENT}"/>
+    <string id="PAIj66iTjmT" text="驻留于 {TARGET_SETTLEMENT}"/>
+    <string id="PAINt8jD9tc" text="跟随 {TARGET_PARTY}"/>
+    <string id="PAIDycETWvm" text="攻击 {TARGET_SETTLEMENT}"/>
+    <string id="PAIgvZTEG1V" text="巡逻家族领地"/>
+    <string id="PAIhBXucHBM" text="招募士兵"/>
+    <string id="PAIRyxa5pnP" text="前往 {SETTLEMENT}"/>
+    <string id="PAIEUwVpMPm" text="感谢使用部队 AI 控制！按 {KEYBIND} 打开设置面板。"/>
+    <string id="PAIFHytp3D7" text="选择要直接指挥的部队"/>
+    <string id="PAIRzSgh49H" text="只有可管理且在视野范围内的部队才会显示于此。"/>
+    <string id="PAIykz3Pc1F" text="编辑默认设置"/>
+    <string id="PAIOMxOAsTY" text="家族部队"/>
+    <string id="PAId8ZsX3ID" text="家族商队"/>
+    <string id="PAIKf5y8Z4K" text="家族驻军"/>
+    <string id="PAIObdiWWBa" text="王国部队"/>
+    <string id="PAIJkUlgNUw" text="王国驻军"/>
+    <string id="PAI4eHNvDEM" text="{HERO} 部队的命令队列"/>
+    <string id="PAI9PHY91SP" text="添加命令"/>
+    <string id="PAIl7GEAaaD" text="清空队列"/>
+    <string id="PAIv8ekJ4gs" text="确定吗？"/>
+    <string id="PAIYkuWNX8E" text="管理家族驻军。"/>
+    <string id="PAIy0nVMLXY" text="如果你是王国统治者，则管理整个王国的驻军，而不只是家族驻军。"/>
+    <string id="PAIRZkSlIxH" text="必须启用兵种转换才能管理驻军。"/>
+    <string id="PAIWV53ONlQ" text="编辑模组选项"/>
+    <string id="PAIt2WLwtca" text="部队数量上限"/>
+    <string id="PAIsBxGgiYZ" text="领队名单"/>
+    <string id="PAIhmt3dhI6" text="领主部队"/>
+    <string id="PAIlflf9B0n" text="允许领主部队转换兵种。管理领主部队构成已不再依赖此选项；请使用招募命令确保部队招募你需要的兵种。"/>
+    <string id="PAIIraDmoi5" text="商队"/>
+    <string id="PAIr7ucbc6X" text="允许商队转换兵种。目前必须启用此项才能管理商队的兵种构成。"/>
+    <string id="PAIxcNer6Hm" text="驻军"/>
+    <string id="PAIc99C3VmP" text="允许驻军转换兵种。目前必须启用此项才能管理驻军的兵种构成。"/>
+    <string id="PAIFQeuWjXA" text="家族驻军"/>
+    <string id="PAI68ZMWYZS" text="商队"/>
+    <string id="PAIlZXTnEd8" text="管理家族商队。商队设置与普通部队设置分别保存，因此同一英雄可同时拥有两套设置。要正确管理商队兵员，必须启用商队兵种转换。"/>
+    <string id="PAIeJ3goSqx" text="王国部队"/>
+    <string id="PAI8l5Lt9g3" text="如果你是王国统治者，则管理整个王国的部队，而不只是家族部队。"/>
+    <string id="PAIGJEcA4MB" text="王国驻军"/>
+    <string id="PAI9BPfqnUx" text="主动巡逻"/>
+    <string id="PAIFxvrVYlD" text="启用后，所有 AI 巡逻队都会主动攻击进入范围且能够追上的目标。此项会让“巡逻某地周边”的 AI 行为主动搜寻目标，而不是漫无目的地移动。该效果会应用于所有相关部队，建议等到附庸或王国阶段、地图上强盗较多时再启用。"/>
+    <string id="PAIbSXqbr08" text="AI 巡逻家族领地"/>
+    <string id="PAIj0xo4vLJ" text="AI 无事可做时会改为巡逻所属家族领地。适用于所有未由本模组管理的领主部队。"/>
+    <string id="PAIsUcGJNnV" text="自动创建家族部队"/>
+    <string id="PAIurMNhxmp" text="自动为可用英雄创建家族部队。位于玩家部队中的英雄不会被选中。"/>
+    <string id="PAIQNbMherW" text="打开此控制面板的快捷键。如果按键组合失效导致无法打开，可在控制台输入 partyai.open 返回此处修改。"/>
+    <string id="PAIdjKjbD9Y" text="选择要直接指挥的部队。默认按 ALT+X 选择附近部队，再按住 ALT 对其下令。"/>
+    <string id="PAIY9zrtsqV" text="指挥附近部队的快捷键。默认按 ALT+X 选择附近部队，再按住 ALT 对其下令。"/>
+    <string id="PAIBKfwhLn2" text="允许自动创建部队的领队英雄。留空则会考虑所有可用英雄。"/>
+    <string id="PAIi4vuS6na" text="限制自动创建的家族部队最大数量。"/>
+    <string id="PAIQNUqwt4C" text="编辑"/>
+    <string id="PAIn0vtnqMG" text="允许将士兵自动转换为指定部队模板中的兵种；所需费用会相应调整。"/>
+    <string id="PAIdJOXgi68" text="启用或停用对各类部队的管理。可随时更改；停用曾管理过的类别后，其设置会被忽略，重新启用后恢复生效。"/>
+    <string id="PAIrJoL4fjj" text="兵种转换"/>
+    <string id="PAI2Kzocn92" text="管理范围"/>
+    <string id="PAIwNqKC63z" text="AI 调整"/>
+    <string id="PAIKbIc509P" text="快捷键"/>
+    <string id="PAIuVpJ2Fxq" text=" - 每日 - "/>
+    <string id="PAIdNxjNCZ8" text="控制面板："/>
+    <string id="PAIMPBJJFE1" text="选择部队："/>
+    <string id="PAIYaTRiKbo" text="指挥部队："/>
+    <string id="PAImiSXBh3N" text="每天转换到部队模板的士兵数量。该数值按每支部队分别计算，适用于所有受管理的部队、商队和驻军，可避免更换模板时费用突然暴增，也不会瞬间凭空转换数百名士兵。"/>
+    <string id="PAILiYi3RTj" text="全部"/>
+    <string id="PAIcd2NB574" text="每日转换士兵数"/>
+    <string id="PAIEADvfPTN" text="输入 0 表示不设上限。"/>
+    <string id="PAI84jzPSvb" text="数量必须是数字"/>
+    <string id="PAIPRrfz8d9" text="数量必须介于 0 到 100000 之间"/>
+    <string id="PAIAbEyy75G" text="选择可自动创建部队的英雄"/>
+    <string id="PAIDWLDk2e4" text="部队 AI 控制：你已更改控制面板快捷键。如果意外导致面板无法打开，请在控制台运行 partyai.open 返回控制面板。"/>
+    <string id="PAgaRahFHeV" text="编辑部队构成"/>
+    <string id="PAIqJ0819Nl" text="显示所有能够带领部队的英雄，便于提前为潜在领队分配设置。"/>
+    <string id="PAIuPlFS64X" text="排序"/>
+    <string id="PAIY2tmN6Vq" text="将一支部队的设置复制到另一支。勾选部队旁的复选框，然后按 CTRL+C 或点击此按钮。"/>
+    <string id="PAIlmndQPWI" text="将已复制的设置粘贴到其他部队。复制后，勾选所有目标部队，再按 CTRL+V 或点击此按钮。"/>
+    <string id="PAImg9cMpVB" text="取消复制/粘贴操作"/>
+    <string id="PAIQlzQNwtn" text="全选"/>
+    <string id="PAIe2AmH8ga" text="部队 AI 控制"/>
+    <string id="PAIVTBDYD5s" text="创建模板"/>
+    <string id="PAR1D0VvXKZ" text="删除模板"/>
+    <string id="PAIwK2enPSp" text="微调模板"/>
+    <string id="PAIzjCcuvQw" text="从已选择的升级路线中指定要纳入部队模板的兵种。列表最上方的兵种会作为模板旁的头像。"/>
+    <string id="PAI3Bf9LMMe" text="[暂未使用……]"/>
+    <string id="PAIyBVEFgXu" text="模组选项"/>
+    <string id="PAI34RDUeMT" text="默认设置"/>
+    <string id="PAIlKT8heH9" text="显示所有英雄"/>
+    <string id="PAI5D5Ofcoo" text="{CHARACTER} 与 {TARGET} 之间没有升级路线"/>
+    <string id="PAI91kcf3yB" text="必须至少选择一个可升级为 {CHARACTER} 的兵种"/>
+    <string id="PAIAAm1PQy1" text="模板中的兵种不足。"/>
+    <string id="PAIekKoDXkq" text="选择按键"/>
+    <string id="PAIC76hjKpD" text="编辑 {HERO} 部队的商队选项"/>
+    <string id="PAI2mEbIPHQ" text="编辑商队选项"/>
+    <string id="PAI7L3x9T3p" text="筛选贸易定居点"/>
+    <string id="PAIRrqrDxYm" text="商队只会前往此列表中的定居点。"/>
+    <string id="PAIjkqd24XT" text=" - 已选择："/>
+    <string id="PAIn4UJJg3a" text="最高兵种等级"/>
+    <string id="PAIKeTFa2PX" text="士兵可升级到的最高等级。若降低此设置，部队中超出等级的士兵会被降级。"/>
+    <string id="PAIr1WS36dp" text="可前往的定居点"/>
+    <string id="PAImajjVs8d" text="北方"/>
+    <string id="PAISzVDwcWu" text="南方"/>
+    <string id="PAIHQQPyo2M" text="东方"/>
+    <string id="PAIWGp1Ti1N" text="西方"/>
+    <string id="PAI7v81Hher" text="目前位于你的{DIRECTION}。"/>
+    <string id="PAI5VM6usUh" text="编辑 {SETTLEMENT} 的驻军选项"/>
+    <string id="PAIy61wxVLV" text="编辑驻军选项"/>
+    <string id="PAITKllkp3Y" text="（相对于部队人数上限）"/>
+    <string id="PAIANrHs1Zb" text="编辑 {HERO} 部队的选项"/>
+    <string id="PAIgiGgAlAm" text="编辑部队选项"/>
+    <string id="PAClaZBMEprx" text="允许加入军团"/>
+    <string id="PAD5Oih6uaW" text="允许此部队加入王国军团。即使关闭此选项，该部队仍可加入你的军团。"/>
+    <string id="PAhInSCxPlc" text="允许向驻军捐赠士兵"/>
+    <string id="PAIYcYomRnV" text="允许此部队向友方驻军捐赠士兵。"/>
+    <string id="PAIJB8EuhJN" text="允许围城"/>
+    <string id="PAIHANhrppA" text="允许此部队围攻城镇和城堡。关闭后，部队会离开正在围城的军团，并将影响力返还给军团领袖。"/>
+    <string id="PArB6kGmInk" text="允许劫掠村庄"/>
+    <string id="PAIG8Ela5BJ" text="允许此部队劫掠敌对村庄。关闭后，部队会离开正在劫掠的军团，并将影响力返还给军团领袖。"/>
+    <string id="PAIv3zQDvLn" text="允许俘虏领主"/>
+    <string id="PAIgE8T3Qxh" text="允许此部队在战后俘虏敌方领主。关闭后，部队会释放俘获的领主。"/>
+    <string id="PAIBMzCXm1l" text="允许招募士兵"/>
+    <string id="PAIhSoz6d1X" text="允许此部队招募士兵。若关闭此项，你必须手动补充兵员，否则 AI 可能作出很不合理的行为。"/>
+    <string id="PAIWXzJxqgi" text="购买马匹"/>
+    <string id="PAIK3xNilPb" text="购买足够的马匹供步行士兵使用，以提高地图移动速度。将预算设为 0 仍可阻止部队不必要地出售马匹。请注意，部分马匹（如原版的驮马）不计入速度加成；只有游戏本身或当前大型模组认可的马匹才会被本功能视为提供速度加成。"/>
+    <string id="PAIpTraw5lq" text="低于此比例时招募："/>
+    <string id="PAIMah8wd6z" text="当部队人数低于上限的指定百分比时，自动添加招募命令。仅当命令队列中没有现有招募命令，且你未直接指挥该部队时才会添加。"/>
+    <string id="PAID8JkoxK0" text=" - 预算："/>
+    <string id="PAIcyDMxg8t" text="每日买马预算。"/>
+    <string id="PAIqGqAFj9G" text="后备命令："/>
+    <string id="PAIDJ1aQnLC" text="部队不在军团中且没有当前命令时执行的命令。"/>
+    <string id="PAIn8Kp9KPp" text="输入自动招募比例"/>
+    <string id="PAIdpT9SuVN" text="当部队人数低于人数上限的该百分比时，会开始招募。"/>
+    <string id="PAIXIv9UgAt" text="更改"/>
+    <string id="PAIIAZIrPw0" text="除非在模组选项中启用商队兵种转换，否则这些数值对商队无效。"/>
+    <string id="PAIQAHEYKZ2" text="除非在模组选项中启用商队兵种转换，否则模板对商队无效。"/>
+    <string id="PATZD6SvrZr" text="无模板"/>
+    <string id="PAI8qha4sZa" text="该英雄是军团领袖，对其部队下达的命令将作用于整个军团。"/>
+    <string id="PAIQnwbXcqc" text="选项"/>
+    <string id="PAIIqVpFFAi" text="上限"/>
+    <string id="PAI4pLNfNa1" text="升序"/>
+    <string id="PAIdc8T9Up8" text="降序"/>
+    <string id="PAIrkbpwijb" text="模板"/>
+    <string id="PAITCqVHXaz" text="选择要微调的模板"/>
+    <string id="PAI6hwc2LSt" text="为 {LEADER} 的部队选择新模板"/>
+    <string id="PAI1HObVpcg" text="为 {SETTLEMENT} 的驻军选择新模板"/>
+    <string id="PAI9HyjJ7ss" text="选择新模板"/>
+    <string id="PAIZScpdz8d" text="选择目标"/>
+    <string id="PAIb2F6Hyfs" text="巡逻家族领地"/>
+    <string id="PAIUq8Q1n8k" text="选择要添加的命令类型"/>
+    <string id="PAIaOu88dqT" text="区域巡逻"/>
+    <string id="PAIIL6JG6Na" text="前往定居点"/>
+    <string id="PAI1Et6heEa" text="护送部队"/>
+    <string id="PAIyzzBSM4P" text="招募"/>
+    <string id="PAIHJFAtbk8" text="命令部队领袖专注于招募士兵。如果分配了兵种模板，部队只会前往提供模板兵种的定居点；这些定居点可能非常遥远。"/>
+    <string id="PAIOzsG1s1J" text="驻留定居点"/>
+    <string id="PAIPQxGUfhd" text="巡逻目标定居点周边。部队会前往村庄和城镇补充兵员与物资；若领队认为能够追上强盗或其他敌人，就会主动追击，并保护巡逻半径内的村庄、城堡和城镇免遭劫掠或围攻。"/>
+    <string id="PAIljAEpAKF" text="前往定居点，但不在其中驻留。"/>
+    <string id="PAIEI3gTLMP" text="护送一支部队"/>
+    <string id="PAIVeQlQhCC" text="驻留在定居点内。如果定居点遭到围攻，而部队仍在城墙外，则不会参与防守。"/>
+    <string id="PAIgXDbzpdD" text="围攻定居点"/>
+    <string id="PAIzxQXNul8" text="部队或军团将围攻目标定居点。占领目标或进攻军团被击败后，此命令会被清除。"/>
+    <string id="PAIgNGL6W5j" text="防守定居点"/>
+    <string id="PAITZmUFJSB" text="驻留在定居点的驻军中。如果当地食物不足，部队可能偶尔前往其他定居点购买食物。"/>
+    <string id="PAIEv0gLuYi" text="选择要复制的设置。"/>
+    <string id="PAIZZEi6e9F" text="可以选择多个选项。"/>
+    <string id="PAI42PrfM04" text="部队构成"/>
+    <string id="PAI6XKZojTt" text="命令"/>
+    <string id="PAIdpg5Dset" text="选择要复制设置到哪些部队"/>
+    <string id="PAI0HrENRV2" text="选择要删除的模板"/>
+    <string id="PAIFofWXL3f" text="删除"/>
+    <string id="PAGIUuSgSnB" text="确定要删除模板 {TEMPLATE} 吗？"/>
+    <string id="PAIlfXfoNTy" text="选择要查看的模板"/>
+    <string id="PABrUnTTy9r" text="模板“{TEMPLATE}”中的兵种"/>
+    <string id="PAoNJx6fAYq" text="查看模板"/>
+    <string id="PAZ8yCnPyxh" text="创建新兵种模板"/>
+    <string id="PAO0HGBsJZd" text="输入新部队兵种模板的名称。"/>
+    <string id="PAHxbYi6Awy" text="至少 {MIN} 个字符"/>
+    <string id="PAbGk5vWaqM" text="最多 {MAX} 个字符"/>
+    <string id="PAuu16DcbWX" text="已存在同名模板。"/>
+    <string id="PAirAdxXSc5" text="可选兵种"/>
+    <string id="PA3a9D3vJpb" text="已选兵种"/>
+    <string id="PAH9JlPJqJC" text="创建新模板"/>
+    <string id="PAYjAC3mQzN" text="创建"/>
+    <string id="PAISIjwQiXw" text="复制到"/>
+    <string id="PAS8COe7Ysl" text="设置"/>
+    <string id="PAQVXq6izAW" text="删除"/>
+    <string id="PAkCYmU0Qtl" text="查看"/>
+    <string id="PAHiRSTCnkv" text="编辑部队构成"/>
+    <string id="PAhmBRjnrwV" text="兵种模板：{NAME}"/>
+    <string id="PA08v16flk8" text="显示"/>
+    <string id="PA635e8pPkz" text="隐藏"/>
+    <string id="PAIxKOXkgPU" text="全选"/>
+    <string id="PAIc1pTxSOA" text="{NAME} 超出直接指挥范围"/>
+    <string id="PAIoLtvzpKU" text="部队 AI 控制：无需成为附庸即可组建军团的功能与 Banner Kings 不兼容。"/>
+    <string id="PAIJPxU5978" text="{HERO} 已在 {SETTLEMENT} 附近创建一支新部队"/>
+    <string id="PAIOEWao2aI" text="{PARTY} 因被召集至 {ARMY}，已停止执行“{ORDER}”"/>
+    <string id="PAIw38SHHlH" text="{PARTY} 因食物不足，已停止执行“{ORDER}”。"/>
+    <string id="PAIxfQuD90U" text="让我检查一下你部队的物品栏。"/>
+    <string id="PAI5m8VhtcI" text="百分比必须大于 0"/>
+    <string id="PAI9084MrFx" text="百分比必须小于 99"/>
+    <string id="PAI5AWANWod" text="必须输入数字"/>
+    <string id="PAIxE5LIta2" text="微调模板"/>
+    <string id="PAI_AUTO_BATTLE_COMMANDER" text="自动战场指挥官"/>
+    <string id="PAI_AUTO_BATTLE_COMMANDER_HINT" text="部署结束后，自动将玩家所有编队交给游戏原生战术 AI 指挥。你仍然亲自控制主角，并可随时使用战场指挥官快捷键切换指挥权。"/>
+    <string id="PAI_BATTLE_COMMANDER_KEY" text="战场指挥官："/>
+    <string id="PAI_BATTLE_COMMANDER_KEY_HINT" text="在战斗中切换原生 AI 指挥，并在关闭时恢复此前的编队控制状态。"/>
+    <string id="PAI_BATTLE_COMMANDER_ENABLED" text="战场 AI 已接管你的编队，你仍可控制主角。按 {KEYBIND} 收回指挥权。"/>
+    <string id="PAI_BATTLE_COMMANDER_DISABLED" text="你已收回编队指挥权。"/>
+    <string id="PAI_BATTLE_COMMANDER_UNAVAILABLE" text="此任务中无法使用战场 AI 指挥。"/>
+    <string id="PAI_locked_formation" text="此部队模板未使用该编队类型。"/>
+    <string id="PAI_order_stopped_invalid_target" text="{PARTY} 因目标无效，已停止执行“{ORDER}”。"/>
+    <string id="PAI_order_stopped_no_valid_targets" text="{PARTY} 因找不到合适目标，已停止执行“{ORDER}”。"/>
+    <string id="PAI_order_stopped_peace" text="{PARTY} 因目标所属阵营已不再是敌人，已停止执行“{ORDER}”。"/>
+    <string id="PAI_order_stopped_siege" text="{PARTY} 因目标正遭围攻，已停止执行“{ORDER}”。"/>
+    <string id="PAI_order_stopped_unreachable" text="{PARTY} 因无法抵达目标，已停止执行“{ORDER}”。"/>
+    <string id="PAI_order_stopped_war" text="{PARTY} 因目标所属阵营已成为敌人，已停止执行“{ORDER}”。"/>
+    <string id="PAI0m3MyqBm" text="必须先载入存档才能使用此菜单。"/>
+    <string id="PAI4nxGNBim" text="编辑"/>
+    <string id="PAIFq36oGcZ" text=" - 每日预算："/>
+    <string id="PAIGHyxwrgx" text="巡逻半径"/>
+    <string id="PAIGsrQyFUm" text="此功能与 Realm of Thrones 不兼容，该模组已包含类似功能。"/>
+    <string id="PAIh3IMyAgt" text="启用兵种转换后无需遣散多余士兵，因为他们可以直接转换为你需要的兵种。"/>
+    <string id="PAIhtLyrJ96" text="巡逻半径：{PERCENTAGE}%"/>
+    <string id="PAIi6it5mnL" text="输入遣散多余士兵的比例"/>
+    <string id="PAIJugGVraS" text="AI 按文化招募"/>
+    <string id="PAIJZdGLEmg" text="尚未实现"/>
+    <string id="PAIkYqZ80Dt" text="数值必须大于 {MINVALUE}"/>
+    <string id="PAIMaf6ECHe" text="调整巡逻命令的半径，直到得到满意效果。百分比以默认巡逻半径为基准。"/>
+    <string id="PAIQVkiTiSf" text="超过此比例时遣散多余士兵："/>
+    <string id="PAIRCSZxGNl" text="允许此部队从你的驻军中带走士兵。"/>
+    <string id="PAIrFBBz1kW" text="遣散不符合部队模板或指定兵种比例的士兵。只有当部队人数超过指定比例后才会执行，以免部队陷入兵力不足。"/>
+    <string id="PAItU2CGhot" text="当部队人数超过人数上限的该百分比后，开始遣散不符合模板的士兵。"/>
+    <string id="PAIu0g5Z5Yk" text="允许此部队从敌方定居点招募士兵。这对深入敌后的部队可能有用，但也有风险。"/>
+    <string id="PAIY2oX1c1Y" text="从敌方定居点招募"/>
+    <string id="PAIZX2CAEyH" text="数值必须小于 {MAXVALUE}"/>
+    <string id="PAhQoukaUbN" text="允许从定居点带走士兵"/>
+    <string id="PAI_BUY_HORSES_BUDGET_TITLE" text="买马预算"/>
+    <string id="PAI_ENHANCED_BATTLE_AI" text="实验性强化战场 AI"/>
+    <string id="PAI_ENHANCED_BATTLE_AI_HINT" text="可选择用自定义野战战术替代原生战术，包括步兵谨慎推进、远程编队受掩护、骑兵侧击、骑射游击和按有效射程控制开火。实际效果会随兵种和地图变化，因此默认仍使用原生 AI 委托。不修改单位属性；检测到 Realistic Battle AI 时会优先让其接管。"/>
+    <string id="PAI_BATTLE_COMMANDER_CANNOT_RESUME" text="主角失去战斗能力后无法收回编队指挥权。"/>
+  </strings>
+</base>

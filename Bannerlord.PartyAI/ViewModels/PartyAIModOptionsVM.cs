@@ -124,6 +124,16 @@ public class PartyAIModOptionsVM : ViewModel
             new TextObject("{=PAI9BPfqnUx}Aggressive Patrols"),
             SubModule.PartySettingsManager.AggressivePatrols,
             new TextObject("{=PAIFxvrVYlD}If enabled, all AI patrols will attack any parties that come in range if they can catch them. Amends the 'Patrolling around X' AI behavior to include searching for targets--normally they wander aimlessly and don't attack anything. This is applied across the board, so you may not want to enable it until you're in the vassal/kingdom stage so there'll be more bandits."));
+
+        AutoBattleCommanderToggle = new PartyAIOptionToggleVM(
+            new TextObject("{=PAI_AUTO_BATTLE_COMMANDER}Automatic Battle Commander"),
+            SubModule.PartySettingsManager.AutoDelegateBattleCommand,
+            new TextObject("{=PAI_AUTO_BATTLE_COMMANDER_HINT}Automatically hand all player formations to the native tactical AI after deployment. Your character remains under your control, and the battle commander key toggles command at any time."));
+
+        EnhancedBattleAiToggle = new PartyAIOptionToggleVM(
+            new TextObject("{=PAI_ENHANCED_BATTLE_AI}Experimental Enhanced Battle AI"),
+            SubModule.PartySettingsManager.EnhancedBattleAi,
+            new TextObject("{=PAI_ENHANCED_BATTLE_AI_HINT}Optionally replace the native field-battle tactic with cautious infantry advances, protected ranged formations, cavalry flanking, mounted skirmishing, and effective-range fire discipline. Results vary by army and map, so native delegation remains the default. Unit stats are not changed, and Realistic Battle AI takes priority when detected."));
       
         AIRecruitCultureToggle = new PartyAIOptionToggleVM(
             new TextObject("{=PAIJugGVraS}AI Recruit Culture"),
@@ -147,10 +157,15 @@ public class PartyAIModOptionsVM : ViewModel
             TaleWorlds.InputSystem.InputKey.Invalid,
             SubModule.PartySettingsManager.CommandPartiesKey,
             false);
+        BattleCommanderKeySelector = new(
+            SubModule.PartySettingsManager.BattleCommanderModifierKey,
+            SubModule.PartySettingsManager.BattleCommanderKey,
+            true);
 
         ControlPanelKeySelectorHint = new HintViewModel(new("{=PAIQNbMherW}Keybind to open this control panel. If you lock yourself out with a broken key combo, use partyai.open in the console to get back here and fix it."));
         CommandedPartiesKeySelectorHint = new HintViewModel(new("{=PAIdjKjbD9Y}Keybind to choose which parties to directly command. Press ALT+X (default) to choose nearby parties, then hold ALT (default) to order them around."));
         CommandPartiesKeySelectorHint = new HintViewModel(new("{=PAIY9zrtsqV}Keybind to command nearby parties. Press ALT+X (default) to choose nearby parties, then hold ALT (default) to order them around."));
+        BattleCommanderKeySelectorHint = new HintViewModel(new("{=PAI_BATTLE_COMMANDER_KEY_HINT}Toggle between native AI command and your previous formation control state during battle."));
         LeaderRosterTextHint = new HintViewModel(new TextObject("{=PAIBKfwhLn2}Heroes that we are allowed to create parties for. If blank, all available heroes will be considered."));
         AutoCreateClanPartiesMaxHint = new HintViewModel(new TextObject("{=PAIi4vuS6na}Limits the maximum amount of clan parties that will be auto created."));
         ChangeHeroRosterHint = new HintViewModel(new TextObject("{=PAIQNUqwt4C}Edit"));
@@ -250,6 +265,8 @@ public class PartyAIModOptionsVM : ViewModel
     [DataSourceProperty] public PartyAIOptionToggleVM ManageKingdomGarrisonsToggle { get; private set; }
 
     [DataSourceProperty] public PartyAIOptionToggleVM AggressivePatrolsToggle { get; private set; }
+    [DataSourceProperty] public PartyAIOptionToggleVM AutoBattleCommanderToggle { get; private set; }
+    [DataSourceProperty] public PartyAIOptionToggleVM EnhancedBattleAiToggle { get; private set; }
     [DataSourceProperty] public PartyAIOptionToggleVM AIRecruitCultureToggle { get; private set; }
 
     [DataSourceProperty] public PartyAIOptionToggleVM AutoCreateClanPartiesToggle { get; private set; }
@@ -259,10 +276,12 @@ public class PartyAIModOptionsVM : ViewModel
     [DataSourceProperty] public PartyAIKeySelectorVM ControlPanelKeySelector { get; private set; }
     [DataSourceProperty] public PartyAIKeySelectorVM CommandedPartiesKeySelector { get; private set; }
     [DataSourceProperty] public PartyAIKeySelectorVM CommandPartiesKeySelector { get; private set; }
+    [DataSourceProperty] public PartyAIKeySelectorVM BattleCommanderKeySelector { get; private set; }
 
     [DataSourceProperty] public HintViewModel ControlPanelKeySelectorHint { get; private set; }
     [DataSourceProperty] public HintViewModel CommandedPartiesKeySelectorHint { get; private set; }
     [DataSourceProperty] public HintViewModel CommandPartiesKeySelectorHint { get; private set; }
+    [DataSourceProperty] public HintViewModel BattleCommanderKeySelectorHint { get; private set; }
     [DataSourceProperty] public HintViewModel AutoCreateClanPartiesMaxHint { get; private set; }
 
     [DataSourceProperty] public HintViewModel LeaderRosterTextHint { get; private set; }
@@ -277,6 +296,7 @@ public class PartyAIModOptionsVM : ViewModel
     [DataSourceProperty] public string ControlPanelKeySelectorText => new TextObject("{=PAIdNxjNCZ8}Control Panel: ").ToString();
     [DataSourceProperty] public string CommandedPartiesKeySelectorText => new TextObject("{=PAIMPBJJFE1}Choose Parties: ").ToString();
     [DataSourceProperty] public string CommandPartiesKeySelectorText => new TextObject("{=PAIYaTRiKbo}Command Parties: ").ToString();
+    [DataSourceProperty] public string BattleCommanderKeySelectorText => new TextObject("{=PAI_BATTLE_COMMANDER_KEY}Battle Commander: ").ToString();
 
     [DataSourceProperty] public HintViewModel TroopsConvertedPerDayHint => new(new TextObject("{=PAImiSXBh3N}Amount of troops to convert to a party template per day. This value is per-party and applies to all managed parties, caravans, and garrisons. Helps protect against large spikes in cost from changing templates, and just makes it feel a little less awkward than magically converting 300 troops at once."));
 
@@ -374,6 +394,8 @@ public class PartyAIModOptionsVM : ViewModel
         SubModule.PartySettingsManager.ManageKingdomParties = ManageKingdomPartiesToggle.IsSelected;
         SubModule.PartySettingsManager.ManageKingdomGarrisons = ManageKingdomGarrisonsToggle.IsSelected;
         SubModule.PartySettingsManager.AggressivePatrols = AggressivePatrolsToggle.IsSelected;
+        SubModule.PartySettingsManager.AutoDelegateBattleCommand = AutoBattleCommanderToggle.IsSelected;
+        SubModule.PartySettingsManager.EnhancedBattleAi = EnhancedBattleAiToggle.IsSelected;
         SubModule.PartySettingsManager.AIRecruitCulture = AIRecruitCultureToggle.IsSelected;
 
         _autoCreationBehavior.UpdateSettings(
@@ -393,6 +415,8 @@ public class PartyAIModOptionsVM : ViewModel
         SubModule.PartySettingsManager.CommandedPartiesModiferKey = CommandedPartiesKeySelector.ModifierKey;
         SubModule.PartySettingsManager.CommandedPartiesKey = CommandedPartiesKeySelector.Key;
         SubModule.PartySettingsManager.CommandPartiesKey = CommandPartiesKeySelector.Key;
+        SubModule.PartySettingsManager.BattleCommanderModifierKey = BattleCommanderKeySelector.ModifierKey;
+        SubModule.PartySettingsManager.BattleCommanderKey = BattleCommanderKeySelector.Key;
 
         // disable dismissing troops for all parties
         if (AllowTroopConversionToggle.IsSelected)

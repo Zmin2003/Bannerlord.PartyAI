@@ -21,6 +21,10 @@ public class PartyAICompositionSlidersVM : ViewModel
 
     private readonly Action<PartyComposition> _onSavePartyComposition;
     private readonly PartyAiEntitySettings _settings;
+    private CompositionSliderRowVM _infantrySliderVm;
+    private CompositionSliderRowVM _rangedSliderVm;
+    private CompositionSliderRowVM _cavalrySliderVm;
+    private CompositionSliderRowVM _horseArcherSliderVm;
 
     public PartyAICompositionSlidersVM(PartyAiEntitySettings settings, Action<PartyComposition> callback)
     {
@@ -70,12 +74,12 @@ public class PartyAICompositionSlidersVM : ViewModel
     [DataSourceProperty]
     public CompositionSliderRowVM InfantrySliderVm
     {
-        get;
+        get => _infantrySliderVm;
         set
         {
-            if (value != field)
+            if (value != _infantrySliderVm)
             {
-                field = value;
+                _infantrySliderVm = value;
                 OnPropertyChangedWithValue(value, nameof(InfantrySliderVm));
             }
         }
@@ -84,12 +88,12 @@ public class PartyAICompositionSlidersVM : ViewModel
     [DataSourceProperty]
     public CompositionSliderRowVM RangedSliderVm
     {
-        get;
+        get => _rangedSliderVm;
         set
         {
-            if (value != field)
+            if (value != _rangedSliderVm)
             {
-                field = value;
+                _rangedSliderVm = value;
                 OnPropertyChangedWithValue(value, nameof(RangedSliderVm));
             }
         }
@@ -98,13 +102,13 @@ public class PartyAICompositionSlidersVM : ViewModel
     [DataSourceProperty]
     public CompositionSliderRowVM CavalrySliderVm
     {
-        get;
+        get => _cavalrySliderVm;
         set
         {
-            if (value != field)
+            if (value != _cavalrySliderVm)
             {
-                field = value;
-                OnPropertyChangedWithValue(value, nameof(RangedSliderVm));
+                _cavalrySliderVm = value;
+                OnPropertyChangedWithValue(value, nameof(CavalrySliderVm));
             }
         }
     }
@@ -112,12 +116,12 @@ public class PartyAICompositionSlidersVM : ViewModel
     [DataSourceProperty]
     public CompositionSliderRowVM HorseArcherSliderVm
     {
-        get;
+        get => _horseArcherSliderVm;
         set
         {
-            if (value != field)
+            if (value != _horseArcherSliderVm)
             {
-                field = value;
+                _horseArcherSliderVm = value;
                 OnPropertyChangedWithValue(value, nameof(HorseArcherSliderVm));
             }
         }

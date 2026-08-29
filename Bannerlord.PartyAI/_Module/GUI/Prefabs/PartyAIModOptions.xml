@@ -88,7 +88,7 @@
 				<TextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" Brush="PartyAI.Menu.PartyRowText" VerticalAlignment="Center" Brush.TextHorizontalAlignment="Left" MarginLeft="14" Text="@AITweaksHeader" />
 
 				<!-- AI Tweaks Toggles -->
-				<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="HorizontalLeftToRight" MarginBottom="30">
+				<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="HorizontalLeftToRight" MarginBottom="5">
 					<Children>
 						<PartyAIOptionToggle Parameter.DataSource="{AggressivePatrolsToggle}" MarginLeft="10" />
 						<PartyAIOptionToggle Parameter.DataSource="{AIRecruitCulture}" IsVisible="False" />
@@ -137,6 +137,26 @@
 							</Children>
 						</TextWidget>
 						<PartyAIKeySelector Parameter.DataSource="{CommandPartiesKeySelector}" />
+					</Children>
+				</ListPanel>
+
+				<!-- Battle Commander Key Selector -->
+				<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" MarginTop="5" MarginLeft="23" StackLayout.LayoutMethod="HorizontalLeftToRight">
+					<Children>
+						<TextWidget WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="180" Brush="Clan.Stat.Name.Text" VerticalAlignment="Center" Brush.TextHorizontalAlignment="Left" Text="@BattleCommanderKeySelectorText" >
+							<Children>
+								<HintWidget DataSource="{BattleCommanderKeySelectorHint}" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" IsDisabled="false" />
+							</Children>
+						</TextWidget>
+						<PartyAIKeySelector Parameter.DataSource="{BattleCommanderKeySelector}" />
+					</Children>
+				</ListPanel>
+
+				<!-- Battle AI Toggles -->
+				<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="HorizontalLeftToRight" MarginBottom="30">
+					<Children>
+						<PartyAIOptionToggle Parameter.DataSource="{AutoBattleCommanderToggle}" MarginLeft="10" />
+						<PartyAIOptionToggle Parameter.DataSource="{EnhancedBattleAiToggle}" MarginLeft="20" />
 					</Children>
 				</ListPanel>
 				
