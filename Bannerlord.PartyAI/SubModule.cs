@@ -152,6 +152,7 @@ public class SubModule : MBSubModuleBase
 
     private static void ApplyPatches(Harmony harmony)
     {
+        PartyAiSaveCompatibilityPatches.Apply(harmony);
         AiMilitaryBehaviorPatches.Apply(harmony);
         AiVisitSettlementBehaviorPatches.Apply(harmony);
         ArmyPatches.Apply(harmony);

@@ -21,7 +21,10 @@ public class PartyAiEntitySettings
     [SaveableProperty(6)] public PartyComposition Composition { get; set; }
     [SaveableProperty(7)] public bool AllowLordPrisoners { get; set; } = true;
     [SaveableProperty(8)] public PartyAiOrder? Order { get; private set; }
-    [SaveableProperty(9)] public PartyObjective CachedPartyObjective { get; set; }
+#if LOWER_THAN_1_5
+    [SaveableProperty(9)]
+#endif
+    public PartyObjective CachedPartyObjective { get; set; }
     [SaveableProperty(10)] public bool AllowSieging { get; set; } = true;
     [SaveableProperty(11)] public Settlement? Settlement { get; private set; }
     [SaveableProperty(12)] public bool BuyHorses { get; set; }
