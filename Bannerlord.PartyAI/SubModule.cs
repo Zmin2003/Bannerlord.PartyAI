@@ -25,6 +25,8 @@ public class SubModule : MBSubModuleBase
     private Harmony _harmony = new(Namespace);
 
     internal static PartyAIClanPartySettingsManager PartySettingsManager = null!;
+    internal static TownManagementBehavior TownManagementBehavior = null!;
+    internal static AutoDefenseBehavior AutoDefenseBehavior = null!;
     internal static PAInformationManager InformationManager = null!;
     internal static ControlAssumptionBehavior ControlAssumptionBehavior = null!;
 
@@ -89,6 +91,13 @@ public class SubModule : MBSubModuleBase
         var troopRecruiter = new PartyAITroopRecruiter();
         campaignGameStarter.AddBehavior(troopRecruiter);
         campaignGameStarter.AddBehavior(new SettlementAutomationBehavior(troopRecruiter));
+
+        TownManagementBehavior = new TownManagementBehavior();
+        campaignGameStarter.AddBehavior(TownManagementBehavior);
+
+        AutoDefenseBehavior = new AutoDefenseBehavior();
+        campaignGameStarter.AddBehavior(AutoDefenseBehavior);
+
         campaignGameStarter.AddBehavior(new FallbackOrderBehavior());
         campaignGameStarter.AddBehavior(new PartyAutoCreationBehavior());
         campaignGameStarter.AddBehavior(new RecruitmentBehavior());

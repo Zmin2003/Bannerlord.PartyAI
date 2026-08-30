@@ -90,7 +90,13 @@ public abstract class PartyOrderBehaviorBase : CampaignBehaviorBase
             return false;
         }
 
-        var willGatherArmy = thinkParams.PossibleArmyMembersUponArmyCreation?.Count > 5;
+        PartyAiOrder? currentOrder = SubModule.PartySettingsManager
+            .Settings(party.LeaderHero)
+            .Order;
+        bool isAutomaticDefenseOrder = currentOrder?.AutomationToken > 0
+            && currentOrder.Behavior == PartyAiOrderType.DefendSettlement;
+        var willGatherArmy = !isAutomaticDefenseOrder
+            && thinkParams.PossibleArmyMembersUponArmyCreation?.Count > 5;
 
         AIBehaviorData aibehaviorData = new AIBehaviorData(
             targetSettlement,

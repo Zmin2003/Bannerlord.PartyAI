@@ -1,0 +1,116 @@
+<Prefab>
+  <Parameters>
+    <Parameter Name="DataSource" DefaultValue="" />
+  </Parameters>
+  <Window>
+    <Widget DataSource="*DataSource" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" VerticalAlignment="Center" Sprite="BlankWhiteSquare_9" Color="#000000FF" AlphaFactor="0.75">
+      <Children>
+        <Widget WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="680" MaxHeight="850" MarginTop="35" MarginBottom="35" HorizontalAlignment="Center" VerticalAlignment="Center">
+          <Children>
+            <Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" ClipContents="true">
+              <Children><Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Sprite="StdAssets\Popup\canvas" /></Children>
+            </Widget>
+            <ScrollablePanel WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginLeft="20" MarginRight="30" MarginTop="12" MarginBottom="12" AutoHideScrollBars="true" ClipRect="OptionsClip" InnerPanel="OptionsClip\InnerPanel" VerticalScrollbar="..\OptionsScrollbar\Scrollbar">
+              <Children>
+                <Widget Id="OptionsClip" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" ClipContents="true">
+                  <Children>
+                    <ListPanel Id="InnerPanel" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalTopToBottom">
+                      <Children>
+                        <AutoHideRichTextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginTop="10" Brush="Popup.Title.Text" MinHeight="50" Text="@TitleText" WidgetToHideIfEmpty="..\TitleDivider" />
+                        <Widget Id="TitleDivider" WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="23" Sprite="StdAssets\Popup\divider" />
+
+                        <TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginLeft="14" MarginTop="4" Brush="PartyAI.Menu.PartyRowText" Text="@GarrisonHeader" />
+                        <ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="38" MarginLeft="23" MarginTop="5" StackLayout.LayoutMethod="HorizontalLeftToRight">
+                          <Children>
+                            <TextWidget WidthSizePolicy="Fixed" SuggestedWidth="330" HeightSizePolicy="StretchToParent" VerticalAlignment="Center" Brush="Clan.Stat.Name.Text" Text="@MaxTroopTierText"><Children><HintWidget DataSource="{MaxTroopTierHint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" /></Children></TextWidget>
+                            <PartyAIDropdown Parameter.DataSource="{MaxTroopTierDropdown}" WidthSizePolicy="Fixed" SuggestedWidth="180" VerticalAlignment="Center" />
+                          </Children>
+                        </ListPanel>
+
+                        <TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginLeft="14" MarginTop="18" Brush="PartyAI.Menu.PartyRowText" Text="@GeneralHeader" />
+                        <PartyAIOptionToggle Parameter.DataSource="{EnabledToggle}" />
+                        <ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="38" MarginLeft="23" MarginTop="5" StackLayout.LayoutMethod="HorizontalLeftToRight">
+                          <Children>
+                            <TextWidget WidthSizePolicy="Fixed" SuggestedWidth="330" HeightSizePolicy="StretchToParent" VerticalAlignment="Center" Brush="Clan.Stat.Name.Text" Text="@StrategyText"><Children><HintWidget DataSource="{StrategyHint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" /></Children></TextWidget>
+                            <PartyAIDropdown Parameter.DataSource="{StrategyDropdown}" WidthSizePolicy="Fixed" SuggestedWidth="250" VerticalAlignment="Center" />
+                          </Children>
+                        </ListPanel>
+
+                        <TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginLeft="14" MarginTop="18" Brush="PartyAI.Menu.PartyRowText" Text="@ConstructionHeader" />
+                        <PartyAIOptionToggle Parameter.DataSource="{ManageBuildingQueueToggle}" />
+                        <PartyAIOptionToggle Parameter.DataSource="{ManageDailyProjectsToggle}" />
+                        <PartyAIOptionToggle Parameter.DataSource="{AutoFundConstructionToggle}" />
+                        <ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="38" MarginLeft="23" StackLayout.LayoutMethod="HorizontalLeftToRight"><Children>
+                          <TextWidget WidthSizePolicy="Fixed" SuggestedWidth="330" HeightSizePolicy="StretchToParent" VerticalAlignment="Center" Brush="Clan.Stat.Name.Text" Text="@ConstructionReserveTargetText"><Children><HintWidget DataSource="{ConstructionReserveTargetHint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" /></Children></TextWidget>
+                          <TextWidget WidthSizePolicy="Fixed" SuggestedWidth="100" HeightSizePolicy="StretchToParent" VerticalAlignment="Center" Brush="PartyAI.Menu.PartyRowText" Text="@ConstructionReserveTargetAmount" />
+                          <ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="30" SuggestedHeight="30" VerticalAlignment="Center" Command.Click="EditConstructionReserveTarget"><Children><HintWidget DataSource="{ChangeHint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" /><BrushWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="34" SuggestedHeight="34" Brush="PartyAI.Menu.EditButton" /></Children></ButtonWidget>
+                        </Children></ListPanel>
+                        <ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="38" MarginLeft="23" StackLayout.LayoutMethod="HorizontalLeftToRight"><Children>
+                          <TextWidget WidthSizePolicy="Fixed" SuggestedWidth="330" HeightSizePolicy="StretchToParent" VerticalAlignment="Center" Brush="Clan.Stat.Name.Text" Text="@DailyConstructionDepositLimitText"><Children><HintWidget DataSource="{DailyConstructionDepositLimitHint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" /></Children></TextWidget>
+                          <TextWidget WidthSizePolicy="Fixed" SuggestedWidth="100" HeightSizePolicy="StretchToParent" VerticalAlignment="Center" Brush="PartyAI.Menu.PartyRowText" Text="@DailyConstructionDepositLimitAmount" />
+                          <ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="30" SuggestedHeight="30" VerticalAlignment="Center" Command.Click="EditDailyConstructionDepositLimit"><Children><HintWidget DataSource="{ChangeHint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" /><BrushWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="34" SuggestedHeight="34" Brush="PartyAI.Menu.EditButton" /></Children></ButtonWidget>
+                        </Children></ListPanel>
+                        <ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="38" MarginLeft="23" StackLayout.LayoutMethod="HorizontalLeftToRight"><Children>
+                          <TextWidget WidthSizePolicy="Fixed" SuggestedWidth="330" HeightSizePolicy="StretchToParent" VerticalAlignment="Center" Brush="Clan.Stat.Name.Text" Text="@LoyaltyEmergencyThresholdText"><Children><HintWidget DataSource="{LoyaltyEmergencyThresholdHint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" /></Children></TextWidget>
+                          <TextWidget WidthSizePolicy="Fixed" SuggestedWidth="100" HeightSizePolicy="StretchToParent" VerticalAlignment="Center" Brush="PartyAI.Menu.PartyRowText" Text="@LoyaltyEmergencyThresholdAmount" />
+                          <ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="30" SuggestedHeight="30" VerticalAlignment="Center" Command.Click="EditLoyaltyEmergencyThreshold"><Children><HintWidget DataSource="{ChangeHint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" /><BrushWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="34" SuggestedHeight="34" Brush="PartyAI.Menu.EditButton" /></Children></ButtonWidget>
+                        </Children></ListPanel>
+                        <ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="38" MarginLeft="23" StackLayout.LayoutMethod="HorizontalLeftToRight"><Children>
+                          <TextWidget WidthSizePolicy="Fixed" SuggestedWidth="330" HeightSizePolicy="StretchToParent" VerticalAlignment="Center" Brush="Clan.Stat.Name.Text" Text="@FoodShortageDaysText"><Children><HintWidget DataSource="{FoodShortageDaysHint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" /></Children></TextWidget>
+                          <TextWidget WidthSizePolicy="Fixed" SuggestedWidth="100" HeightSizePolicy="StretchToParent" VerticalAlignment="Center" Brush="PartyAI.Menu.PartyRowText" Text="@FoodShortageDaysAmount" />
+                          <ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="30" SuggestedHeight="30" VerticalAlignment="Center" Command.Click="EditFoodShortageDays"><Children><HintWidget DataSource="{ChangeHint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" /><BrushWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="34" SuggestedHeight="34" Brush="PartyAI.Menu.EditButton" /></Children></ButtonWidget>
+                        </Children></ListPanel>
+
+                        <TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginLeft="14" MarginTop="18" Brush="PartyAI.Menu.PartyRowText" Text="@GovernorHeader" />
+                        <ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="38" MarginLeft="23" MarginTop="5" StackLayout.LayoutMethod="HorizontalLeftToRight">
+                          <Children>
+                            <TextWidget WidthSizePolicy="Fixed" SuggestedWidth="330" HeightSizePolicy="StretchToParent" VerticalAlignment="Center" Brush="Clan.Stat.Name.Text" Text="@GovernorModeText"><Children><HintWidget DataSource="{GovernorModeHint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" /></Children></TextWidget>
+                            <PartyAIDropdown Parameter.DataSource="{GovernorModeDropdown}" WidthSizePolicy="Fixed" SuggestedWidth="250" VerticalAlignment="Center" />
+                          </Children>
+                        </ListPanel>
+                        <PartyAIOptionToggle Parameter.DataSource="{AllowGovernorReassignmentToggle}" />
+                        <ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="38" MarginLeft="23" StackLayout.LayoutMethod="HorizontalLeftToRight"><Children>
+                          <TextWidget WidthSizePolicy="Fixed" SuggestedWidth="330" HeightSizePolicy="StretchToParent" VerticalAlignment="Center" Brush="Clan.Stat.Name.Text" Text="@GovernorCooldownText"><Children><HintWidget DataSource="{GovernorCooldownHint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" /></Children></TextWidget>
+                          <TextWidget WidthSizePolicy="Fixed" SuggestedWidth="100" HeightSizePolicy="StretchToParent" VerticalAlignment="Center" Brush="PartyAI.Menu.PartyRowText" Text="@GovernorCooldownAmount" />
+                          <ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="30" SuggestedHeight="30" VerticalAlignment="Center" Command.Click="EditGovernorCooldown"><Children><HintWidget DataSource="{ChangeHint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" /><BrushWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="34" SuggestedHeight="34" Brush="PartyAI.Menu.EditButton" /></Children></ButtonWidget>
+                        </Children></ListPanel>
+
+                        <TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginLeft="14" MarginTop="18" Brush="PartyAI.Menu.PartyRowText" Text="@DefenseHeader" />
+                        <PartyAIOptionToggle Parameter.DataSource="{AutoDefenseToggle}" />
+                        <ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="38" MarginLeft="23" MarginTop="5" StackLayout.LayoutMethod="HorizontalLeftToRight">
+                          <Children>
+                            <TextWidget WidthSizePolicy="Fixed" SuggestedWidth="330" HeightSizePolicy="StretchToParent" VerticalAlignment="Center" Brush="Clan.Stat.Name.Text" Text="@DefensePriorityText"><Children><HintWidget DataSource="{DefensePriorityHint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" /></Children></TextWidget>
+                            <PartyAIDropdown Parameter.DataSource="{DefensePriorityDropdown}" WidthSizePolicy="Fixed" SuggestedWidth="250" VerticalAlignment="Center" />
+                          </Children>
+                        </ListPanel>
+                        <ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="38" MarginLeft="23" StackLayout.LayoutMethod="HorizontalLeftToRight"><Children>
+                          <TextWidget WidthSizePolicy="Fixed" SuggestedWidth="330" HeightSizePolicy="StretchToParent" VerticalAlignment="Center" Brush="Clan.Stat.Name.Text" Text="@TargetDefenseStrengthText"><Children><HintWidget DataSource="{TargetDefenseStrengthHint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" /></Children></TextWidget>
+                          <TextWidget WidthSizePolicy="Fixed" SuggestedWidth="100" HeightSizePolicy="StretchToParent" VerticalAlignment="Center" Brush="PartyAI.Menu.PartyRowText" Text="@TargetDefenseStrengthAmount" />
+                          <ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="30" SuggestedHeight="30" VerticalAlignment="Center" Command.Click="EditTargetDefenseStrength"><Children><HintWidget DataSource="{ChangeHint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" /><BrushWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="34" SuggestedHeight="34" Brush="PartyAI.Menu.EditButton" /></Children></ButtonWidget>
+                        </Children></ListPanel>
+                        <ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="38" MarginLeft="23" StackLayout.LayoutMethod="HorizontalLeftToRight"><Children>
+                          <TextWidget WidthSizePolicy="Fixed" SuggestedWidth="330" HeightSizePolicy="StretchToParent" VerticalAlignment="Center" Brush="Clan.Stat.Name.Text" Text="@TargetGarrisonTroopsText"><Children><HintWidget DataSource="{TargetGarrisonTroopsHint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" /></Children></TextWidget>
+                          <TextWidget WidthSizePolicy="Fixed" SuggestedWidth="100" HeightSizePolicy="StretchToParent" VerticalAlignment="Center" Brush="PartyAI.Menu.PartyRowText" Text="@TargetGarrisonTroopsAmount" />
+                          <ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="30" SuggestedHeight="30" VerticalAlignment="Center" Command.Click="EditTargetGarrisonTroops"><Children><HintWidget DataSource="{ChangeHint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" /><BrushWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="34" SuggestedHeight="34" Brush="PartyAI.Menu.EditButton" /></Children></ButtonWidget>
+                        </Children></ListPanel>
+
+                        <ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" MarginTop="24" MarginBottom="10" StackLayout.LayoutMethod="HorizontalLeftToRight">
+                          <Children>
+                            <ToggleButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="251" SuggestedHeight="64" Brush="Popup.Cancel.Button" Command.Click="CancelEditTownOptions"><Children><TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="Popup.Button.Text" Text="@CancelText" MarginLeft="40" MarginRight="40" /></Children></ToggleButtonWidget>
+                            <ToggleButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="251" SuggestedHeight="64" Brush="Popup.Done.Button" Command.Click="AcceptEditTownOptions"><Children><TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="Popup.Button.Text" Text="@AcceptText" MarginLeft="40" MarginRight="40" /></Children></ToggleButtonWidget>
+                          </Children>
+                        </ListPanel>
+                      </Children>
+                    </ListPanel>
+                  </Children>
+                </Widget>
+              </Children>
+            </ScrollablePanel>
+            <Standard.VerticalScrollbar Id="OptionsScrollbar" HeightSizePolicy="StretchToParent" HorizontalAlignment="Right" MarginTop="18" MarginBottom="18" MarginRight="8" />
+            <BrushWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="Popup.Frame" IsEnabled="false" />
+          </Children>
+        </Widget>
+      </Children>
+    </Widget>
+  </Window>
+</Prefab>

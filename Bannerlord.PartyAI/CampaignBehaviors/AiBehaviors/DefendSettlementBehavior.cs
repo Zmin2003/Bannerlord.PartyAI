@@ -47,6 +47,7 @@ public class DefendSettlementBehavior : PartyOrderBehaviorBase
                     Message.OrderStoppedTargetEnemy(party, order);
                 }
                 settings.ClearOrder();
+                RestoreAfterAutomaticFailure(hero, order);
             }
         }
     }
@@ -63,6 +64,7 @@ public class DefendSettlementBehavior : PartyOrderBehaviorBase
         {
             Message.OrderStoppedTargetInvalid(party, order);
             settings.ClearOrder();
+            RestoreAfterAutomaticFailure(party.LeaderHero, order);
             return;
         }
 
@@ -71,6 +73,11 @@ public class DefendSettlementBehavior : PartyOrderBehaviorBase
         if (!targetSettlement.IsUnderSiege && !shouldDefendPort)
         {
             _stayInSettlementBehavior.HandleStayInSettlement(party, settings, order, thinkParams);
+            if (order.AutomationToken > 0
+                && settings.Order?.AutomationToken != order.AutomationToken)
+            {
+                RestoreAfterAutomaticFailure(party.LeaderHero, order);
+            }
             return;
         }
 
@@ -78,6 +85,19 @@ public class DefendSettlementBehavior : PartyOrderBehaviorBase
         {
             Message.OrderStoppedTargetUnreachable(party, order);
             settings.ClearOrder();
+            RestoreAfterAutomaticFailure(party.LeaderHero, order);
+        }
+    }
+
+    private static void RestoreAfterAutomaticFailure(
+        Hero? hero,
+        PartyAiOrder order)
+    {
+        if (order.AutomationToken > 0)
+        {
+            SubModule.AutoDefenseBehavior?.HandleAutomaticOrderFailure(
+                hero,
+                order.AutomationToken);
         }
     }
 

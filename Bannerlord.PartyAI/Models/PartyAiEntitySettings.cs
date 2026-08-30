@@ -101,10 +101,13 @@ public class PartyAiEntitySettings
             party!.Army = null;
         }
 
-        if (HasActiveOrder)
+        NormalizeOrderQueue();
+        if (HasActiveOrder && Order.AutomationToken == 0)
         {
             OrderQueue.Insert(0, Order);
         }
+
+        OrderQueue.RemoveAll(queuedOrder => queuedOrder.AutomationToken != 0);
 
         Order = order;
     }
@@ -119,6 +122,112 @@ public class PartyAiEntitySettings
         }
 
         FallbackOrder = order;
+    }
+
+    internal bool TryBeginAutomaticOrder(
+        PartyAiOrder automaticOrder,
+        out PartyAiOrder? suspendedOrder,
+        out List<PartyAiOrder> suspendedQueue)
+    {
+        suspendedOrder = null;
+        suspendedQueue = new();
+
+        if (Settlement is not null
+            || automaticOrder is null
+            || automaticOrder.AutomationToken <= 0
+            || automaticOrder.Behavior == PartyAiOrderType.None
+            || (Order is not null && Order.AutomationToken != 0))
+        {
+            return false;
+        }
+
+        NormalizeOrderQueue();
+        OrderQueue.RemoveAll(order => order.AutomationToken != 0);
+
+        suspendedOrder = Order is null ? null : new PartyAiOrder(Order);
+        suspendedQueue = OrderQueue
+            .Where(order => order is not null)
+            .Select(order => new PartyAiOrder(order))
+            .ToList();
+
+        Order = automaticOrder;
+        OrderQueue.Clear();
+        UnlockPartyAi();
+        return true;
+    }
+
+    internal bool TryRestoreAutomaticOrder(
+        int automationToken,
+        PartyAiOrder? suspendedOrder,
+        IEnumerable<PartyAiOrder>? suspendedQueue)
+    {
+        if (Settlement is not null || automationToken <= 0)
+        {
+            return false;
+        }
+
+        NormalizeOrderQueue();
+        if (Order is not null && Order.AutomationToken != automationToken)
+        {
+            RemoveAutomaticOrderFromQueue(automationToken);
+            return false;
+        }
+
+        List<PartyAiOrder> queuedWhileAutomatic = OrderQueue
+            .Where(order => order is not null && order.AutomationToken == 0)
+            .Select(order => new PartyAiOrder(order))
+            .ToList();
+        Order = suspendedOrder is null || suspendedOrder.AutomationToken != 0
+            ? null
+            : new PartyAiOrder(suspendedOrder);
+        OrderQueue = suspendedQueue?
+            .Where(order => order is not null && order.AutomationToken == 0)
+            .Select(order => new PartyAiOrder(order))
+            .ToList() ?? new();
+        OrderQueue.AddRange(queuedWhileAutomatic);
+        UnlockPartyAi();
+        return true;
+    }
+
+    internal void AbandonAutomaticOrder(int automationToken)
+    {
+        if (automationToken <= 0)
+        {
+            return;
+        }
+
+        NormalizeOrderQueue();
+        if (Order?.AutomationToken == automationToken)
+        {
+            Order = null;
+        }
+
+        RemoveAutomaticOrderFromQueue(automationToken);
+        UnlockPartyAi();
+    }
+
+    private void RemoveAutomaticOrderFromQueue(int automationToken)
+    {
+        NormalizeOrderQueue();
+        OrderQueue.RemoveAll(order => order.AutomationToken == automationToken);
+    }
+
+    private void NormalizeOrderQueue()
+    {
+        OrderQueue ??= new();
+        OrderQueue.RemoveAll(order => order is null);
+    }
+
+    private void UnlockPartyAi()
+    {
+        MobileParty? party = Hero?.PartyBelongedTo;
+        if (party?.Ai is null)
+        {
+            return;
+        }
+
+        party.Ai.SetDoNotMakeNewDecisions(false);
+        party.Ai.RethinkAtNextHourlyTick = true;
     }
 
     [MemberNotNullWhen(true, nameof(Order))]
@@ -138,6 +247,7 @@ public class PartyAiEntitySettings
         }
 #endif
 
+        NormalizeOrderQueue();
         Hero?.PartyBelongedTo?.Ai.SetDoNotMakeNewDecisions(false);
 
         Order = null;
@@ -151,6 +261,7 @@ public class PartyAiEntitySettings
 
     internal void ClearAllOrders()
     {
+        NormalizeOrderQueue();
         OrderQueue.Clear();
         ClearOrder();
     }
@@ -171,6 +282,7 @@ public class PartyAiEntitySettings
         FilterSettlements = settings.FilterSettlements;
         FilteredSettlements = settings.FilteredSettlements?.ToList() ?? new();
         OrderQueue = settings.OrderQueue?
+            .Where(order => order is not null && order.AutomationToken == 0)
             .Select(order => new PartyAiOrder(order))
             .ToList() ?? [];
         AutoRecruitment = settings.AutoRecruitment;

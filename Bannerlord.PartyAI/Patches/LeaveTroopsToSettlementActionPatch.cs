@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using HarmonyLib.PatchBuilder;
+using Bannerlord.PartyAI.Domain.AutoDefense;
 using TaleWorlds.CampaignSystem.CampaignBehaviors;
 using TaleWorlds.CampaignSystem.Party;
 using TaleWorlds.CampaignSystem.Settlements;
@@ -26,6 +27,18 @@ internal static class LeaveTroopsToSettlementActionPatch
         int numberOfTroopsToLeave,
         bool archersAreHighPriority)
     {
+        if (GarrisonTransferService.IsAutomatedTransferInProgress)
+        {
+            return true;
+        }
+
+        if (GarrisonTransferService.ShouldSuppressVanillaDonation(
+            mobileParty,
+            settlement))
+        {
+            return false;
+        }
+
         // No hero → vanilla
         if (mobileParty?.LeaderHero == null)
             return true;

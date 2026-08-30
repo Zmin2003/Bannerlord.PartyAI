@@ -17,7 +17,7 @@ public class PartyAIGarrisonOptionsVM : ViewModel
     {
         _settings = settings;
 
-        if (_settings.Hero != null)
+        if (_settings.Settlement != null)
         {
             TitleText = new TextObject("{=PAI5VM6usUh}Edit Garrison Options for {SETTLEMENT}")
                 .SetTextVariable("SETTLEMENT", settings.Settlement?.Name ?? TextObject.GetEmpty())

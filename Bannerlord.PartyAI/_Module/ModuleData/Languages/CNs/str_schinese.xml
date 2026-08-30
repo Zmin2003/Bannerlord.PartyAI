@@ -274,5 +274,123 @@
     <string id="PAI_TEMPLATE_IMPORT_PROMPT" text="粘贴 Party AI 模板 JSON 文件的 HTTPS 地址。"/>
     <string id="PAI_TEMPLATE_IMPORT_PENDING" text="已有模板正在下载。"/>
     <string id="PAI_TEMPLATE_IMPORT_SUCCESS" text="已导入模板：{NAME}"/>
+    <string id="PAI_TOWN_MANAGEMENT_BUTTON" text="城镇管理"/>
+    <string id="PAI_TOWN_OPTIONS_TITLE" text="城镇管理"/>
+    <string id="PAI_TOWN_SETTLEMENT_OPTIONS_TITLE" text="管理 {SETTLEMENT}"/>
+    <string id="PAI_TOWN_GENERAL_HEADER" text="通用"/>
+    <string id="PAI_TOWN_CONSTRUCTION_HEADER" text="建设"/>
+    <string id="PAI_TOWN_GOVERNOR_HEADER" text="总督"/>
+    <string id="PAI_TOWN_DEFENSE_HEADER" text="自动派防"/>
+    <string id="PAI_TOWN_DONATION_HEADER" text="补充驻军"/>
+    <string id="PAI_TOWN_GARRISON_HEADER" text="驻军"/>
+    <string id="PAI_TOWN_ENABLED" text="启用城镇管理"/>
+    <string id="PAI_TOWN_ENABLED_HINT" text="允许 Party AI 按以下设置管理玩家家族的城镇与城堡。"/>
+    <string id="PAI_TOWN_SETTLEMENT_ENABLED" text="为此封地启用城镇 AI"/>
+    <string id="PAI_TOWN_SETTLEMENT_ENABLED_HINT" text="全局城镇管理开启时，允许城镇 AI 管理此定居点。"/>
+    <string id="PAI_TOWN_DEFAULT_STRATEGY" text="默认策略"/>
+    <string id="PAI_TOWN_DEFAULT_STRATEGY_HINT" text="首次为定居点创建城镇 AI 设置时采用的策略。"/>
+    <string id="PAI_TOWN_STRATEGY" text="管理策略"/>
+    <string id="PAI_TOWN_STRATEGY_HINT" text="均衡会优先补足短板；稳定侧重忠诚、治安与粮食；经济侧重繁荣；军事侧重城墙与民兵。"/>
+    <string id="PAI_TOWN_STRATEGY_BALANCED" text="均衡"/>
+    <string id="PAI_TOWN_STRATEGY_STABILITY" text="稳定"/>
+    <string id="PAI_TOWN_STRATEGY_ECONOMY" text="经济"/>
+    <string id="PAI_TOWN_STRATEGY_MILITARY" text="军事"/>
+    <string id="PAI_TOWN_BUILD_QUEUE" text="管理建筑队列"/>
+    <string id="PAI_TOWN_BUILD_QUEUE_HINT" text="根据所选策略和当前紧急状况选择并重排建设项目。"/>
+    <string id="PAI_TOWN_DAILY_PROJECTS" text="管理每日项目"/>
+    <string id="PAI_TOWN_DAILY_PROJECTS_HINT" text="无需建设建筑或出现紧急状况时，自动选择持续项目。"/>
+    <string id="PAI_TOWN_AUTO_FUND" text="自动投入建设资金"/>
+    <string id="PAI_TOWN_AUTO_FUND_HINT" text="从玩家金币向定居点建设储备投入资金，但不会低于设定的玩家保留金币。"/>
+    <string id="PAI_TOWN_AUTO_FUND_SETTLEMENT_HINT" text="在全局玩家保留金币限制内，自动向此定居点的建设储备投入资金。"/>
+    <string id="PAI_TOWN_PLAYER_GOLD_RESERVE" text="玩家保留金币"/>
+    <string id="PAI_TOWN_PLAYER_GOLD_RESERVE_HINT" text="自动投入建设资金时，不会让玩家金币低于此数值。"/>
+    <string id="PAI_TOWN_RESERVE_TARGET" text="建设储备目标"/>
+    <string id="PAI_TOWN_RESERVE_TARGET_HINT" text="定居点建设储备达到此数值后停止投入。"/>
+    <string id="PAI_TOWN_SETTLEMENT_RESERVE_TARGET_HINT" text="此定居点的建设储备达到该数值后停止投入。"/>
+    <string id="PAI_TOWN_DAILY_DEPOSIT_LIMIT" text="每日投入上限"/>
+    <string id="PAI_TOWN_DAILY_DEPOSIT_LIMIT_HINT" text="城镇 AI 每天可向单个定居点投入的建设资金上限。"/>
+    <string id="PAI_TOWN_LOYALTY_THRESHOLD" text="忠诚紧急阈值"/>
+    <string id="PAI_TOWN_LOYALTY_THRESHOLD_HINT" text="忠诚低于此数值时，稳定类项目会优先于所选策略。"/>
+    <string id="PAI_TOWN_FOOD_SHORTAGE_DAYS" text="缺粮预警天数"/>
+    <string id="PAI_TOWN_FOOD_SHORTAGE_DAYS_HINT" text="预计在这些天数内缺粮时，将其视为紧急状况。"/>
+    <string id="PAI_TOWN_GOVERNOR_MODE" text="总督模式"/>
+    <string id="PAI_TOWN_GOVERNOR_MODE_HINT" text="推荐合适的总督，或自动任命总督。自动任命只会使用符合条件的玩家家族英雄。"/>
+    <string id="PAI_TOWN_GOVERNOR_OFF" text="关闭"/>
+    <string id="PAI_TOWN_GOVERNOR_RECOMMEND" text="仅推荐"/>
+    <string id="PAI_TOWN_GOVERNOR_ASSIGN" text="自动任命"/>
+    <string id="PAI_TOWN_GOVERNOR_REASSIGN" text="允许更换总督"/>
+    <string id="PAI_TOWN_GOVERNOR_REASSIGN_HINT" text="自动总督模式可在出现明显更优人选时替换现任总督。"/>
+    <string id="PAI_TOWN_GOVERNOR_COOLDOWN" text="更换总督冷却"/>
+    <string id="PAI_TOWN_GOVERNOR_COOLDOWN_HINT" text="城镇 AI 更换其自动任命的总督前至少等待的天数。"/>
+    <string id="PAI_TOWN_AUTO_DEFENSE" text="自动调遣守军"/>
+    <string id="PAI_TOWN_AUTO_DEFENSE_HINT" text="将合适的玩家家族部队临时调往受威胁定居点，结束后恢复其原有命令。"/>
+    <string id="PAI_TOWN_SETTLEMENT_AUTO_DEFENSE" text="自动防守此封地"/>
+    <string id="PAI_TOWN_SETTLEMENT_AUTO_DEFENSE_HINT" text="此定居点受到威胁时，允许城镇 AI 调遣合适的玩家家族部队。"/>
+    <string id="PAI_TOWN_DEFAULT_DEFENSE" text="默认启用自动防务"/>
+    <string id="PAI_TOWN_DEFAULT_DEFENSE_HINT" text="首次为玩家家族城镇或城堡创建设置时，默认开启自动防务。"/>
+    <string id="PAI_TOWN_DEFENSE_PRIORITY" text="防务优先级"/>
+    <string id="PAI_TOWN_DEFENSE_PRIORITY_HINT" text="威胁相近时，可用防守部队会优先派往优先级更高的定居点。"/>
+    <string id="PAI_TOWN_DEFAULT_DEFENSE_PRIORITY" text="默认防务优先级"/>
+    <string id="PAI_TOWN_DEFAULT_DEFENSE_PRIORITY_HINT" text="首次为定居点创建城镇 AI 设置时采用的防务优先级。"/>
+    <string id="PAI_TOWN_DEFENSE_PRIORITY_LOW" text="低"/>
+    <string id="PAI_TOWN_DEFENSE_PRIORITY_NORMAL" text="普通"/>
+    <string id="PAI_TOWN_DEFENSE_PRIORITY_HIGH" text="高"/>
+    <string id="PAI_TOWN_DEFENSE_PRIORITY_CRITICAL" text="最高"/>
+    <string id="PAI_TOWN_THREAT_RADIUS" text="威胁半径"/>
+    <string id="PAI_TOWN_THREAT_RADIUS_HINT" text="统计定居点附近敌军时采用的地图半径。"/>
+    <string id="PAI_TOWN_DISPATCH_THRESHOLD" text="派防威胁比例"/>
+    <string id="PAI_TOWN_DISPATCH_THRESHOLD_HINT" text="附近敌军战力达到本地防御战力的此比例时派出防守部队。"/>
+    <string id="PAI_TOWN_RELEASE_THRESHOLD" text="解除派防比例"/>
+    <string id="PAI_TOWN_RELEASE_THRESHOLD_HINT" text="威胁低于此比例后恢复防守部队的原有命令。应低于派防比例。"/>
+    <string id="PAI_TOWN_MIN_PARTY_RATIO" text="最低部队兵力"/>
+    <string id="PAI_TOWN_MIN_PARTY_RATIO_HINT" text="只有人数达到部队上限此比例的部队才会被自动派防。"/>
+    <string id="PAI_TOWN_RESERVE_PARTIES" text="机动预备部队"/>
+    <string id="PAI_TOWN_RESERVE_PARTIES_HINT" text="城镇 AI 必须保留且不派防的合适家族部队数量。"/>
+    <string id="PAI_TOWN_MAX_DEFENDERS" text="每个封地最多派防部队"/>
+    <string id="PAI_TOWN_MAX_DEFENDERS_HINT" text="城镇 AI 同时可向单个定居点派遣的家族部队上限。"/>
+    <string id="PAI_TOWN_MIN_ASSIGNMENT_DAYS" text="最短驻守天数"/>
+    <string id="PAI_TOWN_MIN_ASSIGNMENT_DAYS_HINT" text="除非命令失效，否则防守部队至少驻守这些天数。"/>
+    <string id="PAI_TOWN_REASSIGNMENT_COOLDOWN" text="部队再次派防冷却"/>
+    <string id="PAI_TOWN_REASSIGNMENT_COOLDOWN_HINT" text="解除驻守后，经过这些天数才能再次自动调遣同一支部队。"/>
+    <string id="PAI_TOWN_DEFAULT_DEFENSE_STRENGTH" text="默认目标防御战力"/>
+    <string id="PAI_TOWN_DEFAULT_DEFENSE_STRENGTH_HINT" text="首次创建定居点设置时采用的总防御战力目标。设为 0 由城镇 AI 自动计算。"/>
+    <string id="PAI_TOWN_TARGET_DEFENSE_STRENGTH" text="目标防御战力"/>
+    <string id="PAI_TOWN_TARGET_DEFENSE_STRENGTH_HINT" text="期望的本地总防御战力。设为 0 由城镇 AI 自动计算。"/>
+    <string id="PAI_TOWN_AUTO_DONATE" text="自动补充驻军"/>
+    <string id="PAI_TOWN_AUTO_DONATE_HINT" text="允许部队选项中准许捐兵的派防部队在抵达时移交一次士兵，同时保留最低兵力。"/>
+    <string id="PAI_TOWN_DONATION_TARGET" text="驻军补充目标"/>
+    <string id="PAI_TOWN_DONATION_TARGET_HINT" text="驻军达到此人数后停止自动移交士兵。设为 0 时使用各定居点目标。"/>
+    <string id="PAI_TOWN_MAX_DONATION_RATIO" text="最大移交比例"/>
+    <string id="PAI_TOWN_MAX_DONATION_RATIO_HINT" text="一次驻守任务中最多可从被派遣部队移交的士兵比例。"/>
+    <string id="PAI_TOWN_MIN_REMAINING_TROOPS" text="部队最低留兵"/>
+    <string id="PAI_TOWN_MIN_REMAINING_TROOPS_HINT" text="向驻军移交士兵时，绝不会让被派遣部队低于此人数。"/>
+    <string id="PAI_TOWN_TARGET_GARRISON_TROOPS" text="目标驻军人数"/>
+    <string id="PAI_TOWN_TARGET_GARRISON_TROOPS_HINT" text="自动补充驻军的目标人数。设为 0 关闭固定人数目标。"/>
+    <string id="PAI_TOWN_DAYS" text="{DAYS} 天"/>
+    <string id="PAI_TOWN_NO_GARRISON" text="无驻军"/>
+    <string id="PAI_town_governor_recommendation" text="建议任命 {HERO} 为 {SETTLEMENT} 的总督。"/>
+    <string id="PAI_town_governor_assigned" text="已任命 {HERO} 为 {SETTLEMENT} 的总督。"/>
+    <string id="PAI_TOWN_DEFAULT_BUILD_QUEUE" text="新封地默认管理建筑队列"/>
+    <string id="PAI_TOWN_DEFAULT_BUILD_QUEUE_HINT" text="首次为定居点创建城镇 AI 设置时，默认启用建筑队列管理。"/>
+    <string id="PAI_TOWN_DEFAULT_DAILY_PROJECTS" text="新封地默认管理每日项目"/>
+    <string id="PAI_TOWN_DEFAULT_DAILY_PROJECTS_HINT" text="首次为定居点创建城镇 AI 设置时，默认启用每日项目管理。"/>
+    <string id="PAI_TOWN_DEFAULT_AUTO_FUND" text="新封地默认投入建设资金"/>
+    <string id="PAI_TOWN_DEFAULT_AUTO_FUND_HINT" text="首次为定居点创建城镇 AI 设置时，默认启用自动建设投入。"/>
+    <string id="PAI_TOWN_DEFAULT_GOVERNOR_REASSIGN" text="新封地默认允许更换总督"/>
+    <string id="PAI_TOWN_DEFAULT_GOVERNOR_REASSIGN_HINT" text="首次为定居点创建城镇 AI 设置时，默认允许自动更换总督。"/>
+    <string id="PAI_TOWN_DEFAULT_GOVERNOR_MODE" text="默认总督模式"/>
+    <string id="PAI_TOWN_DEFAULT_GOVERNOR_MODE_HINT" text="首次为定居点创建城镇 AI 设置时采用的总督模式。"/>
+    <string id="PAI_TOWN_DEFAULT_RESERVE_TARGET" text="默认建设储备目标"/>
+    <string id="PAI_TOWN_DEFAULT_RESERVE_TARGET_HINT" text="首次创建定居点设置时采用的建设储备目标。"/>
+    <string id="PAI_TOWN_DEFAULT_DAILY_DEPOSIT_LIMIT" text="默认每日投入上限"/>
+    <string id="PAI_TOWN_DEFAULT_DAILY_DEPOSIT_LIMIT_HINT" text="首次创建定居点设置时采用的每日建设投入上限。"/>
+    <string id="PAI_TOWN_DEFAULT_LOYALTY_THRESHOLD" text="默认忠诚紧急阈值"/>
+    <string id="PAI_TOWN_DEFAULT_LOYALTY_THRESHOLD_HINT" text="首次创建定居点设置时采用的忠诚紧急阈值。"/>
+    <string id="PAI_TOWN_DEFAULT_FOOD_SHORTAGE_DAYS" text="默认缺粮预警天数"/>
+    <string id="PAI_TOWN_DEFAULT_FOOD_SHORTAGE_DAYS_HINT" text="首次创建定居点设置时采用的缺粮预警天数。"/>
+    <string id="PAI_TOWN_DEFAULT_GOVERNOR_COOLDOWN" text="默认更换总督冷却"/>
+    <string id="PAI_TOWN_DEFAULT_GOVERNOR_COOLDOWN_HINT" text="首次创建定居点设置时采用的总督更换冷却天数。"/>
+    <string id="PAI_TOWN_DEFAULT_GARRISON_TARGET" text="默认目标驻军人数"/>
+    <string id="PAI_TOWN_DEFAULT_GARRISON_TARGET_HINT" text="首次创建定居点设置时采用的目标驻军人数。设为 0 关闭固定人数目标。"/>
   </strings>
 </base>

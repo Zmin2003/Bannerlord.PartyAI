@@ -20,6 +20,10 @@ internal class PAISaveableTypeDefiner : SaveableTypeDefiner
         AddClassDefinition(typeof(PartyComposition), 3);
         AddClassDefinition(typeof(PartyAiOrder), 4);
         AddClassDefinition(typeof(RecruitmentBehavior.PAISettlementVisitLog), 5);
+        AddClassDefinition(typeof(TownManagementOptions), 6);
+        AddClassDefinition(typeof(TownManagementSettlementSettings), 7);
+        AddClassDefinition(typeof(AutoDefenseAssignment), 8);
+        AddClassDefinition(typeof(TownGovernorAssignmentState), 9);
     }
 
     protected override void DefineEnumTypes()
@@ -27,6 +31,9 @@ internal class PAISaveableTypeDefiner : SaveableTypeDefiner
         AddEnumDefinition(typeof(PartyAiOrderType), 1001);
         AddEnumDefinition(typeof(InputKey), 1002);
         AddEnumDefinition(typeof(SettlementAutomationLevel), 1003);
+        AddEnumDefinition(typeof(TownManagementStrategy), 1004);
+        AddEnumDefinition(typeof(AutoGovernorMode), 1005);
+        AddEnumDefinition(typeof(TownDefensePriority), 1006);
     }
 
     protected override void DefineContainerDefinitions()
@@ -39,5 +46,9 @@ internal class PAISaveableTypeDefiner : SaveableTypeDefiner
         ConstructContainerDefinition(typeof(Dictionary<Settlement, CampaignTime>));
         ConstructContainerDefinition(typeof(List<RecruitmentBehavior.PAISettlementVisitLog>));
         ConstructContainerDefinition(typeof(List<PartyAiOrder>));
+        ConstructContainerDefinition(typeof(Dictionary<Settlement, TownManagementSettlementSettings>));
+        ConstructContainerDefinition(typeof(Dictionary<Settlement, TownGovernorAssignmentState>));
+        ConstructContainerDefinition(typeof(Dictionary<Hero, AutoDefenseAssignment>));
+        ConstructContainerDefinition(typeof(Dictionary<Hero, CampaignTime>));
     }
 }

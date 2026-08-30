@@ -5,6 +5,7 @@ using Bannerlord.PartyAI.ViewModels.MenuOptionVMs;
 using System;
 using System.Collections.Generic;
 using TaleWorlds.CampaignSystem;
+using TaleWorlds.CampaignSystem.Settlements;
 using TaleWorlds.Core;
 using TaleWorlds.Engine.GauntletUI;
 using TaleWorlds.InputSystem;
@@ -168,6 +169,17 @@ internal class PAInformationManager : GlobalLayer
         _layer1.RegisterState();
     }
 
+    public void ShowTownManagementOptionsInquiry(Action callback)
+    {
+        if (!CheckContext()) { return; }
+        _layer1.LoadMovie("PartyAITownManagementOptions", new TownManagementOptionsVM(() =>
+        {
+            _layer1.CloseQuery();
+            callback?.Invoke();
+        }));
+        _layer1.RegisterState();
+    }
+
     public void ShowPartyOptionsInquiry(PartyAiEntitySettings settings, Action callback)
     {
         if (!CheckContext()) { return; }
@@ -194,6 +206,21 @@ internal class PAInformationManager : GlobalLayer
     {
         if (!CheckContext()) { return; }
         _layer2.LoadMovie("PartyAIGarrisonOptions", new PartyAIGarrisonOptionsVM(settings, () =>
+        {
+            _layer2.CloseQuery();
+            callback?.Invoke();
+        }));
+        _layer2.RegisterState();
+    }
+
+    public void ShowTownOptionsInquiry(
+        Settlement settlement,
+        PartyAiEntitySettings garrisonSettings,
+        Action callback)
+    {
+        if (!CheckContext()) { return; }
+        TownManagementSettlementSettings townSettings = SubModule.TownManagementBehavior.SettingsSnapshot(settlement);
+        _layer2.LoadMovie("PartyAITownOptions", new PartyAITownOptionsVM(settlement, garrisonSettings, townSettings, () =>
         {
             _layer2.CloseQuery();
             callback?.Invoke();

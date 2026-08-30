@@ -86,7 +86,7 @@ public class PartyAIControlsMenuPartyVM : ViewModel
     [DataSourceProperty] public PartyAIOptionToggleVM CopyPasteToggle { get; set; }
 
     [DataSourceProperty]
-    public string PartySize => GameTexts.FindText("str_LEFT_over_RIGHT").SetTextVariable("LEFT", Party?.MobileParty.MemberRoster.TotalManCount ?? 0).SetTextVariable("RIGHT", Party?.MobileParty.Party.PartySizeLimit ?? 0).ToString();
+    public virtual string PartySize => GameTexts.FindText("str_LEFT_over_RIGHT").SetTextVariable("LEFT", Party?.MobileParty.MemberRoster.TotalManCount ?? 0).SetTextVariable("RIGHT", Party?.MobileParty.Party.PartySizeLimit ?? 0).ToString();
 
     [DataSourceProperty]
     public HintViewModel ClanHint => new(Leader.Clan.Name);

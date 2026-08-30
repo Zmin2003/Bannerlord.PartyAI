@@ -230,16 +230,21 @@
 						  </Children>
 						</ListPanel>
 						
-						<!-- Edit Defaults -->
-						<Widget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" VerticalAlignment="Top" HorizontalAlignment='Left' UpdateChildrenStates='true' MarginTop="20" MarginLeft="10">
+						<!-- Default and Town Management Settings -->
+						<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="Fixed" SuggestedHeight="40" VerticalAlignment="Top" HorizontalAlignment="Left" MarginTop="20" MarginLeft="10" StackLayout.LayoutMethod="HorizontalLeftToRight">
 							<Children>
-								<ButtonWidget DoNotPassEventsToChildren='true' WidthSizePolicy='Fixed' HeightSizePolicy='Fixed' SuggestedWidth="225" SuggestedHeight='40' Brush='ButtonBrush2' UpdateChildrenStates='true' Command.Click='EditDefaultSettings'>
+								<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="225" SuggestedHeight="40" Brush="ButtonBrush2" UpdateChildrenStates="true" Command.Click="EditDefaultSettings">
 									<Children>
-										<TextWidget WidthSizePolicy='CoverChildren' HeightSizePolicy='StretchToParent' HorizontalAlignment="Center" Brush='Kingdom.GeneralButtons.Text' Text='@EditDefaultSettingsText' />
+										<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" Brush="Kingdom.GeneralButtons.Text" Text="@EditDefaultSettingsText" />
+									</Children>
+								</ButtonWidget>
+								<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="225" SuggestedHeight="40" MarginLeft="8" Brush="ButtonBrush2" UpdateChildrenStates="true" Command.Click="OpenTownManagementOptions">
+									<Children>
+										<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" Brush="Kingdom.GeneralButtons.Text" Text="@TownManagementText" />
 									</Children>
 								</ButtonWidget>
 							</Children>
-						</Widget>
+						</ListPanel>
 						
 						<!-- Create Clan Party -->
 						<Widget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" VerticalAlignment="Top" HorizontalAlignment='Right' UpdateChildrenStates='true' MarginTop="40" MarginRight="40">

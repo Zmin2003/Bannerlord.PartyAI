@@ -25,6 +25,12 @@ public static class CallingToArmy
                 continue;
             }
 
+            if (SubModule.AutoDefenseBehavior?.IsAutomaticallyDefending(candidateHero) == true)
+            {
+                partiesToCallToArmy.RemoveAt(index);
+                continue;
+            }
+
             PartyAiEntitySettings settings = SubModule.PartySettingsManager.Settings(candidateHero);
 
             if (!settings.AllowJoinArmies)

@@ -124,6 +124,9 @@ public class PartyAIControlsMenuVM : ViewModel
     public string EditDefaultSettingsText => new TextObject("{=PAI34RDUeMT}Default Settings").ToString();
 
     [DataSourceProperty]
+    public string TownManagementText => new TextObject("{=PAI_TOWN_MANAGEMENT_BUTTON}Town Management").ToString();
+
+    [DataSourceProperty]
     public string DoneText => GameTexts.FindText("str_done").ToString();
 
     [DataSourceProperty]
@@ -197,6 +200,9 @@ public class PartyAIControlsMenuVM : ViewModel
 
     public void EditDefaultSettings() => SubModule.InformationManager.ShowDefaultSettingsInquiry();
 
+    public void OpenTownManagementOptions()
+        => SubModule.InformationManager.ShowTownManagementOptionsInquiry(RefreshPartyList);
+
     private void OnNewPartySelectionOver()
     {
         RefreshPartyList();
@@ -257,7 +263,10 @@ public class PartyAIControlsMenuVM : ViewModel
         }
         foreach (Settlement settlement in Settlement.All)
         {
-            if (SubModule.PartySettingsManager.IsGarrisonManageable(settlement) && settlement?.Town?.GarrisonParty?.Party != null)
+            bool isManagedGarrison = SubModule.PartySettingsManager.IsGarrisonManageable(settlement)
+                && settlement.Town?.GarrisonParty?.Party != null;
+            bool isManagedTown = SubModule.TownManagementBehavior.IsTownManageable(settlement);
+            if (isManagedGarrison || isManagedTown)
             {
                 list.Add(new PartyAIControlsMenuSettlementVM(settlement, this));
             }
