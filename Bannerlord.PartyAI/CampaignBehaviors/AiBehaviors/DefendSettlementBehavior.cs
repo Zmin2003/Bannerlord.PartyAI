@@ -35,9 +35,17 @@ public class DefendSettlementBehavior : PartyOrderBehaviorBase
                 continue;
             }
 
-            if (FactionManager.IsAtWarAgainstFaction(settings.Hero.MapFaction, settlement.MapFaction))
+            if (settings.Hero is not Hero hero)
             {
-                Message.OrderStoppedTargetEnemy(settings.Hero.PartyBelongedTo, order);
+                continue;
+            }
+
+            if (FactionManager.IsAtWarAgainstFaction(hero.MapFaction, settlement.MapFaction))
+            {
+                if (hero.PartyBelongedTo is MobileParty party)
+                {
+                    Message.OrderStoppedTargetEnemy(party, order);
+                }
                 settings.ClearOrder();
             }
         }

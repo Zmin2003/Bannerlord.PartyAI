@@ -11,7 +11,7 @@ namespace Bannerlord.PartyAI.ViewModels.Dialogs;
 
 internal static class CreateTemplate
 {
-    private static string _newTemplateName;
+    private static string _newTemplateName = string.Empty;
 
     public static void Create()
     {
@@ -65,8 +65,8 @@ internal static class CreateTemplate
         FlattenedTroopRoster takenPrisonerRoster,
         FlattenedTroopRoster releasedPrisonerRoster,
         bool isForced,
-        PartyBase leftParty = null,
-        PartyBase rightParty = null)
+        PartyBase? leftParty = null,
+        PartyBase? rightParty = null)
     {
         PAICustomTemplate template = new(
           _newTemplateName,

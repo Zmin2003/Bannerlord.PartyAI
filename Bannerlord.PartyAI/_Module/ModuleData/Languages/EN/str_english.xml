@@ -29,6 +29,7 @@
 	<string id="PAIObdiWWBa" text="Kingdom Parties"/>
 	<string id="PAIJkUlgNUw" text="Kingdom Garrisons"/>
 	<string id="PAI4eHNvDEM" text="Order Queue for {HERO}'s party"/>
+	<string id="PAI_ORDER_QUEUE" text="Order Queue"/>
 	<string id="PAI9PHY91SP" text="Add Order"/>
 	<string id="PAIl7GEAaaD" text="Clear Queue"/>
 	<string id="PAIv8ekJ4gs" text="Are you sure?"/>
@@ -92,7 +93,6 @@
 	<string id="PAR1D0VvXKZ" text="Delete Template"/>
 	<string id="PAIwK2enPSp" text="Fine Tune Template"/>
 	<string id="PAIzjCcuvQw" text="Select which troops along the upgrade paths you've chosen to be included in the party template. The topmost troop in the list will be the portrait next to the template."/>
-	<string id="PAI3Bf9LMMe" text="[Unused for now...]"/>
 	<string id="PAIyBVEFgXu" text="Mod Options"/>
 	<string id="PAI34RDUeMT" text="Default Settings"/>
 	<string id="PAIlKT8heH9" text="Show All Heroes"/>
@@ -228,12 +228,9 @@
 	<string id="PAI4nxGNBim" text="Edit"/>
 	<string id="PAIFq36oGcZ" text=" - Daily Budget: "/>
 	<string id="PAIGHyxwrgx" text="Patrol Radius"/>
-	<string id="PAIGsrQyFUm" text="This feature is not compatible with Realm of Thrones, which already incorporates a version of it."/>
 	<string id="PAIh3IMyAgt" text="It doesn't make sense to dismiss troops when troop conversion is enabled--they can be converted into whatever troop you want."/>
 	<string id="PAIhtLyrJ96" text="Patrol Radius: {PERCENTAGE}%"/>
 	<string id="PAIi6it5mnL" text="Enter Dismiss Unwanted Troops Percentage"/>
-	<string id="PAIJugGVraS" text="AI Recruit Culture"/>
-	<string id="PAIJZdGLEmg" text="Not implemented yet"/>
 	<string id="PAIkYqZ80Dt" text="Value must be greater than {MINVALUE}"/>
 	<string id="PAIMaf6ECHe" text="Change radius for patrol orders. Adjust it until it produces the result you want. The percentage is relative to the default radius."/>
 	<string id="PAIQVkiTiSf" text="Dismiss unwanted troops when above "/>
@@ -245,8 +242,37 @@
 	<string id="PAIZX2CAEyH" text="Value must be less than {MAXVALUE}"/>
 	<string id="PAhQoukaUbN" text="May Take Troops From Settlements"/>
 	<string id="PAI_BUY_HORSES_BUDGET_TITLE" text="Buy Horses Budget"/>
-	<string id="PAI_ENHANCED_BATTLE_AI" text="Experimental Enhanced Battle AI"/>
-	<string id="PAI_ENHANCED_BATTLE_AI_HINT" text="Optionally replace the native field-battle tactic with cautious infantry advances, protected ranged formations, cavalry flanking, mounted skirmishing, and effective-range fire discipline. Results vary by army and map, so native delegation remains the default. Unit stats are not changed, and Realistic Battle AI takes priority when detected."/>
+	<string id="PAI_ENHANCED_BATTLE_AI" text="Adaptive Field Battle AI"/>
+	<string id="PAI_ENHANCED_BATTLE_AI_HINT" text="Adds a power-aware combined-arms tactic that competes normally with native tactics instead of overriding them. Realistic Battle AI still takes priority."/>
 	<string id="PAI_BATTLE_COMMANDER_CANNOT_RESUME" text="You cannot resume formation command while your character is incapacitated."/>
+	<string id="PAI_AVOID_SIEGE_ARTILLERY" text="Avoid Siege Artillery"/>
+	<string id="PAI_AVOID_SIEGE_ARTILLERY_HINT" text="AI troops near the predicted impact point of heavy siege projectiles briefly scatter, then return to native siege behavior. Troops in melee or using siege objects are not interrupted."/>
+	<string id="PAI_BATTLE_ASSESSMENT" text="Battle estimate: {ALLY} vs {ENEMY} troops; allied combat power is about {POWER}% of the enemy."/>
+	<string id="PAI_EQUAL_NUMBERS_WARNING" text="Headcounts are close, but troop tiers, equipment and unit matchups put your side at a real disadvantage."/>
+	<string id="PAI_AUTO_CREATE_CARAVANS" text="Auto Create Clan Caravans"/>
+	<string id="PAI_CLAN_AUTOMATION" text="Clan Automation"/>
+	<string id="PAI_AUTO_CREATE_CARAVANS_HINT" text="While the main party is in a safe town, automatically pay for at most one caravan per day until the configured limit is reached. The best available companion is selected by trade, scouting and tactics skill."/>
+	<string id="PAI_AUTO_ELITE_CARAVANS" text="Use Elite Caravans"/>
+	<string id="PAI_AUTO_ELITE_CARAVANS_HINT" text="Create the more expensive caravan variant with stronger starting guards."/>
+	<string id="PAI_AUTO_CARAVAN_LIMIT" text="Caravan Limit"/>
+	<string id="PAI_AUTO_CARAVAN_LIMIT_HINT" text="Maximum number of active player-clan caravans. Max removes the limit."/>
+	<string id="PAI_AUTO_CARAVAN_RESERVE" text="Keep Gold Reserve"/>
+	<string id="PAI_AUTO_CARAVAN_RESERVE_HINT" text="A caravan is only formed if this much gold remains after paying its creation cost."/>
+	<string id="PAI_AUTO_CARAVAN_CREATED" text="{HERO} formed an automatically managed caravan in {SETTLEMENT} for {COST}{GOLD_ICON}."/>
+	<string id="PAI_AUTOMATION_LEVEL" text="Settlement Automation"/>
+	<string id="PAI_AUTOMATION_LEVEL_HINT" text="Choose what happens after this party enters a town or village. Full Auto also balances its template and equips party heroes from inventory."/>
+	<string id="PAI_AUTOMATION_OFF" text="Off"/>
+	<string id="PAI_AUTOMATION_RECRUIT" text="Recruit"/>
+	<string id="PAI_AUTOMATION_UPGRADE" text="Recruit + Upgrade"/>
+	<string id="PAI_AUTOMATION_FULL" text="Full Auto"/>
+	<string id="PAI_AUTOMATION_RESULT" text="Party AI: recruited {RECRUITED}, upgraded {UPGRADED}, balanced {BALANCED}, equipped {EQUIPPED}."/>
+	<string id="PAI_BUILTIN_STRONGEST" text="Built-in: Strongest v1.5.2"/>
+	<string id="PAI_BUILTIN_CULTURE" text="Built-in: {CULTURE} optimal"/>
+	<string id="PAI_TEMPLATE_IMPORT_BUTTON" text="Online Template"/>
+	<string id="PAI_TEMPLATE_IMPORT_HINT" text="Import a validated troop template and composition from an HTTPS JSON URL."/>
+	<string id="PAI_TEMPLATE_IMPORT_TITLE" text="Import Online Template"/>
+	<string id="PAI_TEMPLATE_IMPORT_PROMPT" text="Paste the HTTPS URL of a Party AI template JSON file."/>
+	<string id="PAI_TEMPLATE_IMPORT_PENDING" text="A template download is already running."/>
+	<string id="PAI_TEMPLATE_IMPORT_SUCCESS" text="Imported template: {NAME}"/>
 </strings>
 </base>

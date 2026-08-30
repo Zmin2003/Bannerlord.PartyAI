@@ -7,15 +7,19 @@
   <Window>
 	<Widget DataSource="*DataSource" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" VerticalAlignment="Center" Sprite="BlankWhiteSquare_9" Color="#000000FF" AlphaFactor="0.75">
 	  <Children>
-		<DimensionSyncWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="650" DimensionToSync="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" WidgetToCopyHeightFrom="SlidersWindowInnerPanel">
+		<Widget WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="680" MaxHeight="820" MarginTop="35" MarginBottom="35" HorizontalAlignment="Center" VerticalAlignment="Center">
 		  <Children>
 			<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" ClipContents="true">
 			  <Children>
 				<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" VerticalAlignment="Top" Sprite="StdAssets\Popup\canvas" />
 			  </Children>
 			</Widget>
-			<ListPanel Id="SlidersWindowInnerPanel" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalTopToBottom" MarginLeft="15" MarginRight="15">
+			<ScrollablePanel WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginLeft="15" MarginRight="25" MarginTop="10" MarginBottom="10" AutoHideScrollBars="true" ClipRect="OptionsClip" InnerPanel="OptionsClip\SlidersWindowInnerPanel" VerticalScrollbar="..\OptionsScrollbar\Scrollbar">
 			  <Children>
+				<Widget Id="OptionsClip" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" ClipContents="true">
+				  <Children>
+					<ListPanel Id="SlidersWindowInnerPanel" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalTopToBottom">
+					  <Children>
 				<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalTopToBottom" MarginBottom="5">
 				  <Children>
 					<!--Title-->
@@ -23,6 +27,18 @@
 					<!--Divider-->
 					<Widget Id="TitleDivider" WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="23" Sprite="StdAssets\Popup\divider" />
 				  </Children>
+				</ListPanel>
+
+				<!-- Settlement Automation -->
+				<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="38" StackLayout.LayoutMethod="HorizontalLeftToRight" MarginBottom="8" MarginLeft="13" MarginRight="13">
+					<Children>
+						<TextWidget WidthSizePolicy="Fixed" SuggestedWidth="250" HeightSizePolicy="StretchToParent" HorizontalAlignment="Left" VerticalAlignment="Center" Brush="Clan.Stat.Name.Text" Text="@AutomationLevelText">
+							<Children>
+								<HintWidget DataSource="{AutomationLevelHint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" />
+							</Children>
+						</TextWidget>
+						<PartyAIDropdown Parameter.DataSource="{AutomationLevelDropdown}" WidthSizePolicy="Fixed" SuggestedWidth="300" VerticalAlignment="Center" />
+					</Children>
 				</ListPanel>
 				
 				<!-- Max Troop Tier -->
@@ -47,7 +63,7 @@
 				<PartyAIOptionToggle Parameter.DataSource="{RecruitFromEnemySettlementsToggle}" />
 				
 				<!-- Patrol Radius -->
-				<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="HorizontalLeftToRight" MarginBottom="5" MarginLeft="13">
+				<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="HorizontalLeftToRight" MarginBottom="5" MarginLeft="13" IsVisible="@ShowAiOptions">
 					<Children>
 						<TextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Left" VerticalAlignment="Bottom" Brush="Clan.Stat.Name.Text" Text="@PatrolRadiusText">
 							<Children>
@@ -65,7 +81,7 @@
 				</ListPanel>
 				
 				<!-- Recruitment Percentage -->
-				<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="HorizontalLeftToRight">
+				<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="HorizontalLeftToRight" IsVisible="@ShowAiOptions">
 					<Children>
 						<!-- Recruitment Toggle -->
 						<PartyAIOptionToggle Parameter.DataSource="{RecruitmentToggle}" />
@@ -87,7 +103,7 @@
 				</ListPanel>
 				
 				<!-- Dismiss Unwanted Troops -->
-				<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="HorizontalLeftToRight">
+				<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="HorizontalLeftToRight" IsVisible="@ShowAiOptions">
 					<Children>
 						<!-- Dismiss Unwanted Troops Toggle -->
 						<PartyAIOptionToggle Parameter.DataSource="{DismissUnwantedTroopsToggle}" />
@@ -109,7 +125,7 @@
 				</ListPanel>
 				
 				<!-- Buy Horses -->
-				<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="HorizontalLeftToRight">
+				<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="HorizontalLeftToRight" IsVisible="@ShowAiOptions">
 					<Children>
 						<!-- Buy Horses Toggle -->
 						<PartyAIOptionToggle Parameter.DataSource="{BuyHorsesToggle}" />
@@ -142,7 +158,7 @@
 				</ListPanel>
 				
 				<!-- Fallback Order -->
-				<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="HorizontalLeftToRight" MarginTop="5" MarginLeft="13">
+				<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="HorizontalLeftToRight" MarginTop="5" MarginLeft="13" IsVisible="@ShowAiOptions">
 					<Children>
 						<TextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Left" VerticalAlignment="Bottom" Brush="Clan.Stat.Name.Text" Text="@FallbackOrderLabel">
 							<Children>
@@ -183,13 +199,18 @@
 					</ToggleButtonWidget>
 				  </Children>
 				</ListPanel>
+					  </Children>
+					</ListPanel>
+				  </Children>
+				</Widget>
 			  </Children>
-			</ListPanel>
+			</ScrollablePanel>
+			<Standard.VerticalScrollbar Id="OptionsScrollbar" HeightSizePolicy="StretchToParent" HorizontalAlignment="Right" MarginTop="18" MarginBottom="18" MarginRight="8" />
 			<!--Frame Border-->
 			<BrushWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="Popup.Frame" IsEnabled="false" />
 
 		  </Children>
-		</DimensionSyncWidget>
+		</Widget>
 	  </Children>
 	</Widget>
   </Window>

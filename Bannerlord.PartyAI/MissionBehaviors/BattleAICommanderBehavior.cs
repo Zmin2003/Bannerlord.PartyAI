@@ -19,6 +19,7 @@ internal sealed class BattleAICommanderBehavior : MissionLogic
     private readonly Dictionary<Formation, FiringOrder> _fireDisciplineOriginalOrders = new();
     private bool _autoEnableAttempted;
     private bool _isDelegated;
+    private bool _battleAssessmentShown;
     private float _nextEnhancedTickTime;
     private SmartPlayerTactic? _smartTactic;
 
@@ -92,6 +93,7 @@ internal sealed class BattleAICommanderBehavior : MissionLogic
         team.DelegateCommandToAI();
         _isDelegated = true;
         EnableSmartCommander(team);
+        ShowBattleAssessment(team);
 
         TextObject message = new(
             "{=PAI_BATTLE_COMMANDER_ENABLED}The battle AI now commands your formations. You still control your character. Press {KEYBIND} to resume command.");
@@ -241,6 +243,38 @@ internal sealed class BattleAICommanderBehavior : MissionLogic
         if (!_fireDisciplineOriginalOrders.ContainsKey(formation))
         {
             _fireDisciplineOriginalOrders[formation] = formation.FiringOrder;
+        }
+    }
+
+    private void ShowBattleAssessment(Team team)
+    {
+        if (_battleAssessmentShown || !Mission.IsFieldBattle)
+        {
+            return;
+        }
+
+        _battleAssessmentShown = true;
+        int allies = team.QuerySystem.AllyUnitCount;
+        int enemies = team.QuerySystem.EnemyUnitCount;
+        int powerPercent = (int)MathF.Round(team.QuerySystem.TotalPowerRatio * 100f);
+
+        TextObject assessment = new(
+            "{=PAI_BATTLE_ASSESSMENT}Battle estimate: {ALLY} vs {ENEMY} troops; allied combat power is about {POWER}% of the enemy.");
+        assessment.SetTextVariable("ALLY", allies);
+        assessment.SetTextVariable("ENEMY", enemies);
+        assessment.SetTextVariable("POWER", powerPercent);
+        DisplayMessage(
+            assessment,
+            powerPercent < 90 ? Colors.Yellow : Colors.Gray);
+
+        float headcountRatio = (allies + 1f) / (enemies + 1f);
+        if (headcountRatio >= 0.85f
+            && headcountRatio <= 1.15f
+            && powerPercent < 90)
+        {
+            DisplayMessage(
+                new TextObject("{=PAI_EQUAL_NUMBERS_WARNING}Headcounts are close, but troop tiers, equipment and unit matchups put your side at a real disadvantage."),
+                Colors.Yellow);
         }
     }
 

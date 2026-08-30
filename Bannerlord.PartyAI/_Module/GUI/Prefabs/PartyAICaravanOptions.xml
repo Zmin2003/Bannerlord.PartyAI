@@ -24,6 +24,17 @@
 					<Widget Id="TitleDivider" WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="23" Sprite="StdAssets\Popup\divider" />
 				  </Children>
 				</ListPanel>
+
+				<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="38" StackLayout.LayoutMethod="HorizontalLeftToRight" MarginBottom="8" MarginLeft="13" MarginRight="13">
+					<Children>
+						<TextWidget WidthSizePolicy="Fixed" SuggestedWidth="210" HeightSizePolicy="StretchToParent" VerticalAlignment="Center" Brush="Clan.Stat.Name.Text" Text="@AutomationLevelText">
+							<Children>
+								<HintWidget DataSource="{AutomationLevelHint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" />
+							</Children>
+						</TextWidget>
+						<PartyAIDropdown Parameter.DataSource="{AutomationLevelDropdown}" WidthSizePolicy="Fixed" SuggestedWidth="260" VerticalAlignment="Center" />
+					</Children>
+				</ListPanel>
 				
 				<!-- Max Troop Tier -->
 				<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="HorizontalLeftToRight" MarginBottom="5" MarginLeft="13">

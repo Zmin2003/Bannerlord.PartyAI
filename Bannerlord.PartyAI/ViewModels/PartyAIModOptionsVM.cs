@@ -2,7 +2,6 @@
 using Bannerlord.PartyAI.Models;
 using Bannerlord.PartyAI.ViewModels.Components;
 using Bannerlord.PartyAI.ViewModels.Dropdowns;
-using HarmonyLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,8 +19,8 @@ public class PartyAIModOptionsVM : ViewModel
 {
     public class PartyAIPartyLeaderRosterImageVM : ViewModel
     {
-        private CharacterImageIdentifierVM _visual;
-        private HintViewModel _hint;
+        private CharacterImageIdentifierVM _visual = null!;
+        private HintViewModel _hint = null!;
 
         public PartyAIPartyLeaderRosterImageVM(Hero hero)
         {
@@ -71,6 +70,7 @@ public class PartyAIModOptionsVM : ViewModel
     private readonly TextObject _manageKingdomGarrisonsHint = new("{=PAIy0nVMLXY}If you are the ruler of your kingdom, manage garrisons for the entire kingdom instead of just your clan.");
     private readonly TextObject _cannotManageGarrisonsHint = new("{=PAIRZkSlIxH}Cannot manage garrison parties without allowing troop conversion.");
     private int _troopsConvertedPerDay;
+    private int _autoCaravanGoldReserve;
     private readonly Action _callback;
 
     private readonly PartyAutoCreationBehavior _autoCreationBehavior;
@@ -131,19 +131,29 @@ public class PartyAIModOptionsVM : ViewModel
             new TextObject("{=PAI_AUTO_BATTLE_COMMANDER_HINT}Automatically hand all player formations to the native tactical AI after deployment. Your character remains under your control, and the battle commander key toggles command at any time."));
 
         EnhancedBattleAiToggle = new PartyAIOptionToggleVM(
-            new TextObject("{=PAI_ENHANCED_BATTLE_AI}Experimental Enhanced Battle AI"),
+            new TextObject("{=PAI_ENHANCED_BATTLE_AI}Adaptive Field Battle AI"),
             SubModule.PartySettingsManager.EnhancedBattleAi,
-            new TextObject("{=PAI_ENHANCED_BATTLE_AI_HINT}Optionally replace the native field-battle tactic with cautious infantry advances, protected ranged formations, cavalry flanking, mounted skirmishing, and effective-range fire discipline. Results vary by army and map, so native delegation remains the default. Unit stats are not changed, and Realistic Battle AI takes priority when detected."));
+            new TextObject("{=PAI_ENHANCED_BATTLE_AI_HINT}Adds a power-aware combined-arms tactic that competes normally with native tactics instead of overriding them. Realistic Battle AI still takes priority."));
+
+        AvoidSiegeArtilleryToggle = new PartyAIOptionToggleVM(
+            new TextObject("{=PAI_AVOID_SIEGE_ARTILLERY}Avoid Siege Artillery"),
+            SubModule.PartySettingsManager.AvoidSiegeArtillery,
+            new TextObject("{=PAI_AVOID_SIEGE_ARTILLERY_HINT}AI troops near the predicted impact point of heavy siege projectiles briefly scatter, then return to native siege behavior. Troops in melee or using siege objects are not interrupted."));
       
-        AIRecruitCultureToggle = new PartyAIOptionToggleVM(
-            new TextObject("{=PAIJugGVraS}AI Recruit Culture"),
-            SubModule.PartySettingsManager.AggressivePatrols,
-            new TextObject("{=PAIJZdGLEmg}TODO"));
-       
         AutoCreateClanPartiesToggle = new PartyAIOptionToggleVM(
             new TextObject("{=PAIsUcGJNnV}Auto Create Clan Parties"),
             _autoCreationBehavior.AutoCreateClanParties,
             new TextObject("{=PAIurMNhxmp}Automatically create clan parties for heroes that are available. Parties will not be created for heroes that are in your party."));
+
+        AutoCreateClanCaravansToggle = new PartyAIOptionToggleVM(
+            new TextObject("{=PAI_AUTO_CREATE_CARAVANS}Auto Create Clan Caravans"),
+            _autoCreationBehavior.AutoCreateClanCaravans,
+            new TextObject("{=PAI_AUTO_CREATE_CARAVANS_HINT}While the main party is in a safe town, automatically pay for at most one caravan per day until the configured limit is reached. The best available companion is selected by trade, scouting and tactics skill."));
+
+        AutoCreateEliteCaravansToggle = new PartyAIOptionToggleVM(
+            new TextObject("{=PAI_AUTO_ELITE_CARAVANS}Use Elite Caravans"),
+            _autoCreationBehavior.AutoCreateEliteCaravans,
+            new TextObject("{=PAI_AUTO_ELITE_CARAVANS_HINT}Create the more expensive caravan variant with stronger starting guards."));
 
         ControlPanelKeySelector = new(
             SubModule.PartySettingsManager.ControlPanelModiferKey,
@@ -172,7 +182,10 @@ public class PartyAIModOptionsVM : ViewModel
         TroopConversionHeaderHint = new HintViewModel(new TextObject("{=PAIn0vtnqMG}Allow troops to be automatically converted to the ones in your assigned party template. Cost is adjusted if needed."));
         ManagementHeaderHint = new HintViewModel(new TextObject("{=PAIdJOXgi68}Enable or disable management of specific types of parties. You can change these at any time. If you disable a category that was previously managed, your settings for those parties will be ignored until you enable management again."));
 
-        AutoCreateClanPartiesMaxController = new PartyAIMaxPartiesDropdownVM(null);
+        AutoCreateClanPartiesMaxController = new PartyAIMaxPartiesDropdownVM();
+        AutoCreateClanCaravansMaxController = new PartyAIMaxCaravansDropdownVM(
+            _autoCreationBehavior.AutoCreateClanCaravansMax);
+        _autoCaravanGoldReserve = _autoCreationBehavior.AutoCreateClanCaravansGoldReserve;
 
         ChosenPartyLeaders = _autoCreationBehavior.AutoCreateClanPartiesRoster.ToList();
         LeaderRoster = new MBBindingList<PartyAIPartyLeaderRosterImageVM>();
@@ -184,13 +197,6 @@ public class PartyAIModOptionsVM : ViewModel
         LeaderRosterHiddenHint = new HintViewModel(new TextObject("{=!}" + _hiddenLeadersHint));
 
         _troopsConvertedPerDay = SubModule.PartySettingsManager.TroopsConvertedPerDay;
-
-        if (AccessTools.TypeByName("ROT.SubModule") != null)
-        {
-            AIRecruitCultureToggle.IsDisabled = true;
-            AIRecruitCultureToggle.IsSelected = false;
-            AIRecruitCultureToggle.Hint = new(new TextObject("{=PAIGsrQyFUm}This feature is not compatible with Realm of Thrones, which already incorporates a version of it."));
-        }
 
         RefreshValues();
         OnChangeAllowTroopConversion(AllowTroopConversionForGarrisonsToggle.IsSelected);
@@ -243,6 +249,7 @@ public class PartyAIModOptionsVM : ViewModel
     [DataSourceProperty] public string ManagementHeader => new TextObject("{=PAI2Kzocn92}Management").ToString();
     [DataSourceProperty] public string AITweaksHeader => new TextObject("{=PAIwNqKC63z}AI Tweaks").ToString();
     [DataSourceProperty] public string KeybindsHeader => new TextObject("{=PAIKbIc509P}Keybinds").ToString();
+    [DataSourceProperty] public string AutomationHeader => new TextObject("{=PAI_CLAN_AUTOMATION}Clan Automation").ToString();
 
     [DataSourceProperty] public string TitleText { get; private set; }
 
@@ -267,11 +274,18 @@ public class PartyAIModOptionsVM : ViewModel
     [DataSourceProperty] public PartyAIOptionToggleVM AggressivePatrolsToggle { get; private set; }
     [DataSourceProperty] public PartyAIOptionToggleVM AutoBattleCommanderToggle { get; private set; }
     [DataSourceProperty] public PartyAIOptionToggleVM EnhancedBattleAiToggle { get; private set; }
-    [DataSourceProperty] public PartyAIOptionToggleVM AIRecruitCultureToggle { get; private set; }
-
+    [DataSourceProperty] public PartyAIOptionToggleVM AvoidSiegeArtilleryToggle { get; private set; }
     [DataSourceProperty] public PartyAIOptionToggleVM AutoCreateClanPartiesToggle { get; private set; }
+    [DataSourceProperty] public PartyAIOptionToggleVM AutoCreateClanCaravansToggle { get; private set; }
+    [DataSourceProperty] public PartyAIOptionToggleVM AutoCreateEliteCaravansToggle { get; private set; }
 
     [DataSourceProperty] public PartyAIMaxPartiesDropdownVM AutoCreateClanPartiesMaxController { get; private set; }
+    [DataSourceProperty] public PartyAIMaxCaravansDropdownVM AutoCreateClanCaravansMaxController { get; private set; }
+    [DataSourceProperty] public string AutoCaravanLimitText => new TextObject("{=PAI_AUTO_CARAVAN_LIMIT}Caravan Limit").ToString();
+    [DataSourceProperty] public HintViewModel AutoCaravanLimitHint => new(new TextObject("{=PAI_AUTO_CARAVAN_LIMIT_HINT}Maximum number of active player-clan caravans. Max removes the limit."));
+    [DataSourceProperty] public string AutoCaravanGoldReserveText => new TextObject("{=PAI_AUTO_CARAVAN_RESERVE}Keep Gold Reserve").ToString();
+    [DataSourceProperty] public string AutoCaravanGoldReserveAmount => _autoCaravanGoldReserve.ToString();
+    [DataSourceProperty] public HintViewModel AutoCaravanGoldReserveHint => new(new TextObject("{=PAI_AUTO_CARAVAN_RESERVE_HINT}A caravan is only formed if this much gold remains after paying its creation cost."));
 
     [DataSourceProperty] public PartyAIKeySelectorVM ControlPanelKeySelector { get; private set; }
     [DataSourceProperty] public PartyAIKeySelectorVM CommandedPartiesKeySelector { get; private set; }
@@ -314,6 +328,23 @@ public class PartyAIModOptionsVM : ViewModel
                 OnPropertyChanged("TroopsConvertedPerDayAmount");
             }
         }, null, shouldInputBeObfuscated: false, IsTroopsConvertedPerDayValid, null, _troopsConvertedPerDay.ToString()));
+    }
+
+    public void EditAutoCaravanGoldReserve()
+    {
+        string title = new TextObject("{=PAI_AUTO_CARAVAN_RESERVE}Keep Gold Reserve").ToString();
+        SubModule.InformationManager.ShowNumberPickerInquiry(
+            _autoCaravanGoldReserve,
+            0,
+            500000,
+            title,
+            string.Empty,
+            value =>
+            {
+                _autoCaravanGoldReserve = value;
+                OnPropertyChanged(nameof(AutoCaravanGoldReserveAmount));
+            },
+            isPercentage: false);
     }
 
     public Tuple<bool, string> IsTroopsConvertedPerDayValid(string budget)
@@ -396,12 +427,21 @@ public class PartyAIModOptionsVM : ViewModel
         SubModule.PartySettingsManager.AggressivePatrols = AggressivePatrolsToggle.IsSelected;
         SubModule.PartySettingsManager.AutoDelegateBattleCommand = AutoBattleCommanderToggle.IsSelected;
         SubModule.PartySettingsManager.EnhancedBattleAi = EnhancedBattleAiToggle.IsSelected;
-        SubModule.PartySettingsManager.AIRecruitCulture = AIRecruitCultureToggle.IsSelected;
+        SubModule.PartySettingsManager.AvoidSiegeArtillery = AvoidSiegeArtilleryToggle.IsSelected;
+        if (AutoCreateClanCaravansToggle.IsSelected)
+        {
+            ManageCaravansToggle.IsSelected = true;
+            SubModule.PartySettingsManager.ManageCaravans = true;
+        }
 
         _autoCreationBehavior.UpdateSettings(
             AutoCreateClanPartiesToggle.IsSelected,
             AutoCreateClanPartiesMaxController.SortOptions.SelectedItem.Max,
-            ChosenPartyLeaders.ToList());
+            ChosenPartyLeaders.ToList(),
+            AutoCreateClanCaravansToggle.IsSelected,
+            AutoCreateClanCaravansMaxController.SortOptions.SelectedItem.Max,
+            _autoCaravanGoldReserve,
+            AutoCreateEliteCaravansToggle.IsSelected);
 
         SubModule.PartySettingsManager.TroopsConvertedPerDay = _troopsConvertedPerDay;
 

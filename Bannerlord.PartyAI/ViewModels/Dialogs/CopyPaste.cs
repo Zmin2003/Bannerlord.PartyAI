@@ -14,24 +14,19 @@ namespace Bannerlord.PartyAI.ViewModels.Dialogs;
 
 internal static class CopyPaste
 {
-    private static PartyAiEntitySettings _source;
-    private static List<InquiryElement> _copySources;
-    private static Action _callback;
-    private static bool _showAll;
-    private static bool _clanOnly;
-
-    public static void CopyTo(Hero hero, Action callback = null)
+    private static PartyAiEntitySettings _source = null!;
+    private static List<InquiryElement> _copySources = new();
+    private static Action? _callback;
+    public static void CopyTo(Hero? hero, Action? callback = null)
     {
         _callback = callback;
-        _showAll = false;
-        _clanOnly = true;
 
         if (hero == null) { return; }
 
         CopyCallback(SubModule.PartySettingsManager.Settings(hero));
     }
 
-    public static void CopyGarrisonTo(Settlement settlement, Action callback = null)
+    public static void CopyGarrisonTo(Settlement? settlement, Action? callback = null)
     {
         _callback = callback;
 
@@ -40,7 +35,7 @@ internal static class CopyPaste
         CopyCallback(SubModule.PartySettingsManager.Settings(settlement));
     }
 
-    internal static void CopyCallback(PartyAiEntitySettings source, Action<List<InquiryElement>> callback = null)
+    internal static void CopyCallback(PartyAiEntitySettings? source, Action<List<InquiryElement>>? callback = null)
     {
         if (source == null) { return; }
         callback ??= ChooseCopyTypeCallback;
@@ -55,7 +50,10 @@ internal static class CopyPaste
         string TemplateText = new TextObject("{=PAIrkbpwijb}Template").ToString();
         string OrderText = new TextObject("{=PAI6XKZojTt}Order").ToString();
         string OptionsText = new TextObject("{=PAIQnwbXcqc}Options").ToString();
-        TextObject hint = new TextObject("{=!}{HERO}'s {OPTION}").SetTextVariable("HERO", _source.Hero != null ? _source.Hero.Name : _source.Settlement.Name);
+        TextObject hint = new TextObject("{=!}{HERO}'s {OPTION}")
+            .SetTextVariable(
+                "HERO",
+                _source.Hero?.Name ?? _source.Settlement?.Name ?? TextObject.GetEmpty());
 
         newList.Add(new InquiryElement(source.Composition, CompositionText, null, true, hint.SetTextVariable("OPTION", CompositionText).ToString()));
         newList.Add(new InquiryElement(source.PartyTemplate, TemplateText, null, true, hint.SetTextVariable("OPTION", TemplateText).ToString()));
@@ -100,14 +98,10 @@ internal static class CopyPaste
             );
             goto done;
         }
-        else if (_clanOnly)
-        {
-            PartyAIControlsMenuVM.GetManageableHeroes(heroList, _clanOnly, _showAll);
-            heroList = heroList.Where(h => h != _source.Hero && !(h.PartyBelongedTo?.IsCaravan ?? false)).ToList();
-        }
         else
         {
-            heroList = PartyAIControlsMenuVM.Instance.PartyList.ToList().ConvertAll(p => p.Leader).Where(h => h != _source.Hero).ToList();
+            PartyAIControlsMenuVM.GetManageableHeroes(heroList, clanOnly: true, showAll: false);
+            heroList = heroList.Where(h => h != _source.Hero && !(h.PartyBelongedTo?.IsCaravan ?? false)).ToList();
         }
 
         newList = heroList.ConvertAll(p =>

@@ -19,15 +19,20 @@ internal class CaravansCampaignBehaviorPatches
 
     private static void GetTradeScoreForTownPostfix(ref float __result, MobileParty caravanParty, Town town, CampaignTime lastHomeVisitTimeOfCaravan, float caravanFullness, bool distanceCut)
     {
-        if (!SubModule.PartySettingsManager.IsCaravanManageable(caravanParty.LeaderHero)) { return; }
+        if (caravanParty?.LeaderHero is not Hero leader
+            || town?.Settlement is not Settlement settlement
+            || !SubModule.PartySettingsManager.IsCaravanManageable(leader))
+        {
+            return;
+        }
 
-        PartyAiEntitySettings settings = SubModule.PartySettingsManager.Settings(caravanParty.LeaderHero);
+        PartyAiEntitySettings settings = SubModule.PartySettingsManager.Settings(leader);
         if (!settings.FilterSettlements || settings.FilteredSettlements?.Count < 2)
         {
             return;
         }
 
-        if (!(settings.FilteredSettlements?.Contains(town?.Settlement) ?? false))
+        if (!(settings.FilteredSettlements?.Contains(settlement) ?? false))
         {
             __result = -1f;
         }

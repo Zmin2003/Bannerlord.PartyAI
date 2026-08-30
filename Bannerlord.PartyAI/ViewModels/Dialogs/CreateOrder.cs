@@ -13,11 +13,11 @@ using TaleWorlds.Localization;
 
 namespace Bannerlord.PartyAI.ViewModels.Dialogs;
 
-internal class CreateOrder
+internal static class CreateOrder
 {
-    private static Action _onCreateOrder;
-    private static Hero _hero;
-    private static PartyAiEntitySettings _settings;
+    private static Action _onCreateOrder = null!;
+    private static Hero _hero = null!;
+    private static PartyAiEntitySettings _settings = null!;
     private static bool _fallback;
 
     private static readonly string _titleText = new TextObject("{=PAIUq8Q1n8k}Choose which type of order to add").ToString();
@@ -38,7 +38,12 @@ internal class CreateOrder
 
     public static void Create(PartyAiEntitySettings settings, Action callback, bool fallback = false)
     {
-        _hero = settings.Hero;
+        if (settings.Hero is not Hero hero)
+        {
+            return;
+        }
+
+        _hero = hero;
         _settings = settings;
         _onCreateOrder = callback;
         _fallback = fallback;
@@ -72,9 +77,8 @@ internal class CreateOrder
 
         PartyAiOrder order = (PartyAiOrder)list.First().Identifier;
 
-        string title = null;
+        string title = new TextObject("{=PAIZScpdz8d}Select a target").ToString();
         List<InquiryElement> newList = new();
-        title = new TextObject("{=PAIZScpdz8d}Select a target").ToString();
 
         switch (order.Behavior)
         {
@@ -83,9 +87,7 @@ internal class CreateOrder
                 ChooseTargetCallback(list);
                 return;
             case PartyAiOrderType.EscortParty:
-                Hero hero = _hero is not null
-                    ? _hero
-                    : Hero.MainHero;
+                Hero hero = _hero;
 
                 var parties = new List<MobileParty?>();
                 var factionComponents = hero.MapFaction?.WarPartyComponents.Select(p => p?.MobileParty);
@@ -100,28 +102,27 @@ internal class CreateOrder
                     parties.AddRange(kingdomComponents);
                 }
 
-                var partiesInRange = MobileParty.All
-                    .Where(m => m?.MapFaction != null
-                        && m.GetPosition2D.Distance(hero.PartyBelongedTo.GetPosition2D) <= hero.PartyBelongedTo.SeeingRange * 2f
-                        && !m.IsGarrison
-                        && !m.IsMilitia
-                        && !FactionManager.IsAtWarAgainstFaction(m.MapFaction, hero.MapFaction));
-                parties.AddRange(partiesInRange);
+                if (hero.PartyBelongedTo is MobileParty heroParty)
+                {
+                    var partiesInRange = MobileParty.All
+                        .Where(m => m?.MapFaction != null
+                            && m.GetPosition2D.Distance(heroParty.GetPosition2D) <= heroParty.SeeingRange * 2f
+                            && !m.IsGarrison
+                            && !m.IsMilitia
+                            && !FactionManager.IsAtWarAgainstFaction(m.MapFaction, hero.MapFaction));
+                    parties.AddRange(partiesInRange);
+                }
 
                 var ordered = parties
+                    .OfType<MobileParty>()
                     .DistinctBy(p => p.Id)
-                    .OrderByDescending(s => s?.ActualClan?.Equals(hero.Clan))
-                    .ThenBy(s => s?.Name?.ToString())
+                    .OrderByDescending(s => s.ActualClan?.Equals(hero.Clan))
+                    .ThenBy(s => s.Name?.ToString())
                     .ToList();
-                foreach (MobileParty? mobileParty in ordered)
+                foreach (MobileParty mobileParty in ordered)
                 {
-                    if (mobileParty == null)
-                    {
-                        continue;
-                    }
-
                     PartyAiOrder insert = new(order.Behavior, mobileParty);
-                    CharacterObject character = ConversationHelper.GetConversationCharacterPartyLeader(mobileParty.Party);
+                    CharacterObject? character = ConversationHelper.GetConversationCharacterPartyLeader(mobileParty.Party);
                     if (character == null)
                     {
                         newList.Add(new InquiryElement(insert, mobileParty.Name?.ToString(), null));

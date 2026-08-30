@@ -29,8 +29,9 @@ internal class RecruitmentBehavior : PartyOrderBehaviorBase
 
     private void OnDailyTickParty(MobileParty party)
     {
-        var hero = party?.LeaderHero;
-        if (!SubModule.PartySettingsManager.IsHeroManageable(hero))
+        if (party is null
+            || party.LeaderHero is not Hero hero
+            || !SubModule.PartySettingsManager.IsHeroManageable(hero))
         {
             return;
         }

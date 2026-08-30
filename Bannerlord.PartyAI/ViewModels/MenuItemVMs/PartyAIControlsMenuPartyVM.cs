@@ -17,15 +17,15 @@ namespace Bannerlord.PartyAI.ViewModels.MenuItemVMs;
 
 public class PartyAIControlsMenuPartyVM : ViewModel
 {
-    internal PartyBase Party;
+    internal PartyBase? Party;
     internal Hero Leader;
-    internal Settlement Settlement;
+    internal Settlement? Settlement;
     private readonly PartyAIControlsMenuVM _menu;
-    private ImageIdentifierVM _visual;
-    private PartyAICompositionDisplayVM _partyComposition;
-    private ImageIdentifierVM _clanVisual;
+    private ImageIdentifierVM _visual = null!;
+    private PartyAICompositionDisplayVM _partyComposition = null!;
+    private ImageIdentifierVM _clanVisual = null!;
     private bool _isInspected;
-    internal Army Army => Party?.MobileParty?.Army;
+    internal Army? Army => Party?.MobileParty?.Army;
 
     public PartyAIControlsMenuPartyVM(Hero leader, PartyAIControlsMenuVM menu)
     {
@@ -36,7 +36,6 @@ public class PartyAIControlsMenuPartyVM : ViewModel
             Party = Leader.PartyBelongedTo?.Party;
         }
 
-        //CharacterCode characterCode = CampaignUIHelper.GetCharacterCode(_party.LeaderHero.CharacterObject);
         CharacterCode characterCode = CharacterCode.CreateFrom(Leader.CharacterObject);
         Visual = new CharacterImageIdentifierVM(characterCode);
         ClanVisual = new BannerImageIdentifierVM(Leader.Clan.Banner, true);
@@ -68,6 +67,7 @@ public class PartyAIControlsMenuPartyVM : ViewModel
     [DataSourceProperty] public HintViewModel ChangeTemplateHint { get; set; }
     [DataSourceProperty] public virtual bool CanShowLocationOfHero => Leader.IsActive || (Leader.IsPrisoner && Leader.CurrentSettlement != null);
     [DataSourceProperty] public virtual bool IsLordParty => true;
+    [DataSourceProperty] public virtual bool CanEditOrders => IsLordParty;
     [DataSourceProperty] public virtual bool IsCaravan => false;
     [DataSourceProperty] public virtual bool IsSettlement => false;
     [DataSourceProperty] public bool AllowEditComposition { get; set; }
@@ -78,7 +78,7 @@ public class PartyAIControlsMenuPartyVM : ViewModel
     {
         get
         {
-            var order = SubModule.PartySettingsManager.Settings(Leader)?.Order;
+            var order = SubModule.PartySettingsManager.Settings(Leader).Order;
             return OrderVerbalizer.GetStatusText(order).ToString();
         }
     }

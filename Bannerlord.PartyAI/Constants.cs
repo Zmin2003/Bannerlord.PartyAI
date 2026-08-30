@@ -1,6 +1,6 @@
 ﻿namespace Bannerlord.PartyAI;
 
-internal class Constants
+internal static class Constants
 {
     public const float BehaviorScore = 25f;
 }

@@ -74,7 +74,7 @@ public class PartyAIKeySelectorVM : ViewModel
         });
     }
 
-    private void SelectKey(List<InputKey> keys, Action<InputKey> successCallback = null)
+    private void SelectKey(List<InputKey> keys, Action<InputKey>? successCallback = null)
     {
         string title = new TextObject("{=PAIekKoDXkq}Select a Key").ToString();
         List<InquiryElement> list = keys.OrderBy(k => k.ToString()).ToList().ConvertAll(k => new InquiryElement(k, k.ToString(), null));

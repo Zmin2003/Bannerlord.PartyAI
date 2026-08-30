@@ -29,6 +29,7 @@
     <string id="PAIObdiWWBa" text="王国部队"/>
     <string id="PAIJkUlgNUw" text="王国驻军"/>
     <string id="PAI4eHNvDEM" text="{HERO} 部队的命令队列"/>
+    <string id="PAI_ORDER_QUEUE" text="命令队列"/>
     <string id="PAI9PHY91SP" text="添加命令"/>
     <string id="PAIl7GEAaaD" text="清空队列"/>
     <string id="PAIv8ekJ4gs" text="确定吗？"/>
@@ -92,7 +93,6 @@
     <string id="PAR1D0VvXKZ" text="删除模板"/>
     <string id="PAIwK2enPSp" text="微调模板"/>
     <string id="PAIzjCcuvQw" text="从已选择的升级路线中指定要纳入部队模板的兵种。列表最上方的兵种会作为模板旁的头像。"/>
-    <string id="PAI3Bf9LMMe" text="[暂未使用……]"/>
     <string id="PAIyBVEFgXu" text="模组选项"/>
     <string id="PAI34RDUeMT" text="默认设置"/>
     <string id="PAIlKT8heH9" text="显示所有英雄"/>
@@ -228,12 +228,9 @@
     <string id="PAI4nxGNBim" text="编辑"/>
     <string id="PAIFq36oGcZ" text=" - 每日预算："/>
     <string id="PAIGHyxwrgx" text="巡逻半径"/>
-    <string id="PAIGsrQyFUm" text="此功能与 Realm of Thrones 不兼容，该模组已包含类似功能。"/>
     <string id="PAIh3IMyAgt" text="启用兵种转换后无需遣散多余士兵，因为他们可以直接转换为你需要的兵种。"/>
     <string id="PAIhtLyrJ96" text="巡逻半径：{PERCENTAGE}%"/>
     <string id="PAIi6it5mnL" text="输入遣散多余士兵的比例"/>
-    <string id="PAIJugGVraS" text="AI 按文化招募"/>
-    <string id="PAIJZdGLEmg" text="尚未实现"/>
     <string id="PAIkYqZ80Dt" text="数值必须大于 {MINVALUE}"/>
     <string id="PAIMaf6ECHe" text="调整巡逻命令的半径，直到得到满意效果。百分比以默认巡逻半径为基准。"/>
     <string id="PAIQVkiTiSf" text="超过此比例时遣散多余士兵："/>
@@ -245,8 +242,37 @@
     <string id="PAIZX2CAEyH" text="数值必须小于 {MAXVALUE}"/>
     <string id="PAhQoukaUbN" text="允许从定居点带走士兵"/>
     <string id="PAI_BUY_HORSES_BUDGET_TITLE" text="买马预算"/>
-    <string id="PAI_ENHANCED_BATTLE_AI" text="实验性强化战场 AI"/>
-    <string id="PAI_ENHANCED_BATTLE_AI_HINT" text="可选择用自定义野战战术替代原生战术，包括步兵谨慎推进、远程编队受掩护、骑兵侧击、骑射游击和按有效射程控制开火。实际效果会随兵种和地图变化，因此默认仍使用原生 AI 委托。不修改单位属性；检测到 Realistic Battle AI 时会优先让其接管。"/>
+    <string id="PAI_ENHANCED_BATTLE_AI" text="自适应野战 AI"/>
+    <string id="PAI_ENHANCED_BATTLE_AI_HINT" text="加入按实际战力判断的混合兵种战术，并与原生战术正常竞争，不再强制覆盖全部原生战术。检测到 Realistic Battle AI 时仍由其优先接管。"/>
     <string id="PAI_BATTLE_COMMANDER_CANNOT_RESUME" text="主角失去战斗能力后无法收回编队指挥权。"/>
+    <string id="PAI_AVOID_SIEGE_ARTILLERY" text="规避攻城火炮"/>
+    <string id="PAI_AVOID_SIEGE_ARTILLERY_HINT" text="预测重型攻城炮弹落点，让危险区内的 AI 士兵短暂散开，随后恢复原生攻城行为。正在近战、攀爬或操作器械的士兵不会被打断。"/>
+    <string id="PAI_BATTLE_ASSESSMENT" text="战力估算：我方 {ALLY} 人，敌方 {ENEMY} 人；我方实际战力约为敌军的 {POWER}%。"/>
+    <string id="PAI_EQUAL_NUMBERS_WARNING" text="双方人数接近，但兵阶、装备和兵种克制使我方实际处于明显劣势。"/>
+    <string id="PAI_AUTO_CREATE_CARAVANS" text="自动组建家族商队"/>
+    <string id="PAI_CLAN_AUTOMATION" text="家族自动化"/>
+    <string id="PAI_AUTO_CREATE_CARAVANS_HINT" text="玩家主队停留在安全城镇时，每天最多付费组建一支商队，直至达到上限。系统会按贸易、侦察和战术技能自动选择最合适的同伴。"/>
+    <string id="PAI_AUTO_ELITE_CARAVANS" text="组建精锐商队"/>
+    <string id="PAI_AUTO_ELITE_CARAVANS_HINT" text="使用价格更高、初始护卫更强的精锐商队。"/>
+    <string id="PAI_AUTO_CARAVAN_LIMIT" text="商队数量上限"/>
+    <string id="PAI_AUTO_CARAVAN_LIMIT_HINT" text="玩家家族可同时存在的商队上限。“最大”表示不限制。"/>
+    <string id="PAI_AUTO_CARAVAN_RESERVE" text="保留金币"/>
+    <string id="PAI_AUTO_CARAVAN_RESERVE_HINT" text="只有支付组建费用后仍能保留这些金币时，才会自动建立商队。"/>
+    <string id="PAI_AUTO_CARAVAN_CREATED" text="{HERO} 已在 {SETTLEMENT} 自动组建商队，花费 {COST}{GOLD_ICON}。"/>
+    <string id="PAI_AUTOMATION_LEVEL" text="定居点自动化"/>
+    <string id="PAI_AUTOMATION_LEVEL_HINT" text="设置部队进入城市或村庄后自动执行的操作。完全自动还会按模板配兵，并用队伍库存为队内英雄更换更优装备。"/>
+    <string id="PAI_AUTOMATION_OFF" text="关闭"/>
+    <string id="PAI_AUTOMATION_RECRUIT" text="仅招募"/>
+    <string id="PAI_AUTOMATION_UPGRADE" text="招募并升级"/>
+    <string id="PAI_AUTOMATION_FULL" text="完全自动"/>
+    <string id="PAI_AUTOMATION_RESULT" text="部队 AI：招募 {RECRUITED}，升级 {UPGRADED}，配兵 {BALANCED}，换装 {EQUIPPED}。"/>
+    <string id="PAI_BUILTIN_STRONGEST" text="内置：v1.5.2 全阵营最强"/>
+    <string id="PAI_BUILTIN_CULTURE" text="内置：{CULTURE} 最优解"/>
+    <string id="PAI_TEMPLATE_IMPORT_BUTTON" text="在线模板"/>
+    <string id="PAI_TEMPLATE_IMPORT_HINT" text="从 HTTPS JSON 地址导入并校验兵种模板及配兵比例。"/>
+    <string id="PAI_TEMPLATE_IMPORT_TITLE" text="导入在线模板"/>
+    <string id="PAI_TEMPLATE_IMPORT_PROMPT" text="粘贴 Party AI 模板 JSON 文件的 HTTPS 地址。"/>
+    <string id="PAI_TEMPLATE_IMPORT_PENDING" text="已有模板正在下载。"/>
+    <string id="PAI_TEMPLATE_IMPORT_SUCCESS" text="已导入模板：{NAME}"/>
   </strings>
 </base>

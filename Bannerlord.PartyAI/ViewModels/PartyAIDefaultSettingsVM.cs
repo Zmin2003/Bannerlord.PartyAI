@@ -22,7 +22,7 @@ public class PartyAIDefaultSettingsVM : ViewModel
     {
         private readonly PartyAiEntitySettings _settings;
         private readonly TextObject _groupNametext;
-        private PartyAICompositionDisplayVM _composition;
+        private PartyAICompositionDisplayVM _composition = null!;
         private readonly OptionsType _optionsType;
 
         public DefaultSettingsItemVM(PartyAiEntitySettings settings, TextObject name, OptionsType optionsType)
@@ -98,7 +98,7 @@ public class PartyAIDefaultSettingsVM : ViewModel
         }
     }
 
-    private MBBindingList<DefaultSettingsItemVM> _itemList;
+    private MBBindingList<DefaultSettingsItemVM> _itemList = null!;
     private readonly PartyAiEntitySettings _defaultClanPartySettings;
     private readonly PartyAiEntitySettings _defaultClanCaravanSettings;
     private readonly PartyAiEntitySettings _defaultClanGarrisonSettings;

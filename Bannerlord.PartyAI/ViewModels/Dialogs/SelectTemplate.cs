@@ -9,10 +9,10 @@ using TaleWorlds.Localization;
 
 namespace Bannerlord.PartyAI.ViewModels.Dialogs;
 
-internal class SelectTemplate
+internal static class SelectTemplate
 {
-    private static Action _onSelectCallback;
-    internal static void Select(PartyAiEntitySettings settings, Action callback = null)
+    private static Action? _onSelectCallback;
+    internal static void Select(PartyAiEntitySettings settings, Action? callback = null)
     {
         _onSelectCallback = callback;
 

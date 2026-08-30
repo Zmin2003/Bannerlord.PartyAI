@@ -11,19 +11,18 @@ namespace Bannerlord.PartyAI.ViewModels.Misc;
 internal static class VMUtilities
 {
     internal static void OpenPartyScreen(
-        TroopRoster leftRoster,
-        TroopRoster rightRoster,
-        TextObject leftPartyName = null,
-        TextObject rightPartyName = null,
-        TextObject header = null,
-        PartyPresentationDoneButtonDelegate doneDelegate = null,
-        PartyPresentationDoneButtonConditionDelegate doneCondition = null,
-        PartyBase leftParty = null,
-        PartyBase rightParty = null,
+        TroopRoster? leftRoster,
+        TroopRoster? rightRoster,
+        TextObject? leftPartyName = null,
+        TextObject? rightPartyName = null,
+        TextObject? header = null,
+        PartyPresentationDoneButtonDelegate? doneDelegate = null,
+        PartyPresentationDoneButtonConditionDelegate? doneCondition = null,
+        PartyBase? leftParty = null,
+        PartyBase? rightParty = null,
         int leftSizeLimit = 0,
-        IsTroopTransferableDelegate
-        transferableDelegate = null,
-        PartyPresentationCancelButtonDelegate cancelDelegate = null)
+        IsTroopTransferableDelegate? transferableDelegate = null,
+        PartyPresentationCancelButtonDelegate? cancelDelegate = null)
     {
         Game current = Game.Current;
         PartyScreenLogic partyScreenLogic = new();
@@ -41,8 +40,8 @@ internal static class VMUtilities
             LeftPrisonerRoster = TroopRoster.CreateDummyTroopRoster(),
             RightMemberRoster = rightRoster,
             RightPrisonerRoster = TroopRoster.CreateDummyTroopRoster(),
-            LeftLeaderHero = null,
-            RightLeaderHero = null,
+            LeftLeaderHero = null!,
+            RightLeaderHero = null!,
             LeftPartyMembersSizeLimit = leftParty != null ? leftParty.PartySizeLimit : leftSizeLimit,
             LeftPartyPrisonersSizeLimit = 0,
             RightPartyMembersSizeLimit = (rightParty ?? PartyBase.MainParty) != null
@@ -56,12 +55,12 @@ internal static class VMUtilities
             TroopTransferableDelegate = transferableDelegate ?? IsTroopTransferable,
             PartyPresentationDoneButtonDelegate = doneDelegate,
             PartyPresentationDoneButtonConditionDelegate = doneCondition ?? IsTemplateRosterValid,
-            PartyPresentationCancelButtonActivateDelegate = null,
+            PartyPresentationCancelButtonActivateDelegate = null!,
             PartyPresentationCancelButtonDelegate = cancelDelegate,
             IsDismissMode = false,
             IsTroopUpgradesDisabled = true,
             Header = header,
-            PartyScreenClosedDelegate = null,
+            PartyScreenClosedDelegate = null!,
             TransferHealthiesGetWoundedsFirst = false,
             ShowProgressBar = false,
             MemberTransferState = PartyScreenLogic.TransferState.Transferable,
@@ -91,7 +90,7 @@ internal static class VMUtilities
     {
         if (rightMemberRoster.TotalManCount > 0)
         {
-            return new Tuple<bool, TextObject>(true, null);
+            return new Tuple<bool, TextObject>(true, TextObject.GetEmpty());
         }
         else
         {

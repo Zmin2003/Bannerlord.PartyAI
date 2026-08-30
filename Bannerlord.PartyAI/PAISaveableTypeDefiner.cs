@@ -26,6 +26,7 @@ internal class PAISaveableTypeDefiner : SaveableTypeDefiner
     {
         AddEnumDefinition(typeof(PartyAiOrderType), 1001);
         AddEnumDefinition(typeof(InputKey), 1002);
+        AddEnumDefinition(typeof(SettlementAutomationLevel), 1003);
     }
 
     protected override void DefineContainerDefinitions()

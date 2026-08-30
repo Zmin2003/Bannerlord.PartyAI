@@ -11,7 +11,7 @@ internal class InventoryPrefabExtension
     [PrefabExtension("Inventory", "descendant::ListPanel[@IsVisible='@OtherSideHasCapacity']/Children")]
     internal class Popups : PrefabExtensionInsertPatch
     {
-        private IEnumerable<XmlNode> _nodes;
+        private IEnumerable<XmlNode>? _nodes;
         public override InsertType Type => InsertType.Child;
         public override int Index => 2;
 

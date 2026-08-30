@@ -64,16 +64,21 @@ internal static class PartyAiSaveCompatibilityPatches
             return;
         }
 
-        object memberSaveId = _memberSaveIdProperty.GetValue(__instance);
+        object? memberSaveId = _memberSaveIdProperty.GetValue(__instance);
+        if (memberSaveId is null)
+        {
+            return;
+        }
+
         int localSaveId = Convert.ToInt32(_localSaveIdField.GetValue(memberSaveId));
         if (localSaveId != 9)
         {
             return;
         }
 
-        object objectLoadData = _objectLoadDataProperty.GetValue(__instance);
-        object target = objectLoadData == null ? null : _targetProperty.GetValue(objectLoadData);
-        object savedMemberType = _savedMemberTypeField.GetValue(__instance);
+        object? objectLoadData = _objectLoadDataProperty.GetValue(__instance);
+        object? target = objectLoadData == null ? null : _targetProperty.GetValue(objectLoadData);
+        object? savedMemberType = _savedMemberTypeField.GetValue(__instance);
         if (target is not PartyAiEntitySettings
             || !string.Equals(savedMemberType?.ToString(), "CustomStruct", StringComparison.Ordinal))
         {

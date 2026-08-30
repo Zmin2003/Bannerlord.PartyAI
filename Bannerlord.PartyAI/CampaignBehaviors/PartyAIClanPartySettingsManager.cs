@@ -1,4 +1,5 @@
 ﻿using Bannerlord.PartyAI.Domain.Models;
+using Bannerlord.PartyAI.Domain;
 using Bannerlord.PartyAI.Models;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,8 @@ public class PartyAIClanPartySettingsManager : CampaignBehaviorBase
     private Dictionary<Settlement, PartyAiEntitySettings> _garrisonSettings = new();
     private Dictionary<Hero, PartyAiEntitySettings> _caravanSettings = new();
     private List<PAICustomTemplate> _partyTemplates = new();
+    private PartyAiEntitySettings? _playerPartySettings;
+    private int _settlementAutomationVersion = 1;
 
     internal bool AllowTroopConversion = false;
     internal bool AllowTroopConversionForCaravans = true;
@@ -25,15 +28,16 @@ public class PartyAIClanPartySettingsManager : CampaignBehaviorBase
     internal bool ManageKingdomParties;
     internal bool ManageKingdomGarrisons;
     internal int TroopsConvertedPerDay = 4;
-    internal PartyAiEntitySettings _defaultClanPartySettings = new((Hero)null);
-    internal PartyAiEntitySettings _defaultClanCaravanSettings = new((Hero)null);
-    internal PartyAiEntitySettings _defaultClanGarrisonSettings = new((Hero)null);
-    internal PartyAiEntitySettings _defaultKingdomPartySettings = new((Hero)null);
-    internal PartyAiEntitySettings _defaultKingdomGarrisonSettings = new((Hero)null);
+    internal PartyAiEntitySettings _defaultClanPartySettings = new();
+    internal PartyAiEntitySettings _defaultClanCaravanSettings = new();
+    internal PartyAiEntitySettings _defaultClanGarrisonSettings = new();
+    internal PartyAiEntitySettings _defaultKingdomPartySettings = new();
+    internal PartyAiEntitySettings _defaultKingdomGarrisonSettings = new();
     internal bool AggressivePatrols = false;
-    internal bool AIRecruitCulture = false;
     internal bool AutoDelegateBattleCommand = true;
-    internal bool EnhancedBattleAi = false;
+    internal bool EnhancedBattleAi = true;
+    internal bool AvoidSiegeArtillery = true;
+    private int _battleAutomationVersion = 1;
     internal InputKey ControlPanelModiferKey = InputKey.LeftControl;
     internal InputKey ControlPanelKey = InputKey.P;
     internal InputKey CommandedPartiesModiferKey = InputKey.LeftAlt;
@@ -50,9 +54,30 @@ public class PartyAIClanPartySettingsManager : CampaignBehaviorBase
 
     private void OnSessionLaunched(CampaignGameStarter campaignGameStarter)
     {
-        //Taleworlds removed InventoryManager for whatever fucking reason so the entire "inspect your partys inventory" feature is removed for 1.3.9
+        _playerPartySettings ??= new PartyAiEntitySettings(_defaultClanPartySettings, Hero.MainHero);
 
-        foreach (PartyAiEntitySettings settings in _partySettings.ToList().ConvertAll(s => s.Value).Concat(_caravanSettings.ToList().ConvertAll(s => s.Value)).Concat(_garrisonSettings.ToList().ConvertAll(s => s.Value)))
+        if (_settlementAutomationVersion < 1)
+        {
+            foreach (PartyAiEntitySettings settings in DefaultSettings())
+            {
+                settings.SettlementAutomation = SettlementAutomationLevel.Full;
+            }
+
+            foreach (PartyAiEntitySettings settings in AllSettings())
+            {
+                settings.SettlementAutomation = SettlementAutomationLevel.Full;
+            }
+            _settlementAutomationVersion = 1;
+        }
+
+        if (_battleAutomationVersion < 1)
+        {
+            EnhancedBattleAi = true;
+            AvoidSiegeArtillery = true;
+            _battleAutomationVersion = 1;
+        }
+
+        foreach (PartyAiEntitySettings settings in AllSettings())
         {
             settings.FilteredSettlements ??= new();
             settings.OrderQueue ??= new();
@@ -61,13 +86,14 @@ public class PartyAIClanPartySettingsManager : CampaignBehaviorBase
                 settings.PatrolRadius = 1f;
             }
         }
+
+        BuiltinTemplateCatalog.EnsureBuiltInTemplates(this);
     }
 
     private void OnDailyTick()
     {
         // reset budgets
-        IEnumerable<PartyAiEntitySettings> allSettings = _partySettings.ToList().ConvertAll(s => s.Value).Concat(_caravanSettings.ToList().ConvertAll(s => s.Value)).Concat(_garrisonSettings.ToList().ConvertAll(s => s.Value)).AsEnumerable();
-        foreach (PartyAiEntitySettings item in allSettings)
+        foreach (PartyAiEntitySettings item in AllSettings())
         {
             item.ResetBudgets();
         }
@@ -103,18 +129,18 @@ public class PartyAIClanPartySettingsManager : CampaignBehaviorBase
     {
         _partyTemplates.Remove(template);
 
-        foreach (KeyValuePair<Hero, PartyAiEntitySettings> settings in _partySettings)
+        foreach (PartyAiEntitySettings settings in AllSettings().Concat(DefaultSettings()))
         {
-            if (settings.Value.PartyTemplate == template)
+            if (settings.PartyTemplate == template)
             {
-                settings.Value.PartyTemplate = null;
+                settings.SetPartyTemplate(null);
             }
         }
     }
 
     internal List<PAICustomTemplate> AllTemplates => _partyTemplates.ToList();
 
-    internal bool HasActiveOrder(Hero h) => Settings(h).HasActiveOrder;
+    internal bool HasActiveOrder(Hero? h) => Settings(h).HasActiveOrder;
     internal bool IsUniqueTemplateName(string name)
     {
         foreach (PAICustomTemplate t in _partyTemplates)
@@ -157,11 +183,17 @@ public class PartyAIClanPartySettingsManager : CampaignBehaviorBase
         return _garrisonSettings[settlement];
     }
 
-    internal PartyAiEntitySettings Settings(Hero hero)
+    internal PartyAiEntitySettings Settings(Hero? hero)
     {
         if (hero is null)
         {
             return new PartyAiEntitySettings();
+        }
+
+        if (hero == Hero.MainHero)
+        {
+            _playerPartySettings ??= new PartyAiEntitySettings(_defaultClanPartySettings, hero);
+            return _playerPartySettings;
         }
 
         if (IsLeadingCaravan(hero))
@@ -192,9 +224,12 @@ public class PartyAIClanPartySettingsManager : CampaignBehaviorBase
         return _partySettings[hero];
     }
 
-    internal bool IsAIHeroManageable(Hero hero) => !IsLeadingCaravan(hero) && hero?.Clan != null && hero.Clan != Clan.PlayerClan && !hero.Clan.IsBanditFaction && hero.Occupation == Occupation.Lord;
+    internal bool IsAIHeroManageable(Hero? hero) => !IsLeadingCaravan(hero) && hero?.Clan != null && hero.Clan != Clan.PlayerClan && !hero.Clan.IsBanditFaction && hero.Occupation == Occupation.Lord;
 
-    internal bool IsManageable(Hero hero) => IsHeroManageable(hero) || IsCaravanManageable(hero);
+    internal bool IsManageable(Hero? hero) => IsHeroManageable(hero) || IsCaravanManageable(hero);
+
+    internal bool IsSettlementAutomationEligible(Hero? hero)
+        => hero is not null && (hero == Hero.MainHero || IsManageable(hero));
 
     internal bool IsHeroManageable([NotNullWhen(true)]Hero? hero)
     {
@@ -235,9 +270,9 @@ public class PartyAIClanPartySettingsManager : CampaignBehaviorBase
         return true;
     }
 
-    internal bool AllowCaravanConversion(Hero hero) => SubModule.PartySettingsManager.IsCaravanManageable(hero) && SubModule.PartySettingsManager.AllowTroopConversionForCaravans;
+    internal bool AllowCaravanConversion(Hero? hero) => SubModule.PartySettingsManager.IsCaravanManageable(hero) && SubModule.PartySettingsManager.AllowTroopConversionForCaravans;
 
-    internal bool IsCaravanManageable(Hero hero)
+    internal bool IsCaravanManageable(Hero? hero)
     {
         if (!ManageCaravans) { return false; }
 
@@ -248,7 +283,7 @@ public class PartyAIClanPartySettingsManager : CampaignBehaviorBase
         return IsLeadingCaravan(hero);
     }
 
-    internal bool IsGarrisonManageable(Settlement settlement)
+    internal bool IsGarrisonManageable(Settlement? settlement)
     {
         if (settlement is null || !settlement.IsFortification)
         {
@@ -271,7 +306,7 @@ public class PartyAIClanPartySettingsManager : CampaignBehaviorBase
         return false;
     }
 
-    internal bool IsLeadingCaravan(Hero hero)
+    internal bool IsLeadingCaravan(Hero? hero)
     {
         return hero?.PartyBelongedTo != null && hero.IsPartyLeader && hero.PartyBelongedTo.IsCaravan;
     }
@@ -282,17 +317,11 @@ public class PartyAIClanPartySettingsManager : CampaignBehaviorBase
         dataStore.SyncData("_garrisonSettings", ref _garrisonSettings);
         dataStore.SyncData("_caravanSettings", ref _caravanSettings);
         dataStore.SyncData("_partyTemplates", ref _partyTemplates);
+        dataStore.SyncData("_playerPartySettings", ref _playerPartySettings);
         _partySettings ??= new Dictionary<Hero, PartyAiEntitySettings>();
         _garrisonSettings ??= new Dictionary<Settlement, PartyAiEntitySettings>();
         _caravanSettings ??= new Dictionary<Hero, PartyAiEntitySettings>();
         _partyTemplates ??= new List<PAICustomTemplate>();
-
-        // convert compositions when template is active
-        foreach (var settings in _partySettings.Values)
-        {
-            PartyComposition composition = settings.Composition;
-            composition.ApplyTemplate(settings.PartyTemplate, out _);
-        }
 
         // set default fallback values here
         if (!dataStore.SyncData("AllowTroopConversion", ref AllowTroopConversion) && dataStore.IsLoading)
@@ -337,37 +366,32 @@ public class PartyAIClanPartySettingsManager : CampaignBehaviorBase
 
         if (!dataStore.SyncData("_defaultClanPartySettings", ref _defaultClanPartySettings) && dataStore.IsLoading)
         {
-            _defaultClanPartySettings = new((Hero)null);
+            _defaultClanPartySettings = new();
         }
 
         if (!dataStore.SyncData("_defaultClanCaravanSettings", ref _defaultClanCaravanSettings) && dataStore.IsLoading)
         {
-            _defaultClanCaravanSettings = new((Hero)null);
+            _defaultClanCaravanSettings = new();
         }
 
         if (!dataStore.SyncData("_defaultClanGarrisonSettings", ref _defaultClanGarrisonSettings) && dataStore.IsLoading)
         {
-            _defaultClanGarrisonSettings = new((Hero)null);
+            _defaultClanGarrisonSettings = new();
         }
 
         if (!dataStore.SyncData("_defaultKingdomPartySettings", ref _defaultKingdomPartySettings) && dataStore.IsLoading)
         {
-            _defaultKingdomPartySettings = new((Hero)null);
+            _defaultKingdomPartySettings = new();
         }
 
         if (!dataStore.SyncData("_defaultKingdomGarrisonSettings", ref _defaultKingdomGarrisonSettings) && dataStore.IsLoading)
         {
-            _defaultKingdomGarrisonSettings = new((Hero)null);
+            _defaultKingdomGarrisonSettings = new();
         }
 
         if (!dataStore.SyncData("AggressivePatrols", ref AggressivePatrols) && dataStore.IsLoading)
         {
             AggressivePatrols = false;
-        }
-
-        if (!dataStore.SyncData("AIRecruitCulture", ref AIRecruitCulture) && dataStore.IsLoading)
-        {
-            AIRecruitCulture = false;
         }
 
         if (!dataStore.SyncData("AutoDelegateBattleCommand", ref AutoDelegateBattleCommand) && dataStore.IsLoading)
@@ -377,7 +401,12 @@ public class PartyAIClanPartySettingsManager : CampaignBehaviorBase
 
         if (!dataStore.SyncData("EnhancedBattleAi", ref EnhancedBattleAi) && dataStore.IsLoading)
         {
-            EnhancedBattleAi = false;
+            EnhancedBattleAi = true;
+        }
+
+        if (!dataStore.SyncData("AvoidSiegeArtillery", ref AvoidSiegeArtillery) && dataStore.IsLoading)
+        {
+            AvoidSiegeArtillery = true;
         }
 
         if (!dataStore.SyncData("ControlPanelModiferKey", ref ControlPanelModiferKey) && dataStore.IsLoading)
@@ -414,5 +443,55 @@ public class PartyAIClanPartySettingsManager : CampaignBehaviorBase
         {
             BattleCommanderKey = InputKey.M;
         }
+
+        if (!dataStore.SyncData("SettlementAutomationVersion", ref _settlementAutomationVersion) && dataStore.IsLoading)
+        {
+            _settlementAutomationVersion = 0;
+        }
+
+        if (!dataStore.SyncData("BattleAutomationVersion", ref _battleAutomationVersion) && dataStore.IsLoading)
+        {
+            _battleAutomationVersion = 0;
+        }
+
+        _playerPartySettings ??= new PartyAiEntitySettings(_defaultClanPartySettings, Hero.MainHero);
+
+        foreach (PartyAiEntitySettings settings in AllSettings())
+        {
+            settings.Composition ??= new PartyComposition(0.35f, 0.30f, 0.20f, 0.15f);
+            settings.Composition.ApplyTemplate(settings.PartyTemplate, out _);
+        }
+    }
+
+    private IEnumerable<PartyAiEntitySettings> AllSettings()
+    {
+        if (_playerPartySettings is not null)
+        {
+            yield return _playerPartySettings;
+        }
+
+        foreach (PartyAiEntitySettings settings in _partySettings.Values)
+        {
+            yield return settings;
+        }
+
+        foreach (PartyAiEntitySettings settings in _caravanSettings.Values)
+        {
+            yield return settings;
+        }
+
+        foreach (PartyAiEntitySettings settings in _garrisonSettings.Values)
+        {
+            yield return settings;
+        }
+    }
+
+    private IEnumerable<PartyAiEntitySettings> DefaultSettings()
+    {
+        yield return _defaultClanPartySettings;
+        yield return _defaultClanCaravanSettings;
+        yield return _defaultClanGarrisonSettings;
+        yield return _defaultKingdomPartySettings;
+        yield return _defaultKingdomGarrisonSettings;
     }
 }

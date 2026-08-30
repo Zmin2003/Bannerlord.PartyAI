@@ -1,5 +1,4 @@
 ﻿using Bannerlord.PartyAI.CampaignBehaviors;
-using System;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.Core.ViewModelCollection.Selector;
 using TaleWorlds.Library;
@@ -20,9 +19,7 @@ public class PartyAIMaxPartiesDropdownVM : ViewModel
         }
     }
 
-    private readonly Action<int> _onSelection;
-
-    private SelectorVM<PartyAIMaxPartiesSelectorItemVM> _sortOptions;
+    private SelectorVM<PartyAIMaxPartiesSelectorItemVM> _sortOptions = null!;
 
     [DataSourceProperty]
     public SelectorVM<PartyAIMaxPartiesSelectorItemVM> SortOptions
@@ -40,11 +37,9 @@ public class PartyAIMaxPartiesDropdownVM : ViewModel
             }
         }
     }
-    public PartyAIMaxPartiesDropdownVM(Action<int> onSort)
+    public PartyAIMaxPartiesDropdownVM()
     {
-        _onSelection = onSort;
-
-        SortOptions = new SelectorVM<PartyAIMaxPartiesSelectorItemVM>(-1, OnMaxPartiesSelected);
+        SortOptions = new SelectorVM<PartyAIMaxPartiesSelectorItemVM>(-1, static _ => { });
 
         SortOptions.AddItem(new PartyAIMaxPartiesSelectorItemVM(new TextObject("{=PAIIqVpFFAi}Max"), 0));
 
@@ -57,8 +52,4 @@ public class PartyAIMaxPartiesDropdownVM : ViewModel
         SortOptions.SelectedIndex = partyAutoCreationBehavior.AutoCreateClanPartiesMax;
     }
 
-    private void OnMaxPartiesSelected(SelectorVM<PartyAIMaxPartiesSelectorItemVM> selector)
-    {
-        _onSelection?.Invoke(selector.SelectedItem.Max);
-    }
 }

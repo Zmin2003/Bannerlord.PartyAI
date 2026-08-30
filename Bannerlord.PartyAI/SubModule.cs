@@ -24,9 +24,9 @@ public class SubModule : MBSubModuleBase
 
     private Harmony _harmony = new(Namespace);
 
-    internal static PartyAIClanPartySettingsManager PartySettingsManager;
-    internal static PAInformationManager InformationManager;
-    internal static ControlAssumptionBehavior ControlAssumptionBehavior;
+    internal static PartyAIClanPartySettingsManager PartySettingsManager = null!;
+    internal static PAInformationManager InformationManager = null!;
+    internal static ControlAssumptionBehavior ControlAssumptionBehavior = null!;
 
     protected override void OnSubModuleLoad()
     {
@@ -72,6 +72,7 @@ public class SubModule : MBSubModuleBase
                 ? PartySettingsManager
                 : null;
             mission.AddMissionBehavior(new BattleAICommanderBehavior(settings));
+            mission.AddMissionBehavior(new SiegeArtilleryAvoidanceBehavior(settings));
         }
 
         base.OnMissionBehaviorInitialize(mission);
@@ -85,7 +86,9 @@ public class SubModule : MBSubModuleBase
         PartySettingsManager = new PartyAIClanPartySettingsManager();
         campaignGameStarter.AddBehavior(PartySettingsManager);
 
-        campaignGameStarter.AddBehavior(new PartyAITroopRecruiter());
+        var troopRecruiter = new PartyAITroopRecruiter();
+        campaignGameStarter.AddBehavior(troopRecruiter);
+        campaignGameStarter.AddBehavior(new SettlementAutomationBehavior(troopRecruiter));
         campaignGameStarter.AddBehavior(new FallbackOrderBehavior());
         campaignGameStarter.AddBehavior(new PartyAutoCreationBehavior());
         campaignGameStarter.AddBehavior(new RecruitmentBehavior());
@@ -126,6 +129,8 @@ public class SubModule : MBSubModuleBase
 
     protected override void OnApplicationTick(float dt)
     {
+        TemplateImportService.Tick();
+
         var activeState = Game.Current?.GameStateManager?.ActiveState;
 
         if (activeState == null
@@ -173,9 +178,6 @@ public class SubModule : MBSubModuleBase
         GarrisonTroopsCampaginBehaviorPatches.Apply(harmony);
 #endif
 
-#if DEBUG
-        AiHourlyTickPatches.PatchAll(harmony);
-#endif
     }
 
     private static void AddGameModels(CampaignGameStarter starter)

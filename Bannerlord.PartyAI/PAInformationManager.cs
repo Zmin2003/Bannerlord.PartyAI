@@ -23,7 +23,7 @@ internal class PAInformationManager : GlobalLayer
     {
         private readonly GauntletLayer _layer;
         private readonly List<SpriteCategory> _spriteCategories = new();
-        private GauntletMovieIdentifier _movie;
+        private GauntletMovieIdentifier? _movie;
 
 
         internal PAInfoLayer(int order)
@@ -214,13 +214,12 @@ internal class PAInformationManager : GlobalLayer
         _layer1.RegisterState();
     }
 
-    public void ShowDefaultSettingsInquiry(Action callback)
+    public void ShowDefaultSettingsInquiry()
     {
         if (!CheckContext()) { return; }
         _layer1.LoadMovie("PartyAIDefaultSettings", new PartyAIDefaultSettingsVM(() =>
         {
             _layer1.CloseQuery();
-            callback?.Invoke();
         }));
         _layer1.RegisterState();
     }

@@ -6,12 +6,12 @@ using HarmonyLib.BUTR.Extensions;
 using HarmonyLib.PatchBuilder;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.CampaignBehaviors;
 using TaleWorlds.CampaignSystem.Party;
 using TaleWorlds.CampaignSystem.Settlements;
-using TaleWorlds.Core;
 using static TaleWorlds.CampaignSystem.CampaignBehaviors.RecruitmentCampaignBehavior;
 
 namespace Bannerlord.PartyAI.Patches;
@@ -49,7 +49,9 @@ internal class RecruitmentCampaignBehaviorPatches
         }
 
         // if we're going to convert the troop anyway, it doesn't matter
-        if (SubModule.PartySettingsManager.AllowTroopConversion && heroSettings.PartyTemplate != null)
+        if ((SubModule.PartySettingsManager.AllowTroopConversion
+                || heroSettings.SettlementAutomation == SettlementAutomationLevel.Full)
+            && heroSettings.PartyTemplate != null)
         {
             return true;
         }
@@ -86,40 +88,77 @@ internal class RecruitmentCampaignBehaviorPatches
             return true;
         }
 
-        PartyComposition partyComposition = Recruitment.GetPartyComposition(mobileParty.Party, settings);
-        var eligibleVolunteers = Recruitment.CollectEligibleVolunteers(mobileParty, settlement, settings, partyComposition);
-
-        var howMany = eligibleVolunteers.Count == 1
-            ? 1 // RandomInt(0, 1) seems to be biased towards 0, so let's just force it
-            : MBRandom.RandomInt(0, eligibleVolunteers.Count);
-        var randomVolunteers = GetRandomElements(eligibleVolunteers, howMany);
-
-        foreach (var volunteer in randomVolunteers)
-        {
-            var troop = volunteer.Troop;
-            var notable = volunteer.Notable;
-            var troopIndex = volunteer.Index;
-            GetRecruitVolunteerFromIndividualMethod.Invoke(__instance, [mobileParty, troop, notable, troopIndex]);
-        }
+        RecruitEligibleVolunteers(__instance, mobileParty, settlement, settings);
 
         return false;
     }
 
-    private static List<T> GetRandomElements<T>(List<T> source, int count)
+    internal static int RecruitEligibleVolunteers(
+        RecruitmentCampaignBehavior behavior,
+        MobileParty mobileParty,
+        Settlement settlement,
+        PartyAiEntitySettings settings)
     {
-        List<T> pool = new List<T>(source);
-        List<T> result = new List<T>();
-
-        count = Math.Min(count, pool.Count);
-
-        for (int i = 0; i < count; i++)
+        if (behavior is null
+            || mobileParty?.Party is null
+            || settlement is null
+            || !settings.AllowRecruitment)
         {
-            T element = pool.GetRandomElement();
-            result.Add(element);
-            pool.Remove(element);
+            return 0;
         }
 
-        return result;
+        int freeSlots = mobileParty.Party.PartySizeLimit - mobileParty.Party.NumberOfAllMembers;
+        if (freeSlots <= 0)
+        {
+            return 0;
+        }
+
+        PartyComposition composition = Recruitment.GetPartyComposition(mobileParty.Party, settings);
+        List<NotableVolunteer> volunteers = Recruitment
+            .CollectEligibleVolunteers(mobileParty, settlement, settings, composition)
+            .OrderByDescending(volunteer => Recruitment.GetRecruitmentPriority(composition, settings, volunteer.Troop))
+            .ToList();
+
+        int recruited = 0;
+        foreach (NotableVolunteer volunteer in volunteers)
+        {
+            if (recruited >= freeSlots
+                || mobileParty.Party.NumberOfAllMembers >= mobileParty.Party.PartySizeLimit)
+            {
+                break;
+            }
+
+            if (volunteer.Index < 0
+                || volunteer.Index >= volunteer.Notable.VolunteerTypes.Length
+                || volunteer.Notable.VolunteerTypes[volunteer.Index] != volunteer.Troop)
+            {
+                continue;
+            }
+
+            PartyComposition currentComposition = Recruitment.GetPartyComposition(
+                mobileParty.Party,
+                settings);
+            if (!Recruitment.CanAffordVolunteer(mobileParty, volunteer.Troop)
+                || !Recruitment.ShouldRecruit(
+                    currentComposition,
+                    settings,
+                    volunteer.Troop,
+                    mobileParty.Party,
+                    allowConversionFallback: true))
+            {
+                continue;
+            }
+
+            int partySizeBefore = mobileParty.Party.NumberOfAllMembers;
+            GetRecruitVolunteerFromIndividualMethod.Invoke(
+                behavior,
+                [mobileParty, volunteer.Troop, volunteer.Notable, volunteer.Index]);
+            recruited += Math.Max(
+                0,
+                mobileParty.Party.NumberOfAllMembers - partySizeBefore);
+        }
+
+        return recruited;
     }
 
 }

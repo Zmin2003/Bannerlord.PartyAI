@@ -1,5 +1,4 @@
-﻿using Bannerlord.PartyAI.Domain;
-using HarmonyLib;
+﻿using HarmonyLib;
 using HarmonyLib.PatchBuilder;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.Party;

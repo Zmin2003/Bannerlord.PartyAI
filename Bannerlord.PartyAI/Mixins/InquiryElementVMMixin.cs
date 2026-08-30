@@ -36,5 +36,5 @@ internal class InquiryElementVMMixin : BaseViewModelMixin<InquiryElementVM>
     }
 
     [DataSourceProperty]
-    public BannerImageIdentifierVM Banner_9 { get; private set; }
+    public BannerImageIdentifierVM? Banner_9 { get; private set; }
 }

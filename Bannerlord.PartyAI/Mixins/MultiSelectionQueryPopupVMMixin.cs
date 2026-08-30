@@ -16,7 +16,7 @@ namespace Bannerlord.PartyAI.Mixins;
 internal class MultiSelectionQueryPopupVMMixin : BaseViewModelMixin<MultiSelectionQueryPopUpVM>
 {
     private readonly MultiSelectionQueryPopUpVM _vm;
-    private string _selectAllText;
+    private string _selectAllText = string.Empty;
     private bool _isSelectAllVisible;
     internal static bool AddClanBanners;
 
@@ -80,9 +80,15 @@ internal class MultiSelectionQueryPopupVMMixin : BaseViewModelMixin<MultiSelecti
     {
         base.OnRefresh();
 
-        if (PartyAIModOptionsVM.IsAutoCreatePartyLeaderRosterSelection && _vm?.InquiryElements?.FirstOrDefault()?.InquiryElement?.Identifier is Hero)
+        var inquiryElements = _vm.InquiryElements;
+        if (inquiryElements is null)
         {
-            foreach (InquiryElementVM e in _vm.InquiryElements)
+            return;
+        }
+
+        if (PartyAIModOptionsVM.IsAutoCreatePartyLeaderRosterSelection && inquiryElements.FirstOrDefault()?.InquiryElement?.Identifier is Hero)
+        {
+            foreach (InquiryElementVM e in inquiryElements)
             {
                 if (PartyAIModOptionsVM.ChosenPartyLeaders.Contains((Hero)e.InquiryElement.Identifier))
                 {
@@ -93,11 +99,12 @@ internal class MultiSelectionQueryPopupVMMixin : BaseViewModelMixin<MultiSelecti
         }
         PartyAIModOptionsVM.IsAutoCreatePartyLeaderRosterSelection = false;
 
-        if (PartyAICaravanOptionsVM.IsSelectFilteredSettlements && _vm?.InquiryElements?.FirstOrDefault()?.InquiryElement?.Identifier is Settlement)
+        if (PartyAICaravanOptionsVM.IsSelectFilteredSettlements && inquiryElements.FirstOrDefault()?.InquiryElement?.Identifier is Settlement)
         {
-            foreach (InquiryElementVM e in _vm.InquiryElements)
+            foreach (InquiryElementVM e in inquiryElements)
             {
-                if (PartyAICaravanOptionsVM.FilteredSettlements.Contains(e.InquiryElement.Identifier as Settlement))
+                if (e.InquiryElement?.Identifier is Settlement settlement
+                    && PartyAICaravanOptionsVM.FilteredSettlements.Contains(settlement))
                 {
                     e.IsSelected = true;
                     e.RefreshValues();
@@ -108,7 +115,7 @@ internal class MultiSelectionQueryPopupVMMixin : BaseViewModelMixin<MultiSelecti
 
         AddClanBanners = false;
 
-        IsSelectAllVisible = _vm.InquiryElements.Count <= _vm.MaxSelectableOptionCount && _vm.InquiryElements.Count > 1 && _vm.MaxSelectableOptionCount - _vm.MinSelectableOptionCount > 1;
+        IsSelectAllVisible = inquiryElements.Count <= _vm.MaxSelectableOptionCount && inquiryElements.Count > 1 && _vm.MaxSelectableOptionCount - _vm.MinSelectableOptionCount > 1;
 
         _vm.SearchText = string.Empty;
     }

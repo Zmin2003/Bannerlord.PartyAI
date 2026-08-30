@@ -44,13 +44,14 @@ public class PartyAiEntitySettings
     [SaveableProperty(26)] public bool AllowTakeTroopsFromSettlement { get; set; } = false;
     [SaveableProperty(27)] public float PatrolRadius { get; set; } = 1f;
     [SaveableProperty(28)] public bool RecruitFromEnemySettlements { get; set; } = false;
+    [SaveableProperty(29)] public SettlementAutomationLevel SettlementAutomation { get; set; } = SettlementAutomationLevel.Full;
 
     public PartyAiEntitySettings()
     {
         Composition = new PartyComposition(0.35f, 0.30f, 0.20f, 0.15f);
     }
 
-    public PartyAiEntitySettings(Hero hero) : this()
+    public PartyAiEntitySettings(Hero? hero) : this()
     {
         Hero = hero;
     }
@@ -69,7 +70,7 @@ public class PartyAiEntitySettings
 
     public PartyAiEntitySettings(
         PartyAiEntitySettings cloneFrom,
-        Hero hero) : this(cloneFrom)
+        Hero? hero) : this(cloneFrom)
     {
         Hero = hero;
     }
@@ -137,7 +138,7 @@ public class PartyAiEntitySettings
         }
 #endif
 
-        Hero.PartyBelongedTo?.Ai.SetDoNotMakeNewDecisions(false);
+        Hero?.PartyBelongedTo?.Ai.SetDoNotMakeNewDecisions(false);
 
         Order = null;
 
@@ -178,6 +179,7 @@ public class PartyAiEntitySettings
         DismissUnwantedTroopsPercentage = settings.DismissUnwantedTroopsPercentage;
         PatrolRadius = settings.PatrolRadius;
         RecruitFromEnemySettlements = settings.RecruitFromEnemySettlements;
+        SettlementAutomation = settings.SettlementAutomation;
 
         if (settings.FallbackOrder is not null)
         {
@@ -201,16 +203,19 @@ public class PartyAiEntitySettings
     internal void SetPartyTemplate(PAICustomTemplate? template)
     {
         PartyTemplate = template;
+        if (template?.RecommendedComposition is not null)
+        {
+            Composition = new PartyComposition(template.RecommendedComposition);
+        }
         Composition.ApplyTemplate(template, out _);
 
         // Only affect recruiting targets
         if (HasActiveOrder && Order?.Behavior == PartyAiOrderType.RecruitFromTemplate && template != null)
         {
-            if (Order.Target is Settlement settlement)
+            if (Order!.Target is Settlement settlement)
             {
                 var cultures = template.TroopCultures;
-                bool unrestricted = cultures == null || cultures.Count == 0;
-                if (!unrestricted && !cultures.Contains(settlement.Culture))
+                if (cultures is { Count: > 0 } && !cultures.Contains(settlement.Culture))
                 {
                     Order.Target = null;
                 }

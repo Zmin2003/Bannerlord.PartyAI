@@ -32,7 +32,7 @@ public class PartyAISortDropdownVM : ViewModel
     public static PartySortType SortType = PartySortType.Clan;
     private readonly Action<PartySortType> _onSort;
 
-    private SelectorVM<PartyAISortSelectorItemVM> _sortOptions;
+    private SelectorVM<PartyAISortSelectorItemVM> _sortOptions = null!;
 
     [DataSourceProperty]
     public SelectorVM<PartyAISortSelectorItemVM> SortOptions

@@ -16,8 +16,9 @@ internal class ResetPartyAiBehavior : CampaignBehaviorBase
 
     private void OnHourlyTickParty(MobileParty party)
     {
-        var hero = party?.LeaderHero;
-        if (!SubModule.PartySettingsManager.IsHeroManageable(hero))
+        if (party is null
+            || party.LeaderHero is not Hero hero
+            || !SubModule.PartySettingsManager.IsHeroManageable(hero))
         {
             return;
         }

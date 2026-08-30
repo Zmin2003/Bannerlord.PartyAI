@@ -74,7 +74,16 @@ internal sealed class SmartPlayerTactic : TacticComponent
 
     protected override float GetTacticWeight()
     {
-        return 1000f;
+        float powerRatio = MBMath.ClampFloat(Team.QuerySystem.RemainingPowerRatio, 0.5f, 2f);
+        int activeClasses = 0;
+        activeClasses += Team.QuerySystem.InfantryRatio > 0.08f ? 1 : 0;
+        activeClasses += Team.QuerySystem.RangedRatio > 0.08f ? 1 : 0;
+        activeClasses += Team.QuerySystem.CavalryRatio > 0.08f ? 1 : 0;
+        activeClasses += Team.QuerySystem.RangedCavalryRatio > 0.08f ? 1 : 0;
+
+        float combinedArmsFactor = 0.82f + activeClasses * 0.07f;
+        float defensivePenalty = powerRatio < 0.85f ? 0.72f : 1f;
+        return combinedArmsFactor * defensivePenalty * MathF.Sqrt(powerRatio);
     }
 
     private BattlePhase DeterminePhase()
@@ -91,14 +100,20 @@ internal sealed class SmartPlayerTactic : TacticComponent
         float timeToContact = distance / enemySpeed;
         float joinThreshold = _phase >= BattlePhase.Engage ? 12f : 8f;
 
+        float powerRatio = Team.QuerySystem.RemainingPowerRatio;
+        bool shouldDefend = Team.TeamAI.IsDefenseApplicable
+            || powerRatio < 0.92f
+            || (Team.QuerySystem.AllyRangedRatio
+                > Team.QuerySystem.EnemyRangedRatio + 0.15f);
+
         if (timeToContact > joinThreshold)
         {
-            return Team.TeamAI.IsDefenseApplicable
+            return shouldDefend
                 ? BattlePhase.Hold
                 : BattlePhase.Approach;
         }
 
-        bool hasDecisiveAdvantage = Team.QuerySystem.RemainingPowerRatio >= 1.35f;
+        bool hasDecisiveAdvantage = powerRatio >= 1.20f;
         bool enemyIsCollapsing = Team.QuerySystem.EnemyUnitCount <= MathF.Max(10f, Team.QuerySystem.AllyUnitCount * 0.45f);
         return hasDecisiveAdvantage || enemyIsCollapsing
             ? BattlePhase.Press
@@ -124,18 +139,23 @@ internal sealed class SmartPlayerTactic : TacticComponent
         switch (_phase)
         {
             case BattlePhase.Hold:
+                SetInfantryArrangement(defensive: true);
                 _mainInfantry.AI.SetBehaviorWeight<BehaviorHoldHighGround>(1.8f).RangedAllyFormation = _archers;
-                _mainInfantry.AI.SetBehaviorWeight<BehaviorTacticalCharge>(0.5f);
+                _mainInfantry.AI.SetBehaviorWeight<BehaviorTacticalCharge>(0.15f);
                 break;
             case BattlePhase.Approach:
+                SetInfantryArrangement(defensive: Team.QuerySystem.EnemyRangedRatio > 0.20f);
                 _mainInfantry.AI.SetBehaviorWeight<BehaviorCautiousAdvance>(1.8f);
                 _mainInfantry.AI.SetBehaviorWeight<BehaviorAdvance>(0.7f);
                 break;
             case BattlePhase.Engage:
+                SetInfantryArrangement(defensive: false);
                 _mainInfantry.AI.SetBehaviorWeight<BehaviorCautiousAdvance>(0.8f);
-                _mainInfantry.AI.SetBehaviorWeight<BehaviorTacticalCharge>(1.8f);
+                _mainInfantry.AI.SetBehaviorWeight<BehaviorTacticalCharge>(
+                    Team.QuerySystem.RemainingPowerRatio < 0.85f ? 1.1f : 1.8f);
                 break;
             case BattlePhase.Press:
+                SetInfantryArrangement(defensive: false);
                 _mainInfantry.AI.SetBehaviorWeight<BehaviorTacticalCharge>(2.2f);
                 _mainInfantry.AI.SetBehaviorWeight<BehaviorCharge>(1.2f);
                 break;
@@ -153,16 +173,22 @@ internal sealed class SmartPlayerTactic : TacticComponent
         {
             case BattlePhase.Hold:
             case BattlePhase.Approach:
+                _archers.SetArrangementOrder(new ArrangementOrder(
+                    ArrangementOrder.ArrangementOrderEnum.Loose));
                 _archers.AI.SetBehaviorWeight<BehaviorScreenedSkirmish>(1.8f);
                 _archers.AI.SetBehaviorWeight<BehaviorSkirmishLine>(1.5f);
                 _archers.AI.SetBehaviorWeight<BehaviorSkirmish>(0.6f);
                 break;
             case BattlePhase.Engage:
+                _archers.SetArrangementOrder(new ArrangementOrder(
+                    ArrangementOrder.ArrangementOrderEnum.Loose));
                 _archers.AI.SetBehaviorWeight<BehaviorScreenedSkirmish>(1.5f);
                 _archers.AI.SetBehaviorWeight<BehaviorSkirmish>(1.8f);
                 _archers.AI.SetBehaviorWeight<BehaviorSkirmishLine>(1.2f);
                 break;
             case BattlePhase.Press:
+                _archers.SetArrangementOrder(new ArrangementOrder(
+                    ArrangementOrder.ArrangementOrderEnum.Line));
                 _archers.AI.SetBehaviorWeight<BehaviorSkirmishLine>(1.4f);
                 _archers.AI.SetBehaviorWeight<BehaviorAdvance>(1.1f);
                 _archers.AI.SetBehaviorWeight<BehaviorSkirmish>(0.8f);
@@ -177,7 +203,11 @@ internal sealed class SmartPlayerTactic : TacticComponent
             return;
         }
 
-        if (_phase is BattlePhase.Hold or BattlePhase.Approach)
+        cavalry.SetArrangementOrder(new ArrangementOrder(
+            ArrangementOrder.ArrangementOrderEnum.Skein));
+
+        if (_phase is BattlePhase.Hold or BattlePhase.Approach
+            || Team.QuerySystem.RemainingPowerRatio < 0.85f)
         {
             cavalry.AI.SetBehaviorWeight<BehaviorProtectFlank>(1.8f).FlankSide = side;
             cavalry.AI.SetBehaviorWeight<BehaviorCavalryScreen>(1.4f);
@@ -199,10 +229,26 @@ internal sealed class SmartPlayerTactic : TacticComponent
 
         _rangedCavalry.AI.SetBehaviorWeight<BehaviorMountedSkirmish>(1.8f);
         _rangedCavalry.AI.SetBehaviorWeight<BehaviorHorseArcherSkirmish>(2f);
-        if (_phase == BattlePhase.Press)
+        if (_phase == BattlePhase.Press
+            && Team.QuerySystem.RemainingPowerRatio >= 1f)
         {
             _rangedCavalry.AI.SetBehaviorWeight<BehaviorTacticalCharge>(0.8f);
         }
+    }
+
+    private void SetInfantryArrangement(bool defensive)
+    {
+        if (_mainInfantry is null)
+        {
+            return;
+        }
+
+        bool useShieldWall = defensive
+            && _mainInfantry.QuerySystem.HasShieldUnitRatio >= 0.30f;
+        _mainInfantry.SetArrangementOrder(new ArrangementOrder(
+            useShieldWall
+                ? ArrangementOrder.ArrangementOrderEnum.ShieldWall
+                : ArrangementOrder.ArrangementOrderEnum.Line));
     }
 
     private static bool Prepare([NotNullWhen(true)] Formation? formation)

@@ -3,6 +3,7 @@ using Bannerlord.PartyAI.Models;
 using Bannerlord.PartyAI.ViewModels.Components;
 using Bannerlord.PartyAI.ViewModels.Dialogs;
 using System;
+using TaleWorlds.CampaignSystem;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
 using TaleWorlds.Localization;
@@ -12,15 +13,18 @@ namespace Bannerlord.PartyAI.ViewModels;
 public class PartyAIOrderQueueVM : ViewModel
 {
     private readonly PartyAiEntitySettings _settings;
-    private MBBindingList<PartyAIOrderItemVM> _orderList;
+    private MBBindingList<PartyAIOrderItemVM> _orderList = null!;
     private readonly Action _callback;
 
     public PartyAIOrderQueueVM(PartyAiEntitySettings settings, Action callback)
     {
-        if (settings == null) { return; }
         _settings = settings;
         _callback = callback;
-        TitleText = new TextObject("{=PAI4eHNvDEM}Order Queue for {HERO}'s party").SetTextVariable("HERO", _settings.Hero.Name.ToString()).ToString();
+        TitleText = _settings.Hero is Hero hero
+            ? new TextObject("{=PAI4eHNvDEM}Order Queue for {HERO}'s party")
+                .SetTextVariable("HERO", hero.Name)
+                .ToString()
+            : new TextObject("{=PAI_ORDER_QUEUE}Order Queue").ToString();
         OrderList = new MBBindingList<PartyAIOrderItemVM>();
 
         RefreshOrderQueue();

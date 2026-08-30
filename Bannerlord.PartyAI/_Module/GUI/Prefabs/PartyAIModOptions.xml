@@ -7,15 +7,19 @@
   <Window>
 	<Widget DataSource="*DataSource" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" VerticalAlignment="Center" Sprite="BlankWhiteSquare_9" Color="#000000FF" AlphaFactor="0.75">
 	  <Children>
-		<DimensionSyncWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="650" DimensionToSync="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" WidgetToCopyHeightFrom="InnerPanel">
+		<Widget WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="680" MaxHeight="820" MarginTop="35" MarginBottom="35" HorizontalAlignment="Center" VerticalAlignment="Center">
 		  <Children>
 			<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" ClipContents="true">
 			  <Children>
 				<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" VerticalAlignment="Top" Sprite="StdAssets\Popup\canvas" />
 			  </Children>
 			</Widget>
-			<ListPanel Id="InnerPanel" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalTopToBottom" MarginLeft="15" MarginRight="15">
+			<ScrollablePanel WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginLeft="15" MarginRight="25" MarginTop="10" MarginBottom="10" AutoHideScrollBars="true" ClipRect="OptionsClip" InnerPanel="OptionsClip\InnerPanel" VerticalScrollbar="..\OptionsScrollbar\Scrollbar">
 			  <Children>
+				<Widget Id="OptionsClip" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" ClipContents="true">
+				  <Children>
+					<ListPanel Id="InnerPanel" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalTopToBottom">
+					  <Children>
 				<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalTopToBottom" MarginBottom="5">
 				  <Children>
 					<!--Title-->
@@ -55,7 +59,7 @@
 				</ListPanel>
 				
 				<!-- Troop Conversion Toggles -->
-				<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="HorizontalLeftToRight" MarginBottom="30">
+				<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalTopToBottom" MarginBottom="10">
 					<Children>
 						<PartyAIOptionToggle Parameter.DataSource="{AllowTroopConversionToggle}" MarginLeft="10" />
 						<PartyAIOptionToggle Parameter.DataSource="{AllowTroopConversionForCaravansToggle}" />
@@ -91,13 +95,6 @@
 				<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="HorizontalLeftToRight" MarginBottom="5">
 					<Children>
 						<PartyAIOptionToggle Parameter.DataSource="{AggressivePatrolsToggle}" MarginLeft="10" />
-						<PartyAIOptionToggle Parameter.DataSource="{AIRecruitCulture}" IsVisible="False" />
-						<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="30" SuggestedHeight="30" VerticalAlignment="Center" MarginLeft="8" UpdateChildrenStates="true" Command.Click='OpenCulturalTroopsEditor' IsVisible="False">
-						  <Children>
-							<HintWidget DataSource="{ChangeHint}" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" />
-							<BrushWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="34" SuggestedHeight="34" HorizontalAlignment="Right" VerticalAlignment="Center" Brush="PartyAI.Menu.EditButton" />
-						  </Children>
-						</ButtonWidget>
 					</Children>
 				</ListPanel>
 				
@@ -153,10 +150,48 @@
 				</ListPanel>
 
 				<!-- Battle AI Toggles -->
-				<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="HorizontalLeftToRight" MarginBottom="30">
+				<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalTopToBottom" MarginBottom="10">
 					<Children>
 						<PartyAIOptionToggle Parameter.DataSource="{AutoBattleCommanderToggle}" MarginLeft="10" />
-						<PartyAIOptionToggle Parameter.DataSource="{EnhancedBattleAiToggle}" MarginLeft="20" />
+						<PartyAIOptionToggle Parameter.DataSource="{EnhancedBattleAiToggle}" MarginLeft="10" />
+					</Children>
+				</ListPanel>
+				<PartyAIOptionToggle Parameter.DataSource="{AvoidSiegeArtilleryToggle}" MarginLeft="10" MarginBottom="15" />
+
+				<TextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" Brush="PartyAI.Menu.PartyRowText" MarginLeft="14" MarginTop="10" Text="@AutomationHeader" />
+
+				<!-- Auto Create Clan Caravans -->
+				<PartyAIOptionToggle Parameter.DataSource="{AutoCreateClanCaravansToggle}" MarginTop="10" />
+				<PartyAIOptionToggle Parameter.DataSource="{AutoCreateEliteCaravansToggle}" />
+
+				<!-- Caravan Limit -->
+				<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="38" StackLayout.LayoutMethod="HorizontalLeftToRight" MarginTop="5" MarginLeft="23">
+					<Children>
+						<TextWidget WidthSizePolicy="Fixed" SuggestedWidth="220" HeightSizePolicy="StretchToParent" VerticalAlignment="Center" Brush="Clan.Stat.Name.Text" Text="@AutoCaravanLimitText">
+							<Children>
+								<HintWidget DataSource="{AutoCaravanLimitHint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" />
+							</Children>
+						</TextWidget>
+						<PartyAIDropdown Parameter.DataSource="{AutoCreateClanCaravansMaxController}" WidthSizePolicy="Fixed" SuggestedWidth="140" VerticalAlignment="Center" />
+					</Children>
+				</ListPanel>
+
+				<!-- Caravan Gold Reserve -->
+				<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="38" StackLayout.LayoutMethod="HorizontalLeftToRight" MarginTop="5" MarginLeft="23">
+					<Children>
+						<TextWidget WidthSizePolicy="Fixed" SuggestedWidth="220" HeightSizePolicy="StretchToParent" VerticalAlignment="Center" Brush="Clan.Stat.Name.Text" Text="@AutoCaravanGoldReserveText">
+							<Children>
+								<HintWidget DataSource="{AutoCaravanGoldReserveHint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" />
+							</Children>
+						</TextWidget>
+						<Widget Sprite="General\Icons\Coin@2x" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" VerticalAlignment="Center" SuggestedWidth="28" SuggestedHeight="28" />
+						<TextWidget WidthSizePolicy="Fixed" SuggestedWidth="100" HeightSizePolicy="StretchToParent" VerticalAlignment="Center" MarginLeft="4" Brush="Clan.Stat.Name.Text" Text="@AutoCaravanGoldReserveAmount" />
+						<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="30" SuggestedHeight="30" VerticalAlignment="Center" MarginLeft="8" UpdateChildrenStates="true" Command.Click="EditAutoCaravanGoldReserve">
+							<Children>
+								<HintWidget DataSource="{AutoCaravanGoldReserveHint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" />
+								<BrushWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="34" SuggestedHeight="34" Brush="PartyAI.Menu.EditButton" />
+							</Children>
+						</ButtonWidget>
 					</Children>
 				</ListPanel>
 				
@@ -232,12 +267,17 @@
 					</ToggleButtonWidget>
 				  </Children>
 				</ListPanel>
+					  </Children>
+					</ListPanel>
+				  </Children>
+				</Widget>
 			  </Children>
-			</ListPanel>
+			</ScrollablePanel>
+			<Standard.VerticalScrollbar Id="OptionsScrollbar" HeightSizePolicy="StretchToParent" HorizontalAlignment="Right" MarginTop="18" MarginBottom="18" MarginRight="8" />
 			<!--Frame Border-->
 			<BrushWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="Popup.Frame" IsEnabled="false" />
 		  </Children>
-		</DimensionSyncWidget>
+		</Widget>
 	  </Children>
 	</Widget>
   </Window>

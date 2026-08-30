@@ -8,7 +8,7 @@ namespace Bannerlord.PartyAI.Mixins;
 internal class ClanPartiesVMMixin : BaseViewModelMixin<ClanPartiesVM>
 {
     internal ClanPartiesVM _vm;
-    internal static ClanPartiesVMMixin Instance;
+    internal static ClanPartiesVMMixin Instance = null!;
 
     public ClanPartiesVMMixin(ClanPartiesVM vm) : base(vm)
     {

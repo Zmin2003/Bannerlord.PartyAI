@@ -14,7 +14,7 @@ public class CompositionSliderRowVM : ViewModel
     private bool _isLocked;
     private bool _isSliderEnabled;
     private bool _isLockToggleable;
-    private HintViewModel _lockHint;
+    private HintViewModel _lockHint = null!;
 
     public CompositionSliderRowVM(int initialValue, bool enabled, string icon)
     {

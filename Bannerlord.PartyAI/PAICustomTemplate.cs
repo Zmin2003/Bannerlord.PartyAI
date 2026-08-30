@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Bannerlord.PartyAI.Domain.Models;
 using System.Linq;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.Roster;
@@ -11,6 +12,9 @@ public class PAICustomTemplate
     [SaveableProperty(1)] public string Name { get; private set; }
     [SaveableProperty(2)] public TroopRoster UpgradeTargets { get; private set; }
     [SaveableProperty(3)] public List<CharacterObject> Troops { get; internal set; }
+    [SaveableProperty(4)] public PartyComposition? RecommendedComposition { get; private set; }
+    [SaveableProperty(5)] public string? SourceId { get; private set; }
+    public bool IsBuiltIn => SourceId?.StartsWith("builtin:") == true;
     private HashSet<CultureObject> _troopCultures = new();
     public HashSet<CultureObject> TroopCultures
     {
@@ -19,7 +23,7 @@ public class PAICustomTemplate
             _troopCultures ??= new();
             if (_troopCultures.Count == 0)
             {
-                foreach (CharacterObject troop in Troops)
+                foreach (CharacterObject troop in Troops ?? [])
                 {
                     _troopCultures.Add(troop.Culture);
                 }
@@ -28,12 +32,22 @@ public class PAICustomTemplate
         }
     }
 
-    public PAICustomTemplate(string name, TroopRoster upgradeTargets)
+    public PAICustomTemplate(
+        string name,
+        TroopRoster upgradeTargets,
+        PartyComposition? recommendedComposition = null,
+        string? sourceId = null)
     {
         Name = name;
         UpgradeTargets = upgradeTargets;
+        RecommendedComposition = recommendedComposition is null
+            ? null
+            : new PartyComposition(recommendedComposition);
+        SourceId = sourceId;
 
         Troops = ResolveTroops().ToList();
+
+        RecommendedComposition?.ApplyTemplate(this, out _);
 
         SubModule.PartySettingsManager.AddPartyTemplate(this);
     }

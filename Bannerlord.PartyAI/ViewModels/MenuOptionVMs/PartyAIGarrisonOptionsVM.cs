@@ -15,19 +15,20 @@ public class PartyAIGarrisonOptionsVM : ViewModel
 
     public PartyAIGarrisonOptionsVM(PartyAiEntitySettings settings, Action callback)
     {
-        if (settings == null) { return; }
         _settings = settings;
 
         if (_settings.Hero != null)
         {
-            TitleText = new TextObject("{=PAI5VM6usUh}Edit Garrison Options for {SETTLEMENT}").SetTextVariable("SETTLEMENT", settings.Settlement.Name.ToString()).ToString();
+            TitleText = new TextObject("{=PAI5VM6usUh}Edit Garrison Options for {SETTLEMENT}")
+                .SetTextVariable("SETTLEMENT", settings.Settlement?.Name ?? TextObject.GetEmpty())
+                .ToString();
         }
         else
         {
             TitleText = new TextObject("{=PAIy61wxVLV}Edit Garrison Options").ToString();
         }
 
-        MaxTroopTierDropdown = new(settings.MaxTroopTier, null);
+        MaxTroopTierDropdown = new(settings.MaxTroopTier);
 
         _onClosePartyOptions = callback;
 

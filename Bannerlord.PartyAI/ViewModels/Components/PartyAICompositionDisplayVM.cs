@@ -10,15 +10,16 @@ public class PartyAICompositionDisplayVM : ViewModel
 {
     private readonly PartyComposition _composition;
 
-    private HintViewModel _infantryHint;
+    private HintViewModel _infantryHint = null!;
 
-    private HintViewModel _rangedHint;
+    private HintViewModel _rangedHint = null!;
 
-    private HintViewModel _cavalryHint;
+    private HintViewModel _cavalryHint = null!;
 
-    private HintViewModel _horseArcherHint;
+    private HintViewModel _horseArcherHint = null!;
 
     public PartyAICompositionDisplayVM(PartyComposition composition, int spacing = 0)
+        : this()
     {
         _composition = new PartyComposition(composition);
         _composition.Scale(100);
@@ -111,6 +112,7 @@ public class PartyAICompositionDisplayVM : ViewModel
 
     public PartyAICompositionDisplayVM()
     {
+        _composition = new PartyComposition();
         InfantryHint = new HintViewModel(new TextObject("{=1Bm1Wk1v}Infantry"));
         RangedHint = new HintViewModel(new TextObject("{=bIiBytSB}Archers"));
         CavalryHint = new HintViewModel(new TextObject("{=YVGtcLHF}Cavalry"));

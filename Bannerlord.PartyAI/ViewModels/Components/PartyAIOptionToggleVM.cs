@@ -7,13 +7,14 @@ namespace Bannerlord.PartyAI.ViewModels.Components;
 
 public class PartyAIOptionToggleVM : ViewModel
 {
-    private string _text;
+    private string _text = string.Empty;
     private bool _isSelected;
-    private HintViewModel _hint;
+    private HintViewModel _hint = new();
     private bool _isDisabled;
-    private readonly Action<bool> _onChange;
+    private bool _isVisible = true;
+    private readonly Action<bool>? _onChange;
 
-    public PartyAIOptionToggleVM(TextObject text, bool isSelected, TextObject hint, Action<bool> onChange = null)
+    public PartyAIOptionToggleVM(TextObject text, bool isSelected, TextObject? hint, Action<bool>? onChange = null)
     {
         Text = text.ToString();
         IsSelected = isSelected;
@@ -69,6 +70,20 @@ public class PartyAIOptionToggleVM : ViewModel
             {
                 _isDisabled = value;
                 OnPropertyChangedWithValue(value, "IsDisabled");
+            }
+        }
+    }
+
+    [DataSourceProperty]
+    public bool IsVisible
+    {
+        get => _isVisible;
+        set
+        {
+            if (value != _isVisible)
+            {
+                _isVisible = value;
+                OnPropertyChangedWithValue(value, nameof(IsVisible));
             }
         }
     }

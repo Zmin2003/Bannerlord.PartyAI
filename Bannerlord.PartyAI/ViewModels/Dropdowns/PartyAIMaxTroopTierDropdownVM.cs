@@ -1,5 +1,4 @@
-﻿using System;
-using TaleWorlds.CampaignSystem;
+﻿using TaleWorlds.CampaignSystem;
 using TaleWorlds.Core.ViewModelCollection.Selector;
 using TaleWorlds.Library;
 using TaleWorlds.Localization;
@@ -19,9 +18,7 @@ public class PartyAIMaxTroopTierDropdownVM : ViewModel
         }
     }
 
-    private readonly Action<int> _onSelection;
-
-    private SelectorVM<PartyAIMaxTroopTierSelectorItemVM> _sortOptions;
+    private SelectorVM<PartyAIMaxTroopTierSelectorItemVM> _sortOptions = null!;
 
     [DataSourceProperty]
     public SelectorVM<PartyAIMaxTroopTierSelectorItemVM> SortOptions
@@ -39,11 +36,9 @@ public class PartyAIMaxTroopTierDropdownVM : ViewModel
             }
         }
     }
-    public PartyAIMaxTroopTierDropdownVM(int selectedIndex, Action<int> onSort)
+    public PartyAIMaxTroopTierDropdownVM(int selectedIndex)
     {
-        _onSelection = onSort;
-
-        SortOptions = new SelectorVM<PartyAIMaxTroopTierSelectorItemVM>(-1, OnMaxTroopTierSelected);
+        SortOptions = new SelectorVM<PartyAIMaxTroopTierSelectorItemVM>(-1, static _ => { });
 
         SortOptions.AddItem(new PartyAIMaxTroopTierSelectorItemVM(new TextObject("{=PAIIqVpFFAi}Max"), 0));
 
@@ -54,8 +49,4 @@ public class PartyAIMaxTroopTierDropdownVM : ViewModel
         SortOptions.SelectedIndex = selectedIndex;
     }
 
-    private void OnMaxTroopTierSelected(SelectorVM<PartyAIMaxTroopTierSelectorItemVM> selector)
-    {
-        _onSelection?.Invoke(selector.SelectedItem.Max);
-    }
 }

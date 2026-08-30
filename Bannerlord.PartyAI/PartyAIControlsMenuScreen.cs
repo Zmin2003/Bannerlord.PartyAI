@@ -20,9 +20,9 @@ public class PartyAIControlsMenuState : GameState
 [GameStateScreen(typeof(PartyAIControlsMenuState))]
 public class PartyAIControlsMenuScreen : ScreenBase, IGameStateListener
 {
-    private GauntletLayer _gauntletLayer;
+    private GauntletLayer? _gauntletLayer;
     private readonly PartyAIControlsMenuState _partyAIControlsMenuState;
-    private PartyAIControlsMenuVM _dataSource;
+    private PartyAIControlsMenuVM? _dataSource;
     private readonly List<SpriteCategory> _spriteCategories = new();
 
     public PartyAIControlsMenuScreen(PartyAIControlsMenuState partyAIControlsMenuState)
@@ -55,27 +55,37 @@ public class PartyAIControlsMenuScreen : ScreenBase, IGameStateListener
 
     void IGameStateListener.OnDeactivate()
     {
-        _gauntletLayer.InputRestrictions.ResetInputRestrictions();
-        _gauntletLayer.IsFocusLayer = false;
-        RemoveLayer(_gauntletLayer);
+        if (_gauntletLayer is not null)
+        {
+            _gauntletLayer.InputRestrictions.ResetInputRestrictions();
+            _gauntletLayer.IsFocusLayer = false;
+            RemoveLayer(_gauntletLayer);
+            _gauntletLayer = null;
+        }
         _dataSource = null;
     }
 
     protected override void OnFrameTick(float dt)
     {
         base.OnFrameTick(dt);
-        if (_gauntletLayer.Input.IsKeyReleased(TaleWorlds.InputSystem.InputKey.Escape))
+        if (_gauntletLayer is not GauntletLayer layer
+            || _dataSource is not PartyAIControlsMenuVM dataSource)
         {
-            _dataSource.ExecuteDone();
+            return;
         }
 
-        if (_gauntletLayer.Input.IsKeyDown(TaleWorlds.InputSystem.InputKey.LeftControl) && _gauntletLayer.Input.IsKeyDown(TaleWorlds.InputSystem.InputKey.C))
+        if (layer.Input.IsKeyReleased(TaleWorlds.InputSystem.InputKey.Escape))
         {
-            _dataSource.Copy();
+            dataSource.ExecuteDone();
         }
-        if (_gauntletLayer.Input.IsKeyDown(TaleWorlds.InputSystem.InputKey.LeftControl) && _gauntletLayer.Input.IsKeyDown(TaleWorlds.InputSystem.InputKey.V))
+
+        if (layer.Input.IsKeyDown(TaleWorlds.InputSystem.InputKey.LeftControl) && layer.Input.IsKeyDown(TaleWorlds.InputSystem.InputKey.C))
         {
-            _dataSource.Paste();
+            dataSource.Copy();
+        }
+        if (layer.Input.IsKeyDown(TaleWorlds.InputSystem.InputKey.LeftControl) && layer.Input.IsKeyDown(TaleWorlds.InputSystem.InputKey.V))
+        {
+            dataSource.Paste();
         }
     }
 

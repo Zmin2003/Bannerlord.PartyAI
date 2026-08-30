@@ -23,7 +23,6 @@ internal class ClanPartyItemVMMixin : BaseViewModelMixin<ClanPartyItemVM>
     private readonly ClanPartyItemVM _vm;
     private PartyAIClanPartySettingsManager _manager => SubModule.PartySettingsManager;
     private static bool _enabled = true;
-    private static Hero _cachedHero;
     private readonly int _spacing;
     private PartyAICompositionDisplayVM _partyComposition;
     internal static PartyBase SelectedParty;
@@ -31,7 +30,6 @@ internal class ClanPartyItemVMMixin : BaseViewModelMixin<ClanPartyItemVM>
     public ClanPartyItemVMMixin(ClanPartyItemVM vm) : base(vm)
     {
         _vm = vm;
-        _cachedHero = _vm.Party?.LeaderHero;
         _spacing = 25;
 
         CreatePartyTemplateText = new TextObject("{=PAYjAC3mQzN}Create").ToString();
@@ -74,12 +72,6 @@ internal class ClanPartyItemVMMixin : BaseViewModelMixin<ClanPartyItemVM>
     public void EditPartyTemplate()
     {
         SelectTemplate.Select(_heroSettings, OnRefresh);
-    }
-
-    internal void HandleSavePartyComposition(PartyComposition composition)
-    {
-        _heroSettings.Composition = composition;
-        PartyComposition = new PartyAICompositionDisplayVM(_heroSettings.Composition, _spacing);
     }
 
     public override void OnRefresh()

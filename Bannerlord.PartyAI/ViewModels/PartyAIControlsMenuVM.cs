@@ -20,17 +20,15 @@ namespace Bannerlord.PartyAI.ViewModels;
 
 public class PartyAIControlsMenuVM : ViewModel
 {
-    internal static PartyAIControlsMenuVM Instance;
-    private MBBindingList<PartyAIControlsMenuPartyVM> _partyList;
-    private HintViewModel _createClanPartyHint;
+    private MBBindingList<PartyAIControlsMenuPartyVM> _partyList = null!;
+    private HintViewModel _createClanPartyHint = null!;
     private bool _canCreateNewParty;
-    private HintViewModel _showAllHeroesHint;
+    private HintViewModel _showAllHeroesHint = null!;
     private bool _showAllHeroes;
-    private List<InquiryElement> _copySource = null;
+    private List<InquiryElement>? _copySource;
 
     public PartyAIControlsMenuVM()
     {
-        Instance = this;
         PartyList = new MBBindingList<PartyAIControlsMenuPartyVM>();
         CreateClanPartyHint = new HintViewModel();
         ShowAllHeroesHint = new HintViewModel(new TextObject("{=PAIqJ0819Nl}Show all heroes that can lead parties. Useful for assigning settings for any potential hero that might be a leader."));
@@ -102,6 +100,12 @@ public class PartyAIControlsMenuVM : ViewModel
     public string CreateTemplateText => new TextObject("{=PAIVTBDYD5s}Create Template").ToString();
 
     [DataSourceProperty]
+    public string ImportTemplateText => new TextObject("{=PAI_TEMPLATE_IMPORT_BUTTON}Online Template").ToString();
+
+    [DataSourceProperty]
+    public HintViewModel ImportTemplateHint => new(new TextObject("{=PAI_TEMPLATE_IMPORT_HINT}Import a validated troop template and composition from an HTTPS JSON URL."));
+
+    [DataSourceProperty]
     public string DeletePartyTemplateText => new TextObject("{=PAR1D0VvXKZ}Delete Template").ToString();
 
     [DataSourceProperty]
@@ -109,9 +113,6 @@ public class PartyAIControlsMenuVM : ViewModel
 
     [DataSourceProperty]
     public HintViewModel FineTunePartyTemplateHint => new(new TextObject("{=PAIzjCcuvQw}Select which troops along the upgrade paths you've chosen to be included in the party template. The topmost troop in the list will be the portrait next to the template."));
-
-    [DataSourceProperty]
-    public string CopyPasteText => new TextObject("{=PAI3Bf9LMMe}[Unused for now...]").ToString();
 
     [DataSourceProperty]
     public string ModOptionsText => new TextObject("{=PAIyBVEFgXu}Mod Options").ToString();
@@ -186,13 +187,15 @@ public class PartyAIControlsMenuVM : ViewModel
 
     public void CreatePartyTemplate() => CreateTemplate.Create();
 
-    public void DeletePartyTemplate() => DeleteTemplate.Delete(new Action(RefreshPartyList));
+    public void ImportPartyTemplate() => ImportTemplate.Show(RefreshPartyList);
+
+    public void DeletePartyTemplate() => DeleteTemplate.Delete(RefreshPartyList);
 
     public void FineTunePartyTemplate() => Dialogs.FineTune.Tune();
 
     public void OpenModOptions() => SubModule.InformationManager.ShowModOptionsInquiry(RefreshPartyList);
 
-    public void EditDefaultSettings() => SubModule.InformationManager.ShowDefaultSettingsInquiry(null);
+    public void EditDefaultSettings() => SubModule.InformationManager.ShowDefaultSettingsInquiry();
 
     private void OnNewPartySelectionOver()
     {
@@ -209,9 +212,14 @@ public class PartyAIControlsMenuVM : ViewModel
         PartyScreenHelper.OpenScreenAsCreateClanPartyForHero(hero);
     }
 
-    public static void GetManageableHeroes(in List<Hero> list, bool clanOnly, bool showAll)
+    public static void GetManageableHeroes(List<Hero> list, bool clanOnly, bool showAll)
     {
-        foreach (Hero hero in Hero.AllAliveHeroes.Where(l => l != null && l.CanLeadParty() && SubModule.PartySettingsManager.IsManageable(l) && (!clanOnly || l.Clan == Clan.PlayerClan)).ToList())
+        if (Hero.MainHero?.PartyBelongedTo is not null && Hero.MainHero.IsPartyLeader)
+        {
+            list.Add(Hero.MainHero);
+        }
+
+        foreach (Hero hero in Hero.AllAliveHeroes.Where(l => l != null && l != Hero.MainHero && l.CanLeadParty() && SubModule.PartySettingsManager.IsManageable(l) && (!clanOnly || l.Clan == Clan.PlayerClan)).ToList())
         {
             if (showAll || (hero.PartyBelongedTo != null && hero.IsPartyLeader))
             {
@@ -228,13 +236,17 @@ public class PartyAIControlsMenuVM : ViewModel
         }
     }
 
-    private void GetManageablePartyVMs(in MBBindingList<PartyAIControlsMenuPartyVM> list, bool clanOnly)
+    private void GetManageablePartyVMs(MBBindingList<PartyAIControlsMenuPartyVM> list, bool clanOnly)
     {
         List<Hero> heroes = new();
         GetManageableHeroes(heroes, clanOnly, ShowAllHeroes);
         foreach (Hero hero in heroes)
         {
-            if (hero.PartyBelongedTo?.IsCaravan ?? false)
+            if (hero == Hero.MainHero)
+            {
+                list.Add(new PartyAIControlsMenuPlayerVM(hero, this));
+            }
+            else if (hero.PartyBelongedTo?.IsCaravan ?? false)
             {
                 list.Add(new PartyAIControlsMenuCaravanVM(hero, this));
             }
@@ -260,7 +272,7 @@ public class PartyAIControlsMenuVM : ViewModel
 
         OnSortChanged(SortType);
 
-        ClanPartiesVM stockVM = new(() => { }, null, () => { }, (i) => { });
+        ClanPartiesVM stockVM = new(() => { }, _ => { }, () => { }, (i) => { });
         CanCreateNewParty = stockVM.CanCreateNewParty;
         CreateClanPartyHint.HintText = stockVM.CreateNewPartyActionHint?.HintText ?? new TextObject("");
 
@@ -360,7 +372,6 @@ public class PartyAIControlsMenuVM : ViewModel
         PartyAIControlsMenuPartyVM vm = PartyList.FirstOrDefault(p => p.CopyPasteToggle.IsSelected);
         if (vm == null) { return; }
         if (_copySource != null) { return; }
-        ;
         CopyPaste.CopyCallback(vm.Settings, (List<InquiryElement> list) =>
         {
             _copySource = list;
@@ -398,7 +409,6 @@ public class PartyAIControlsMenuVM : ViewModel
         if (_copySource == null) { return; }
         IEnumerable<PartyAIControlsMenuPartyVM> targets = PartyList.Where(p => p.CopyPasteToggle.IsSelected);
         if (targets.Count() == 0) { return; }
-        ;
         foreach (PartyAIControlsMenuPartyVM target in targets)
         {
             foreach (InquiryElement source in _copySource)

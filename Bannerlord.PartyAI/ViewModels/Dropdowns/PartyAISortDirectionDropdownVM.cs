@@ -27,7 +27,7 @@ public class PartyAISortDirectionDropdownVM : ViewModel
     public static PartySortDirection SortDirection = PartySortDirection.ASC;
     private readonly Action<PartySortDirection> _onSort;
 
-    private SelectorVM<PartyAISortDirectionSelectorItemVM> _sortOptions;
+    private SelectorVM<PartyAISortDirectionSelectorItemVM> _sortOptions = null!;
 
     [DataSourceProperty]
     public SelectorVM<PartyAISortDirectionSelectorItemVM> SortOptions

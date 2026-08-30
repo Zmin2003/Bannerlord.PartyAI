@@ -94,9 +94,14 @@ internal class PartyAITroopRecruiter : CampaignBehaviorBase
 
     private void DailyTickParty(MobileParty party)
     {
+        if (party is null || party.LeaderHero is not Hero leader)
+        {
+            return;
+        }
+
         if ((!SubModule.PartySettingsManager.AllowTroopConversion
-            || !SubModule.PartySettingsManager.IsManageable(party?.LeaderHero))
-            && !SubModule.PartySettingsManager.AllowCaravanConversion(party?.LeaderHero))
+            || !SubModule.PartySettingsManager.IsManageable(leader))
+            && !SubModule.PartySettingsManager.AllowCaravanConversion(leader))
         {
             return;
         }
@@ -105,13 +110,13 @@ internal class PartyAITroopRecruiter : CampaignBehaviorBase
             return;
         }
 
-        PartyAiEntitySettings heroSettings = SubModule.PartySettingsManager.Settings(party.LeaderHero);
+        PartyAiEntitySettings heroSettings = SubModule.PartySettingsManager.Settings(leader);
         if (heroSettings.PartyTemplate == null)
         {
             return;
         }
 
-        ExchangeRoster(party.MemberRoster, heroSettings, party.LeaderHero, null);
+        ExchangeRoster(party.MemberRoster, heroSettings, leader, null);
     }
 
     private void OnTroopRecruited(Hero recruiter, Settlement settlement, Hero recruitmentSource, CharacterObject troop, int count)
@@ -234,13 +239,23 @@ internal class PartyAITroopRecruiter : CampaignBehaviorBase
         }
     }
 
-    private void ExchangeRoster(TroopRoster roster, PartyAiEntitySettings settings, Hero hero, Settlement settlement)
+    private void ExchangeRoster(
+        TroopRoster roster,
+        PartyAiEntitySettings settings,
+        Hero? hero,
+        Settlement? settlement)
     {
+        PAICustomTemplate? template = settings.PartyTemplate;
+        if (template is null)
+        {
+            return;
+        }
+
         List<TroopRosterElement> troops = roster.GetTroopRoster().ToList();
         troops.Shuffle();
         foreach (TroopRosterElement e in troops)
         {
-            if (!settings.PartyTemplate.Troops.Contains(e.Character)
+            if (!template.Troops.Contains(e.Character)
                 || Recruitment.IsOverMaxTier(e.Character, settings.MaxTroopTier))
             {
                 if (settings.TroopsConvertibleToday <= 0)
@@ -253,15 +268,107 @@ internal class PartyAITroopRecruiter : CampaignBehaviorBase
         }
     }
 
-    private void ExchangeClanTroops(Hero owner, TroopRoster roster, CharacterObject troop, int count, bool fireEvent, Settlement settlement = null)
+    internal int BalancePartyNow(MobileParty party, PartyAiEntitySettings settings)
+    {
+        if (party?.MemberRoster is null
+            || party.LeaderHero is null
+            || settings?.PartyTemplate is null)
+        {
+            return 0;
+        }
+
+        int budgetBefore = settings.TroopsConvertibleToday;
+        ExchangeRoster(party.MemberRoster, settings, party.LeaderHero, null);
+        BalanceComposition(party, settings);
+        return Math.Max(0, budgetBefore - settings.TroopsConvertibleToday);
+    }
+
+    private void BalanceComposition(MobileParty party, PartyAiEntitySettings settings)
+    {
+        int maximumIterations = Math.Max(16, party.MemberRoster.TotalManCount * 2);
+        for (int iteration = 0;
+            iteration < maximumIterations && settings.TroopsConvertibleToday > 0;
+            iteration++)
+        {
+            PartyComposition composition = Recruitment.GetPartyComposition(party.Party, settings);
+            float occupiedRatio = composition.GetTotal();
+            float minimumDifference = 1f / Math.Max(1, party.Party.PartySizeLimit);
+
+            HashSet<FormationClass> overrepresented = new(
+                new[]
+                {
+                    FormationClass.Infantry,
+                    FormationClass.Ranged,
+                    FormationClass.Cavalry,
+                    FormationClass.HorseArcher
+                }.Where(formation => composition[formation]
+                    - settings.Composition[formation] * occupiedRatio
+                    >= minimumDifference));
+
+            if (overrepresented.Count == 0)
+            {
+                return;
+            }
+
+            bool converted = false;
+            foreach (TroopRosterElement element in party.MemberRoster.GetTroopRoster().ToList())
+            {
+                if (element.Character.IsHero || element.Number <= element.WoundedNumber)
+                {
+                    continue;
+                }
+
+                List<FormationClass> targetClasses = Recruitment
+                    .UpgradeTargets(element.Character, true, settings.PartyTemplate)
+                    .Select(target => target.DefaultFormationClass.FallbackClass())
+                    .Distinct()
+                    .ToList();
+                if (targetClasses.Count != 1 || !overrepresented.Contains(targetClasses[0]))
+                {
+                    continue;
+                }
+
+                int budgetBefore = settings.TroopsConvertibleToday;
+                ExchangeClanTroops(
+                    party.LeaderHero,
+                    party.MemberRoster,
+                    element.Character,
+                    element.Number - element.WoundedNumber,
+                    false,
+                    settlement: null,
+                    excludedReplacementFormation: targetClasses[0]);
+
+                if (settings.TroopsConvertibleToday < budgetBefore)
+                {
+                    converted = true;
+                    break;
+                }
+            }
+
+            if (!converted)
+            {
+                return;
+            }
+        }
+    }
+
+    private void ExchangeClanTroops(
+        Hero? owner,
+        TroopRoster? roster,
+        CharacterObject troop,
+        int count,
+        bool fireEvent,
+        Settlement? settlement = null,
+        FormationClass? excludedReplacementFormation = null)
     {
         if (owner?.PartyBelongedTo?.Party == null && settlement == null)
         {
             return;
         }
 
-        if (!SubModule.PartySettingsManager.IsManageable(owner)
-            && !SubModule.PartySettingsManager.IsGarrisonManageable(settlement))
+        if (!SubModule.PartySettingsManager.IsSettlementAutomationEligible(owner)
+            && (settlement is null
+                || !SubModule.PartySettingsManager.IsGarrisonManageable(settlement)))
         {
             return;
         }
@@ -276,7 +383,7 @@ internal class PartyAITroopRecruiter : CampaignBehaviorBase
 
         PartyBase party;
         PartyAiEntitySettings heroSettings;
-        PAICustomTemplate template;
+        PAICustomTemplate? template;
         if (settlement != null)
         {
             party = settlement.Town.GarrisonParty.Party;
@@ -285,7 +392,7 @@ internal class PartyAITroopRecruiter : CampaignBehaviorBase
         }
         else
         {
-            party = owner.PartyBelongedTo.Party;
+            party = owner!.PartyBelongedTo!.Party;
             heroSettings = SubModule.PartySettingsManager.Settings(owner);
             template = heroSettings.PartyTemplate;
         }
@@ -304,15 +411,27 @@ internal class PartyAITroopRecruiter : CampaignBehaviorBase
         {
             PartyComposition comp = Recruitment.GetPartyComposition(party, heroSettings, troop);
             List<CharacterObject> eligible = template.Troops
-                .Where(t => Recruitment.ShouldRecruit(comp, heroSettings, t, party))
+                .Where(t => t != troop
+                    && Recruitment.ShouldRecruit(comp, heroSettings, t, party)
+                    && IsEligibleReplacementFormation(
+                        t,
+                        heroSettings,
+                        excludedReplacementFormation)
+                    && ImprovesComposition(t, comp, heroSettings))
                 .ToList();
 
-            CharacterObject replacement = DetermineReplacement(eligible, troop.Tier, Recruitment.IsEliteTroop(troop));
+            CharacterObject? replacement = DetermineReplacement(eligible, troop.Tier, Recruitment.IsEliteTroop(troop));
 
             if (replacement == null)
             {
                 eligible = template.Troops
-                    .Where(t => Recruitment.ShouldRecruit(comp, heroSettings, t, party, false))
+                    .Where(t => t != troop
+                        && Recruitment.ShouldRecruit(comp, heroSettings, t, party, false)
+                        && IsEligibleReplacementFormation(
+                            t,
+                            heroSettings,
+                            excludedReplacementFormation)
+                        && ImprovesComposition(t, comp, heroSettings))
                     .ToList();
                 replacement = DetermineReplacement(eligible, troop.Tier, Recruitment.IsEliteTroop(troop));
                 replacement ??= DetermineReplacement(eligible, troop.Tier, !Recruitment.IsEliteTroop(troop));
@@ -320,8 +439,15 @@ internal class PartyAITroopRecruiter : CampaignBehaviorBase
 
             if (replacement == null && !template.Troops.Contains(troop))
             {
-                replacement = DetermineReplacement(template.Troops, troop.Tier, Recruitment.IsEliteTroop(troop));
-                replacement ??= DetermineReplacement(template.Troops, troop.Tier, !Recruitment.IsEliteTroop(troop));
+                List<CharacterObject> alternatives = template.Troops
+                    .Where(t => t != troop
+                        && IsEligibleReplacementFormation(
+                            t,
+                            heroSettings,
+                            excludedReplacementFormation))
+                    .ToList();
+                replacement = DetermineReplacement(alternatives, troop.Tier, Recruitment.IsEliteTroop(troop));
+                replacement ??= DetermineReplacement(alternatives, troop.Tier, !Recruitment.IsEliteTroop(troop));
             }
 
             if (replacement == null) { return; }
@@ -336,25 +462,54 @@ internal class PartyAITroopRecruiter : CampaignBehaviorBase
                 amount = count;
             }
 
+            int costDifference = 0;
+            if (settlement == null)
+            {
+                int troopCost = Campaign.Current.Models.PartyWageModel
+                    .GetTroopRecruitmentCost(troop, owner!)
+                    .RoundedResultNumber;
+                int replacementCost = Campaign.Current.Models.PartyWageModel
+                    .GetTroopRecruitmentCost(replacement, owner!)
+                    .RoundedResultNumber;
+                costDifference = replacementCost - troopCost;
+
+                if (costDifference > 0)
+                {
+                    amount = Math.Min(amount, owner!.Gold / costDifference);
+                    if (amount <= 0)
+                    {
+                        return;
+                    }
+                }
+            }
+
             roster.RemoveTroop(troop, amount);
             roster.AddToCounts(replacement, amount);
             roster.RemoveZeroCounts();
             count -= amount;
             heroSettings.DeductTroopsConvertibleToday(amount);
 
-            if (settlement == null
-                && replacement.Tier != troop.Tier
-                || Recruitment.IsEliteTroop(replacement) != Recruitment.IsEliteTroop(troop))
+            if (settlement == null && costDifference != 0)
             {
-                // adjust recruitment gold
-                var troopCostExpl = Campaign.Current.Models.PartyWageModel.GetTroopRecruitmentCost(troop, owner);
-                var replacementCostExpl = Campaign.Current.Models.PartyWageModel.GetTroopRecruitmentCost(replacement, owner);
-                int troopCost = troopCostExpl.RoundedResultNumber;
-                int replacementCost = replacementCostExpl.RoundedResultNumber;
-                GiveGoldAction.ApplyBetweenCharacters(null, owner, troopCost - replacementCost);
+                if (costDifference > 0)
+                {
+                    GiveGoldAction.ApplyBetweenCharacters(
+                        owner!,
+                        null,
+                        costDifference * amount,
+                        disableNotification: true);
+                }
+                else
+                {
+                    GiveGoldAction.ApplyBetweenCharacters(
+                        null,
+                        owner!,
+                        -costDifference * amount,
+                        disableNotification: true);
+                }
             }
 
-            if (fireEvent)
+            if (fireEvent && owner is not null)
             {
                 _firingEvent = true;
                 CampaignEventDispatcher.Instance.OnTroopRecruited(owner, null, null, replacement, amount);
@@ -363,9 +518,47 @@ internal class PartyAITroopRecruiter : CampaignBehaviorBase
         }
     }
 
-    private CharacterObject DetermineReplacement(List<CharacterObject> templateCharacters, int troopTier, bool useElite)
+    private static bool ImprovesComposition(
+        CharacterObject candidate,
+        PartyComposition composition,
+        PartyAiEntitySettings settings)
     {
-        CharacterObject replacement = null;
+        float occupiedRatio = composition.GetTotal();
+        if (occupiedRatio <= 0f)
+        {
+            return true;
+        }
+
+        return Recruitment.UpgradeTargets(candidate, true, settings.PartyTemplate)
+            .Select(target => target.DefaultFormationClass.FallbackClass())
+            .Distinct()
+            .Any(formation => composition[formation]
+                < settings.Composition[formation] * occupiedRatio);
+    }
+
+    private static bool IsEligibleReplacementFormation(
+        CharacterObject candidate,
+        PartyAiEntitySettings settings,
+        FormationClass? excludedFormation)
+    {
+        if (!excludedFormation.HasValue)
+        {
+            return true;
+        }
+
+        List<FormationClass> targetClasses = Recruitment
+            .UpgradeTargets(candidate, true, settings.PartyTemplate)
+            .Select(target => target.DefaultFormationClass.FallbackClass())
+            .Distinct()
+            .ToList();
+
+        return targetClasses.Count > 0
+            && !targetClasses.Contains(excludedFormation.Value);
+    }
+
+    private CharacterObject? DetermineReplacement(List<CharacterObject> templateCharacters, int troopTier, bool useElite)
+    {
+        CharacterObject? replacement = null;
         foreach (bool elite in new bool[] { useElite, !useElite })
         {
             if (replacement != null)

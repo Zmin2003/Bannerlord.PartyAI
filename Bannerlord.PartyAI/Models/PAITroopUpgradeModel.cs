@@ -45,15 +45,7 @@ internal class PAITroopUpgradeModel : PartyTroopUpgradeModel
 
     public override float GetUpgradeChanceForTroopUpgrade(PartyBase party, CharacterObject troop, int upgradeTargetIndex)
     {
-        if (party.MobileParty == null) return BaseModel.GetUpgradeChanceForTroopUpgrade(party, troop, upgradeTargetIndex);
-        if (party.MobileParty.IsGarrison)
-        {
-            if (!SubModule.PartySettingsManager.IsGarrisonManageable(party.MobileParty.CurrentSettlement))
-            {
-                return BaseModel.GetUpgradeChanceForTroopUpgrade(party, troop, upgradeTargetIndex);
-            }
-        }
-        else if (!SubModule.PartySettingsManager.IsManageable(party.LeaderHero))
+        if (!IsPartyManaged(party))
         {
             return BaseModel.GetUpgradeChanceForTroopUpgrade(party, troop, upgradeTargetIndex);
         }
@@ -117,15 +109,7 @@ internal class PAITroopUpgradeModel : PartyTroopUpgradeModel
     {
         bool result = BaseModel.IsTroopUpgradeable(party, character);
 
-        if (!result || party.MobileParty == null) return result;
-        if (party.MobileParty.IsGarrison)
-        {
-            if (!SubModule.PartySettingsManager.IsGarrisonManageable(party.MobileParty.CurrentSettlement))
-            {
-                return result;
-            }
-        }
-        else if (!SubModule.PartySettingsManager.IsManageable(party.LeaderHero))
+        if (!result || !IsPartyManaged(party))
         {
             return result;
         }
@@ -139,5 +123,27 @@ internal class PAITroopUpgradeModel : PartyTroopUpgradeModel
         }
 
         return false;
+    }
+
+    private static bool IsPartyManaged(PartyBase party)
+    {
+        MobileParty? mobileParty = party.MobileParty;
+        if (mobileParty is null)
+        {
+            return false;
+        }
+
+        if (mobileParty.IsGarrison)
+        {
+            return SubModule.PartySettingsManager.IsGarrisonManageable(mobileParty.CurrentSettlement);
+        }
+
+        if (mobileParty == MobileParty.MainParty)
+        {
+            PartyAiEntitySettings settings = SubModule.PartySettingsManager.Settings(Hero.MainHero);
+            return settings.SettlementAutomation >= SettlementAutomationLevel.RecruitAndUpgrade;
+        }
+
+        return SubModule.PartySettingsManager.IsManageable(party.LeaderHero);
     }
 }

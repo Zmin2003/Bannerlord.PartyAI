@@ -49,7 +49,7 @@
 					</Widget>
 
 					<!--List and Scrollbar horizontal list-->
-					<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="Fixed" MarginTop="165" SuggestedHeight="800" HorizontalAlignment="Center" IsVisible="@EnablePartyList">
+					<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" MarginTop="165" MarginBottom="90" MaxHeight="800" HorizontalAlignment="Center" IsVisible="@EnablePartyList">
 					  <Children>
 						<!--Clan List Scrollable Panel-->
 						<ScrollablePanel WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" MarginLeft="3" MarginBottom="3" AutoHideScrollBars="true" ClipRect="PartyListClipRect" InnerPanel="PartyListClipRect\PartyList" VerticalScrollbar="..\PartyListScrollbar\Scrollbar">
@@ -157,7 +157,7 @@
 											<Widget Sprite="" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" VerticalAlignment="Center" SuggestedWidth="!PartyRow.Height" SuggestedHeight="!PartyRow.Height" MarginLeft="-10" IsVisible="@IsSettlement" />
 											
 											<!-- Edit Active Order -->
-											<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="!PartyRow.Height" SuggestedHeight="!PartyRow.Height" MarginLeft="-10" IsVisible="@IsLordParty">
+											<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="!PartyRow.Height" SuggestedHeight="!PartyRow.Height" MarginLeft="-10" IsVisible="@CanEditOrders">
 												<Children>
 													<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" UpdateChildrenStates="true" Command.Click='OpenOrderQueue'>
 													  <Children>
@@ -198,30 +198,31 @@
 					<!-- Header -->
 					<Standard.TopPanel Parameter.Title="@MainHeadingText">
 					 <Children>
-						<ListPanel DoNotAcceptEvents="false" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" MarginTop="60" LayoutImp.LayoutMethod="HorizontalLeftToRight" MarginLeft="-100">
+						<ListPanel DoNotAcceptEvents="false" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" MarginTop="60" LayoutImp.LayoutMethod="HorizontalLeftToRight">
 						  <Children>
-							<ButtonWidget DoNotPassEventsToChildren="true" Command.Click="CreatePartyTemplate" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="225" SuggestedHeight="60" MarginBottom="3" HorizontalAlignment="Center" VerticalAlignment="Top" Brush="Header.Tab.Left">
+							<ButtonWidget DoNotPassEventsToChildren="true" Command.Click="CreatePartyTemplate" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="185" SuggestedHeight="60" MarginBottom="3" HorizontalAlignment="Center" VerticalAlignment="Top" Brush="Header.Tab.Left">
 							  <Children>
 								<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" PositionYOffset="1" Brush="Clan.TabControl.Text" Text="@CreateTemplateText"/>
 							  </Children>
 							</ButtonWidget>
-							<ButtonWidget DoNotPassEventsToChildren="true" Command.Click="FineTunePartyTemplate" MarginRight="10" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="250" SuggestedHeight="51" MarginTop="6" HorizontalAlignment="Center" VerticalAlignment="Top" Brush="Header.Tab.Center">
+							<ButtonWidget DoNotPassEventsToChildren="true" Command.Click="ImportPartyTemplate" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="175" SuggestedHeight="51" MarginTop="6" HorizontalAlignment="Center" VerticalAlignment="Top" Brush="Header.Tab.Center">
+							  <Children>
+								<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" PositionYOffset="1" Brush="Clan.TabControl.Text" Text="@ImportTemplateText"/>
+								<HintWidget DataSource="{ImportTemplateHint}" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" />
+							  </Children>
+							</ButtonWidget>
+							<ButtonWidget DoNotPassEventsToChildren="true" Command.Click="FineTunePartyTemplate" MarginRight="6" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="210" SuggestedHeight="51" MarginTop="6" HorizontalAlignment="Center" VerticalAlignment="Top" Brush="Header.Tab.Center">
 							  <Children>
 								<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" PositionYOffset="1" Brush="Clan.TabControl.Text" Text="@FineTunePartyTemplateText"/>
 								<HintWidget DataSource="{FineTunePartyTemplateHint}" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" />
 							  </Children>
 							</ButtonWidget>
-							<ButtonWidget DoNotPassEventsToChildren="true" Command.Click="DeletePartyTemplate" MarginRight="10" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="225" SuggestedHeight="51" MarginTop="6" HorizontalAlignment="Center" VerticalAlignment="Top" Brush="Header.Tab.Center">
+							<ButtonWidget DoNotPassEventsToChildren="true" Command.Click="DeletePartyTemplate" MarginRight="6" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="175" SuggestedHeight="51" MarginTop="6" HorizontalAlignment="Center" VerticalAlignment="Top" Brush="Header.Tab.Center">
 							  <Children>
 								<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" PositionYOffset="1" Brush="Clan.TabControl.Text" Text="@DeletePartyTemplateText"/>
 							  </Children>
 							</ButtonWidget>
-							<!--<ButtonWidget DoNotPassEventsToChildren="true" Command.Click="CopyPasteSettings" MarginLeft="10" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="200" SuggestedHeight="51" MarginTop="6" HorizontalAlignment="Center" VerticalAlignment="Top" Brush="Header.Tab.Center">
-							  <Children>
-								<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" PositionYOffset="1" Brush="Clan.TabControl.Text" Text="@CopyPasteText"/>
-							  </Children>
-							</ButtonWidget>-->
-							<ButtonWidget DoNotPassEventsToChildren="true" Command.Click="OpenModOptions" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="200" SuggestedHeight="60" MarginBottom="3"  HorizontalAlignment="Center" VerticalAlignment="Top" Brush="Header.Tab.Right">
+							<ButtonWidget DoNotPassEventsToChildren="true" Command.Click="OpenModOptions" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="175" SuggestedHeight="60" MarginBottom="3" HorizontalAlignment="Center" VerticalAlignment="Top" Brush="Header.Tab.Right">
 							  <Children>
 								<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" PositionYOffset="1" Brush="Clan.TabControl.Text" Text="@ModOptionsText"/>
 							  </Children>

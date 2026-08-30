@@ -21,10 +21,10 @@ public class PartyAICompositionSlidersVM : ViewModel
 
     private readonly Action<PartyComposition> _onSavePartyComposition;
     private readonly PartyAiEntitySettings _settings;
-    private CompositionSliderRowVM _infantrySliderVm;
-    private CompositionSliderRowVM _rangedSliderVm;
-    private CompositionSliderRowVM _cavalrySliderVm;
-    private CompositionSliderRowVM _horseArcherSliderVm;
+    private CompositionSliderRowVM _infantrySliderVm = null!;
+    private CompositionSliderRowVM _rangedSliderVm = null!;
+    private CompositionSliderRowVM _cavalrySliderVm = null!;
+    private CompositionSliderRowVM _horseArcherSliderVm = null!;
 
     public PartyAICompositionSlidersVM(PartyAiEntitySettings settings, Action<PartyComposition> callback)
     {

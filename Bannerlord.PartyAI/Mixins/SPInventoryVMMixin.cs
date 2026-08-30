@@ -3,6 +3,7 @@ using Bannerlord.UIExtenderEx.ViewModels;
 using HarmonyLib;
 using System.Linq;
 using System.Reflection;
+using TaleWorlds.CampaignSystem.Party;
 using TaleWorlds.CampaignSystem.Inventory;
 using TaleWorlds.CampaignSystem.ViewModelCollection;
 using TaleWorlds.CampaignSystem.ViewModelCollection.Inventory;
@@ -17,26 +18,29 @@ namespace Bannerlord.PartyAI.Mixins;
 internal class SPInventoryVMMixin : BaseViewModelMixin<SPInventoryVM>
 {
     private readonly SPInventoryVM _vm;
-    private readonly InventoryLogic _inventoryLogic;
-    private BasicTooltipViewModel _otherSideEquipmentMaxCountHint;
-    private static readonly FieldInfo _inventoryLogicField = AccessTools.Field(typeof(SPInventoryVM), "_inventoryLogic");
+    private readonly InventoryLogic? _inventoryLogic;
+    private BasicTooltipViewModel _otherSideEquipmentMaxCountHint = new();
+    private static readonly FieldInfo? _inventoryLogicField = AccessTools.Field(typeof(SPInventoryVM), "_inventoryLogic");
 
     public SPInventoryVMMixin(SPInventoryVM vm) : base(vm)
     {
         _vm = vm;
-        _inventoryLogic = (InventoryLogic)_inventoryLogicField?.GetValue(_vm);
+        _inventoryLogic = _inventoryLogicField?.GetValue(_vm) as InventoryLogic;
     }
 
     public override void OnRefresh()
     {
         base.OnRefresh();
 
-        if (_vm.OtherSideHasCapacity && _inventoryLogic?.OtherSideCapacityData != null && !_vm.IsTrading)
+        if (_vm.OtherSideHasCapacity
+            && _inventoryLogic?.OtherSideCapacityData is { } capacityData
+            && !_vm.IsTrading)
         {
             int weight;
-            if (_inventoryLogic?.OtherParty?.MobileParty != null)
+            if (_inventoryLogic.OtherParty?.MobileParty is MobileParty otherParty)
             {
-                OtherSideEquipmentMaxCountHint = new BasicTooltipViewModel(() => CampaignUIHelper.GetPartyInventoryCapacityTooltip(_inventoryLogic?.OtherParty?.MobileParty));
+                OtherSideEquipmentMaxCountHint = new BasicTooltipViewModel(
+                    () => CampaignUIHelper.GetPartyInventoryCapacityTooltip(otherParty));
                 weight = MathF.Ceiling(_vm.LeftItemListVM.Where(i => !i.ItemRosterElement.EquipmentElement.Item.IsMountable && !i.ItemRosterElement.EquipmentElement.Item.IsAnimal).Sum((SPItemVM x) => x.ItemRosterElement.GetRosterElementWeight()));
             }
             else
@@ -45,7 +49,7 @@ internal class SPInventoryVMMixin : BaseViewModelMixin<SPInventoryVM>
             }
 
             TextObject textObject = GameTexts.FindText("str_LEFT_over_RIGHT");
-            int capacity = _inventoryLogic.OtherSideCapacityData.GetCapacity();
+            int capacity = capacityData.GetCapacity();
             textObject.SetTextVariable("LEFT", weight);
             textObject.SetTextVariable("RIGHT", capacity);
             _vm.OtherEquipmentCountText = textObject.ToString();

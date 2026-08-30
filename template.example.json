@@ -1,0 +1,15 @@
+{
+  "name": "Imperial balanced elite",
+  "troops": [
+    "imperial_legionary",
+    "imperial_palatine_guard",
+    "imperial_elite_cataphract",
+    "bucellarii"
+  ],
+  "composition": {
+    "infantry": 35,
+    "ranged": 30,
+    "cavalry": 25,
+    "horseArcher": 10
+  }
+}

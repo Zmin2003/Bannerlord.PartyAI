@@ -12,7 +12,7 @@ namespace Bannerlord.PartyAI.ViewModels.Dialogs;
 internal static class DeleteTemplate
 {
 
-    private static Action _onDeleteCallback;
+    private static Action _onDeleteCallback = null!;
 
     public static void Delete(Action callback)
     {
@@ -20,7 +20,11 @@ internal static class DeleteTemplate
 
         string title = new TextObject("{=PAI0HrENRV2}Select which template to delete").ToString();
 
-        List<InquiryElement> list = SubModule.PartySettingsManager.AllTemplates.OrderBy(t => t.Name).ToList().ConvertAll(t =>
+        List<InquiryElement> list = SubModule.PartySettingsManager.AllTemplates
+            .Where(template => !template.IsBuiltIn)
+            .OrderBy(t => t.Name)
+            .ToList()
+            .ConvertAll(t =>
           new InquiryElement(t, t.Name, new CharacterImageIdentifier(CampaignUIHelper.GetCharacterCode(t.Troops.First())))
         );
         MBInformationManager.ShowMultiSelectionInquiry(new MultiSelectionInquiryData(title, string.Empty, list, isExitShown: true, 1, 1, new TextObject("{=PAIFofWXL3f}DELETE").ToString(), GameTexts.FindText("str_cancel").ToString(), DeletePartyTemplateCallback, null, "", true));

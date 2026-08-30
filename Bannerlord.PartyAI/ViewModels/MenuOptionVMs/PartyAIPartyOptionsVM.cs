@@ -4,6 +4,7 @@ using Bannerlord.PartyAI.ViewModels.Components;
 using Bannerlord.PartyAI.ViewModels.Dialogs;
 using Bannerlord.PartyAI.ViewModels.Dropdowns;
 using System;
+using TaleWorlds.CampaignSystem;
 using TaleWorlds.Core;
 using TaleWorlds.Core.ViewModelCollection.Information;
 using TaleWorlds.Library;
@@ -16,14 +17,13 @@ public class PartyAIPartyOptionsVM : ViewModel
     private readonly Action _onClosePartyOptions;
     private readonly PartyAiEntitySettings _settings;
     private int _buyHorsesBudget;
-    private readonly PartyAiOrder _currentFallbackOrder;
+    private readonly PartyAiOrder? _currentFallbackOrder;
     private float _autoRecruitmentPercentage;
     private float _dismissUnwantedTroopsPercentage;
     private float _patrolRadius;
 
     public PartyAIPartyOptionsVM(PartyAiEntitySettings settings, Action callback)
     {
-        if (settings == null) { return; }
         _settings = settings;
 
         if (_settings.Hero != null)
@@ -47,11 +47,26 @@ public class PartyAIPartyOptionsVM : ViewModel
         RecruitmentToggle = new PartyAIOptionToggleVM(new TextObject("{=PAIpTraw5lq}Recruit when below "), _settings.AutoRecruitment, new TextObject("{=PAIMah8wd6z}Automatically set an order to go recruiting when party is below X% of it's max party size. The order will only be added if there is not an existing order to recruit troops in the queue and you are not directly commanding the party."));
         DismissUnwantedTroopsToggle = new PartyAIOptionToggleVM(new TextObject("{=PAIQVkiTiSf}Dismiss unwanted troops when above "), _settings.DismissUnwantedTroops, new TextObject("{=PAIrFBBz1kW}Dismiss troops that either don't fit your party template or don't fit your chosen party composition percentages. This will only happen when aboved the specified party size percentage so that the party won't leave itself vulnerable."));
         _buyHorsesBudget = _settings.BuyHorsesBudget;
-        MaxTroopTierDropdown = new(settings.MaxTroopTier, null);
+        MaxTroopTierDropdown = new(settings.MaxTroopTier);
         _currentFallbackOrder = _settings.FallbackOrder;
         _autoRecruitmentPercentage = _settings.AutoRecruitmentPercentage;
         _dismissUnwantedTroopsPercentage = _settings.DismissUnwantedTroopsPercentage;
         _patrolRadius = _settings.PatrolRadius;
+        AutomationLevelDropdown = new(_settings.SettlementAutomation);
+        ShowAiOptions = _settings.Hero != Hero.MainHero;
+
+        if (!ShowAiOptions)
+        {
+            AllowJoinArmiesToggle.IsVisible = false;
+            AllowDonateTroopsToggle.IsVisible = false;
+            AllowTakeTroopsFromSettlementToggle.IsVisible = false;
+            AllowSiegingToggle.IsVisible = false;
+            AllowRaidVillagesToggle.IsVisible = false;
+            AllowLordPrisonersToggle.IsVisible = false;
+            BuyHorsesToggle.IsVisible = false;
+            RecruitmentToggle.IsVisible = false;
+            DismissUnwantedTroopsToggle.IsVisible = false;
+        }
         UpdatePatrolRadiusText();
 
         // disable dismiss troops setting if troop conversion is enabled
@@ -85,10 +100,14 @@ public class PartyAIPartyOptionsVM : ViewModel
     [DataSourceProperty] public string BuyHorsesBudgetAmount => _buyHorsesBudget.ToString();
     [DataSourceProperty] public string RecruitmentPercentageText => ((int)(_autoRecruitmentPercentage * 100f)).ToString() + "%";
     [DataSourceProperty] public string DismissUnwantedTroopsPercentageText => ((int)(_dismissUnwantedTroopsPercentage * 100f)).ToString() + "%";
-    [DataSourceProperty] public string PatrolRadiusText { get; private set; }
+    [DataSourceProperty] public string PatrolRadiusText { get; private set; } = string.Empty;
     [DataSourceProperty] public string RecruitmentPostText { get; private set; } = new TextObject("{=PAITKllkp3Y} of max party size").ToString();
     [DataSourceProperty] public HintViewModel BuyHorsesBudgetHint => new(new TextObject("{=PAIcyDMxg8t}Horse purchase budget per day."));
     [DataSourceProperty] public PartyAIMaxTroopTierDropdownVM MaxTroopTierDropdown { get; private set; }
+    [DataSourceProperty] public PartyAIAutomationLevelDropdownVM AutomationLevelDropdown { get; private set; }
+    [DataSourceProperty] public bool ShowAiOptions { get; private set; }
+    [DataSourceProperty] public string AutomationLevelText => new TextObject("{=PAI_AUTOMATION_LEVEL}Settlement Automation").ToString();
+    [DataSourceProperty] public HintViewModel AutomationLevelHint => new(new TextObject("{=PAI_AUTOMATION_LEVEL_HINT}Choose what happens automatically after this party enters a town or village. Full Auto also balances the template and equips party heroes from inventory."));
     [DataSourceProperty] public string MaxTroopTierText => new TextObject("{=PAIn4UJJg3a}Max Troop Tier").ToString();
     [DataSourceProperty] public HintViewModel MaxTroopTierHint => new(new TextObject("{=PAIKeTFa2PX}Maximum troop tier to upgrade troops to. If you lower this setting while there are higher tier troops in the party, they will be downgraded."));
     [DataSourceProperty] public HintViewModel PatrolRadiusHint => new(new TextObject("{=PAIMaf6ECHe}Change radius for patrol orders. You'll just have to play with it and find a value that gives you the results you want. Percentage is a percentage of the default radius."));
@@ -164,12 +183,15 @@ public class PartyAIPartyOptionsVM : ViewModel
         _settings.DismissUnwantedTroops = DismissUnwantedTroopsToggle.IsSelected;
         _settings.MaxTroopTier = MaxTroopTierDropdown.SortOptions.SelectedItem.Max;
         _settings.PatrolRadius = _patrolRadius;
+        _settings.SettlementAutomation = AutomationLevelDropdown.SortOptions.SelectedItem.Level;
 
-        if (_currentFallbackOrder != _settings.FallbackOrder && (_settings.Order == _currentFallbackOrder || !_settings.HasActiveOrder))
+        if (_currentFallbackOrder != _settings.FallbackOrder
+            && _settings.FallbackOrder is PartyAiOrder fallbackOrder
+            && (_settings.Order == _currentFallbackOrder || !_settings.HasActiveOrder))
         {
             if (_settings.Hero?.PartyBelongedTo != null && _settings.Hero.PartyBelongedTo.Army == null)
             {
-                _settings.SetOrder(_settings.FallbackOrder.Behavior, _settings.FallbackOrder.Target);
+                _settings.SetOrder(fallbackOrder.Behavior, fallbackOrder.Target);
             }
         }
 
