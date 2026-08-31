@@ -50,6 +50,8 @@ internal static class CopyPaste
         string TemplateText = new TextObject("{=PAIrkbpwijb}Template").ToString();
         string OrderText = new TextObject("{=PAI6XKZojTt}Order").ToString();
         string OptionsText = new TextObject("{=PAIQnwbXcqc}Options").ToString();
+        string TownManagementText = new TextObject(
+            "{=PAI_TOWN_COPY_SETTINGS}Town Management").ToString();
         TextObject hint = new TextObject("{=!}{HERO}'s {OPTION}")
             .SetTextVariable(
                 "HERO",
@@ -57,6 +59,19 @@ internal static class CopyPaste
 
         newList.Add(new InquiryElement(source.Composition, CompositionText, null, true, hint.SetTextVariable("OPTION", CompositionText).ToString()));
         newList.Add(new InquiryElement(source.PartyTemplate, TemplateText, null, true, hint.SetTextVariable("OPTION", TemplateText).ToString()));
+        if (_source.Settlement is Settlement settlement
+            && SubModule.TownManagementBehavior.IsTownManageable(settlement))
+        {
+            TownManagementSettlementSettings townSettings = SubModule
+                .TownManagementBehavior
+                .SettingsSnapshot(settlement);
+            newList.Add(new InquiryElement(
+                townSettings,
+                TownManagementText,
+                null,
+                true,
+                hint.SetTextVariable("OPTION", TownManagementText).ToString()));
+        }
         if (_source.Settlement == null)
         {
             if (!SubModule.PartySettingsManager.IsCaravanManageable(_source.Hero))
@@ -170,6 +185,14 @@ internal static class CopyPaste
         if (source.Identifier is PartyAiEntitySettings)
         {
             settings.CopyOptionsFrom((PartyAiEntitySettings)source.Identifier);
+        }
+
+        if (source.Identifier is TownManagementSettlementSettings townSettings
+            && settings.Settlement is Settlement settlement
+            && SubModule.TownManagementBehavior.IsTownManageable(settlement))
+        {
+            SubModule.TownManagementBehavior.UpdateSettings(settlement, townSettings);
+            SubModule.TownManagementBehavior.TryAssignMissingGovernor(settlement);
         }
 
         if (source.Identifier == null)

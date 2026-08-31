@@ -8,6 +8,7 @@ using TaleWorlds.CampaignSystem.Actions;
 using TaleWorlds.CampaignSystem.Party;
 using TaleWorlds.CampaignSystem.Settlements;
 using TaleWorlds.CampaignSystem.Settlements.Buildings;
+using TaleWorlds.Core;
 using TaleWorlds.Library;
 using TaleWorlds.Localization;
 
@@ -74,18 +75,10 @@ public class TownManagementBehavior : CampaignBehaviorBase
 
     internal TownManagementSettlementSettings Settings(Settlement settlement)
     {
-        if (!_settlementSettings.TryGetValue(settlement, out TownManagementSettlementSettings? settings))
-        {
-            settings = TownManagementSettlementSettings.FromOptions(settlement, _options);
-            _settlementSettings.Add(settlement, settings);
-        }
-        else
-        {
-            settings.AttachTo(settlement);
-            settings.Normalize();
-        }
-
-        return settings;
+        TownManagementSettlementSettings settings = StoredSettings(settlement);
+        TownManagementSettlementSettings resolved = settings.Resolve(_options);
+        resolved.AttachTo(settlement);
+        return resolved;
     }
 
     internal TownManagementSettlementSettings SettingsSnapshot(Settlement settlement)
@@ -94,7 +87,7 @@ public class TownManagementBehavior : CampaignBehaviorBase
             settlement,
             out TownManagementSettlementSettings? settings))
         {
-            var copy = settings.DeepCopy();
+            var copy = settings.Resolve(_options);
             copy.AttachTo(settlement);
             copy.Normalize();
             return copy;
@@ -108,6 +101,49 @@ public class TownManagementBehavior : CampaignBehaviorBase
         _options = new TownManagementOptions(options);
     }
 
+    internal void ApplyGlobalDefaultsToAllFiefs()
+    {
+        List<Settlement> settlements = ManageableSettlementsByEconomicPriority();
+        foreach (Settlement settlement in settlements)
+        {
+            TownManagementSettlementSettings settings = StoredSettings(settlement);
+            bool enabled = settings.Enabled;
+            settings.ApplyDefaults(_options);
+            settings.Enabled = enabled;
+            settings.UseGlobalDefaults = true;
+            settings.Normalize();
+        }
+
+        foreach (Settlement settlement in settlements)
+        {
+            TryAssignMissingGovernor(settlement);
+        }
+    }
+
+    internal void TryAssignMissingGovernorsFollowingGlobalDefaults()
+    {
+        if (!_options.Enabled || _options.GovernorMode != AutoGovernorMode.Assign)
+        {
+            return;
+        }
+
+        foreach (Settlement settlement in ManageableSettlementsByEconomicPriority())
+        {
+            if (StoredSettings(settlement).UseGlobalDefaults)
+            {
+                TryAssignMissingGovernor(settlement);
+            }
+        }
+    }
+
+    private List<Settlement> ManageableSettlementsByEconomicPriority()
+        => Settlement.All
+            .Where(IsTownManageable)
+            .OrderByDescending(settlement => settlement.IsTown)
+            .ThenByDescending(settlement => settlement.Town?.Prosperity ?? 0f)
+            .ThenBy(settlement => settlement.StringId)
+            .ToList();
+
     internal void UpdateSettings(
         Settlement settlement,
         TownManagementSettlementSettings settings)
@@ -116,6 +152,47 @@ public class TownManagementBehavior : CampaignBehaviorBase
         copy.AttachTo(settlement);
         copy.Normalize();
         _settlementSettings[settlement] = copy;
+    }
+
+    internal void TryAssignMissingGovernor(Settlement settlement)
+    {
+        if (!_options.Enabled
+            || !IsTownManageable(settlement)
+            || settlement.Town.Governor is not null)
+        {
+            return;
+        }
+
+        TownManagementSettlementSettings settings = Settings(settlement);
+        if (!settings.Enabled
+            || EffectiveGovernorMode(settings) != AutoGovernorMode.Assign)
+        {
+            return;
+        }
+
+        ManageGovernor(
+            settlement.Town,
+            AutoGovernorMode.Assign,
+            AllowsGovernorReassignment(settings),
+            EffectiveGovernorCooldown(settings));
+    }
+
+    private TownManagementSettlementSettings StoredSettings(Settlement settlement)
+    {
+        if (!_settlementSettings.TryGetValue(
+            settlement,
+            out TownManagementSettlementSettings? settings))
+        {
+            settings = TownManagementSettlementSettings.FromOptions(settlement, _options);
+            _settlementSettings.Add(settlement, settings);
+        }
+        else
+        {
+            settings.AttachTo(settlement);
+            settings.Normalize();
+        }
+
+        return settings;
     }
 
     internal bool IsTownManageable(Settlement settlement)
@@ -139,31 +216,25 @@ public class TownManagementBehavior : CampaignBehaviorBase
             return;
         }
 
-        bool manageDailyProjects = _options.ManageDailyProjects
-            && settings.ManageDailyProjects;
+        bool manageDailyProjects = settings.ManageDailyProjects;
         if (manageDailyProjects)
         {
             ManageDailyProject(town, settings);
         }
 
-        if (_options.ManageBuildingQueue && settings.ManageBuildingQueue)
+        if (settings.ManageBuildingQueue)
         {
             ManageBuildingQueue(town, settings, manageDailyProjects);
         }
 
-        if (_options.AutoFundConstruction && settings.AutoFundConstruction)
+        if (settings.AutoFundConstruction)
         {
             FundConstruction(town, settings);
         }
 
-        AutoGovernorMode governorMode = (AutoGovernorMode)Math.Min(
-            (int)_options.GovernorMode,
-            (int)settings.GovernorMode);
-        bool allowGovernorReassignment = _options.AllowGovernorReassignment
-            && settings.AllowGovernorReassignment;
-        int governorCooldownDays = Math.Max(
-            _options.GovernorAssignmentCooldownDays,
-            settings.GovernorAssignmentCooldownDays);
+        AutoGovernorMode governorMode = EffectiveGovernorMode(settings);
+        bool allowGovernorReassignment = AllowsGovernorReassignment(settings);
+        int governorCooldownDays = EffectiveGovernorCooldown(settings);
         ManageGovernor(
             town,
             governorMode,
@@ -186,8 +257,18 @@ public class TownManagementBehavior : CampaignBehaviorBase
         Town town,
         TownManagementSettlementSettings settings)
     {
-        Building? bestProject = town.Buildings
+        List<Building> projects = town.Buildings
             .Where(building => building.BuildingType.IsDailyProject)
+            .ToList();
+        List<Building> emergencyProjects = projects
+            .Where(building => ProvidesEmergencyBenefit(building, town, settings))
+            .ToList();
+        if (emergencyProjects.Count > 0)
+        {
+            projects = emergencyProjects;
+        }
+
+        Building? bestProject = projects
             .OrderByDescending(building => ScoreDailyProject(building, town, settings))
             .ThenBy(building => building.BuildingType.StringId)
             .FirstOrDefault();
@@ -206,6 +287,7 @@ public class TownManagementBehavior : CampaignBehaviorBase
         List<Building> currentQueue = town.BuildingsInProgress.ToList();
         bool pauseForEmergency = manageDailyProjects
             && HasUsefulEmergencyDailyProject(town, settings);
+        bool hasUsefulEmergencyBuilding = HasUsefulEmergencyBuilding(town, settings);
         var existingIndexes = currentQueue
             .Select((building, index) => new { building, index })
             .GroupBy(pair => pair.building)
@@ -217,13 +299,26 @@ public class TownManagementBehavior : CampaignBehaviorBase
                 .Where(building => !building.BuildingType.IsDailyProject
                     && building.CurrentLevel < BuildingType.MaxLevel)
                 .Distinct()
-                .OrderByDescending(building => ScoreBuilding(
+                .OrderByDescending(building => hasUsefulEmergencyBuilding
+                    && ProvidesEmergencyBenefit(building, town, settings))
+                .ThenByDescending(building => ScoreBuilding(
                     building,
                     town,
                     settings,
                     existingIndexes.TryGetValue(building, out int index) ? index : int.MaxValue))
                 .ThenBy(building => building.BuildingType.StringId)
                 .ToList();
+
+        // Keep the project the player (or Town AI on the previous tick) already
+        // started unless an emergency requires an immediate change.
+        Building? activeProject = currentQueue.FirstOrDefault();
+        if (!pauseForEmergency
+            && !hasUsefulEmergencyBuilding
+            && activeProject is not null
+            && desiredQueue.Remove(activeProject))
+        {
+            desiredQueue.Insert(0, activeProject);
+        }
 
         if (!currentQueue.SequenceEqual(desiredQueue))
         {
@@ -272,8 +367,7 @@ public class TownManagementBehavior : CampaignBehaviorBase
         TownGovernorAssignmentState state = GovernorState(town.Settlement);
         Hero? candidate = FindGovernorCandidate(
             town,
-            allowGovernorReassignment,
-            governorCooldownDays);
+            allowGovernorReassignment);
         Hero? recommendation = candidate != town.Governor ? candidate : null;
 
         if (governorMode == AutoGovernorMode.Recommend)
@@ -318,12 +412,36 @@ public class TownManagementBehavior : CampaignBehaviorBase
         DisplayGovernorAssigned(town, candidate);
     }
 
+    internal AutoGovernorMode EffectiveGovernorMode(
+        TownManagementSettlementSettings settings)
+        => settings.GovernorMode;
+
+    internal bool AllowsGovernorReassignment(
+        TownManagementSettlementSettings settings)
+        => settings.AllowGovernorReassignment;
+
+    internal int EffectiveGovernorCooldown(
+        TownManagementSettlementSettings settings)
+        => settings.GovernorAssignmentCooldownDays;
+
+    internal Hero? GovernorCandidate(
+        Town town,
+        TownManagementSettlementSettings settings)
+    {
+        TownManagementSettlementSettings effective = settings.Resolve(_options);
+        return FindGovernorCandidate(
+            town,
+            AllowsGovernorReassignment(effective),
+            effective.Strategy);
+    }
+
     private TownGovernorAssignmentState GovernorState(Settlement settlement)
     {
-        if (!_governorStates.TryGetValue(settlement, out TownGovernorAssignmentState? state))
+        if (!_governorStates.TryGetValue(settlement, out TownGovernorAssignmentState? state)
+            || state is null)
         {
             state = new TownGovernorAssignmentState();
-            _governorStates.Add(settlement, state);
+            _governorStates[settlement] = state;
         }
 
         return state;
@@ -332,7 +450,7 @@ public class TownManagementBehavior : CampaignBehaviorBase
     private Hero? FindGovernorCandidate(
         Town town,
         bool allowGovernorReassignment,
-        int governorCooldownDays)
+        TownManagementStrategy? preferredStrategy = null)
     {
         IEnumerable<Hero> candidates = Clan.PlayerClan.Heroes
             .Union(Clan.PlayerClan.Companions)
@@ -340,13 +458,26 @@ public class TownManagementBehavior : CampaignBehaviorBase
             .Where(hero => IsGovernorCandidate(
                 hero,
                 town,
-                allowGovernorReassignment,
-                governorCooldownDays));
+                allowGovernorReassignment));
 
+        // Filling a vacancy must not create another vacancy elsewhere. Existing
+        // governors are considered only when replacing this town's governor and
+        // there is no suitable unassigned hero.
+        TownManagementStrategy strategy = preferredStrategy
+            ?? SettingsSnapshot(town.Settlement).Strategy;
         Hero? best = candidates
-            .OrderByDescending(hero => GovernorScore(hero, town))
+            .Where(hero => hero.GovernorOf is null || hero.GovernorOf == town)
+            .OrderByDescending(hero => GovernorScore(hero, town, strategy))
             .ThenBy(hero => hero.StringId)
             .FirstOrDefault();
+
+        if (best is null && town.Governor is not null && allowGovernorReassignment)
+        {
+            best = candidates
+                .OrderByDescending(hero => GovernorScore(hero, town, strategy))
+                .ThenBy(hero => hero.StringId)
+                .FirstOrDefault();
+        }
 
         if (best is null || town.Governor is null || best == town.Governor)
         {
@@ -358,16 +489,15 @@ public class TownManagementBehavior : CampaignBehaviorBase
             return null;
         }
 
-        float currentScore = GovernorScore(town.Governor, town);
-        float bestScore = GovernorScore(best, town);
+        float currentScore = GovernorScore(town.Governor, town, strategy);
+        float bestScore = GovernorScore(best, town, strategy);
         return bestScore >= currentScore * 1.2f + 5f ? best : null;
     }
 
     private bool IsGovernorCandidate(
         Hero hero,
         Town town,
-        bool allowGovernorReassignment,
-        int governorCooldownDays)
+        bool allowGovernorReassignment)
     {
         if (hero == Hero.MainHero
             || hero.Clan != Clan.PlayerClan
@@ -393,13 +523,39 @@ public class TownManagementBehavior : CampaignBehaviorBase
         return allowGovernorReassignment
             && previousSettings.Enabled
             && previousSettings.AllowGovernorReassignment
-            && !WasGovernorAssignedRecently(hero, governorCooldownDays);
+            && !WasGovernorAssignedRecently(
+                previousTown,
+                hero,
+                EffectiveGovernorCooldown(previousSettings));
     }
 
-    private static float GovernorScore(Hero hero, Town town)
+    private static float GovernorScore(
+        Hero hero,
+        Town town,
+        TownManagementStrategy strategy)
     {
         float score = Campaign.Current.Models.DiplomacyModel
             .GetHeroGoverningStrengthForClan(hero);
+
+        switch (strategy)
+        {
+            case TownManagementStrategy.Economy:
+                score += hero.GetSkillValue(DefaultSkills.Trade) * 0.18f;
+                score += hero.GetSkillValue(DefaultSkills.Steward) * 0.08f;
+                break;
+            case TownManagementStrategy.Stability:
+                score += hero.GetSkillValue(DefaultSkills.Steward) * 0.15f;
+                score += hero.GetSkillValue(DefaultSkills.Charm) * 0.08f;
+                break;
+            case TownManagementStrategy.Military:
+                score += hero.GetSkillValue(DefaultSkills.Leadership) * 0.12f;
+                score += hero.GetSkillValue(DefaultSkills.Tactics) * 0.08f;
+                score += hero.GetSkillValue(DefaultSkills.Engineering) * 0.08f;
+                break;
+            default:
+                score += hero.GetSkillValue(DefaultSkills.Steward) * 0.1f;
+                break;
+        }
 
         if (hero.Culture == town.Culture)
         {
@@ -422,18 +578,27 @@ public class TownManagementBehavior : CampaignBehaviorBase
         TownGovernorAssignmentState state,
         int cooldownDays)
     {
-        return state.LastAssignmentTime.IsPast
-            && state.LastAssignmentTime.ElapsedDaysUntilNow < cooldownDays;
+        return IsCoolingDown(state.LastAssignmentTime, cooldownDays);
     }
 
-    private bool WasGovernorAssignedRecently(Hero hero, int cooldownDays)
+    private bool WasGovernorAssignedRecently(
+        Town town,
+        Hero hero,
+        int cooldownDays)
     {
-        return _governorStates.Values.Any(state => state.LastAssignedGovernor == hero
-            && (state.LastAssignmentTime.IsNow
-                || (cooldownDays > 0
-                    && state.LastAssignmentTime.IsPast
-                    && state.LastAssignmentTime.ElapsedDaysUntilNow < cooldownDays)));
+        return _governorStates.TryGetValue(
+                town.Settlement,
+                out TownGovernorAssignmentState? state)
+            && state is not null
+            && state.LastAssignedGovernor == hero
+            && IsCoolingDown(state.LastAssignmentTime, cooldownDays);
     }
+
+    private static bool IsCoolingDown(CampaignTime assignmentTime, int cooldownDays)
+        => cooldownDays > 0
+            && (assignmentTime.IsNow
+                || (assignmentTime.IsPast
+                    && assignmentTime.ElapsedDaysUntilNow < cooldownDays));
 
     private static float ScoreDailyProject(
         Building building,
@@ -441,8 +606,9 @@ public class TownManagementBehavior : CampaignBehaviorBase
         TownManagementSettlementSettings settings)
     {
         float score = building == town.CurrentDefaultBuilding ? 1f : 0f;
-        bool loyaltyEmergency = town.Loyalty <= settings.LoyaltyEmergencyThreshold;
+        bool loyaltyEmergency = IsLoyaltyEmergency(town, settings);
         bool foodEmergency = IsFoodEmergency(town, settings.FoodShortageDays);
+        bool foodPressure = town.FoodChange <= 0f;
 
         if (loyaltyEmergency)
         {
@@ -465,10 +631,16 @@ public class TownManagementBehavior : CampaignBehaviorBase
                 AddEffectScore(building, BuildingEffectEnum.Militia, 200f, ref score);
                 break;
             case TownManagementStrategy.Economy:
-                AddEffectScore(building, BuildingEffectEnum.Prosperity, 700f, ref score);
-                AddEffectScore(building, BuildingEffectEnum.FoodProduction, 550f, ref score);
-                AddEffectScore(building, BuildingEffectEnum.VillageProduction, 350f, ref score);
-                AddEffectScore(building, BuildingEffectEnum.TaxPerDay, 250f, ref score);
+                AddEffectScore(building, BuildingEffectEnum.Prosperity, 1200f, ref score);
+                AddEffectScore(building, BuildingEffectEnum.TaxPerDay, 1100f, ref score);
+                AddEffectScore(building, BuildingEffectEnum.TariffIncome, 1000f, ref score);
+                AddEffectScore(building, BuildingEffectEnum.WorkshopProduction, 900f, ref score);
+                AddEffectScore(building, BuildingEffectEnum.VillageProduction, 850f, ref score);
+                AddEffectScore(building, BuildingEffectEnum.FoodProduction,
+                    foodPressure ? 1400f : 650f, ref score);
+                AddEffectScore(building, BuildingEffectEnum.GarrisonWageReduction, 700f, ref score);
+                AddEffectScore(building, BuildingEffectEnum.Militia, 200f, ref score);
+                AddEffectScore(building, BuildingEffectEnum.GarrisonAutoRecruitment, -250f, ref score);
                 break;
             case TownManagementStrategy.Military:
                 AddEffectScore(building, BuildingEffectEnum.Militia, 700f, ref score);
@@ -499,8 +671,9 @@ public class TownManagementBehavior : CampaignBehaviorBase
             score += 1f / (existingQueueIndex + 1f);
         }
 
-        bool loyaltyEmergency = town.Loyalty <= settings.LoyaltyEmergencyThreshold;
+        bool loyaltyEmergency = IsLoyaltyEmergency(town, settings);
         bool foodEmergency = IsFoodEmergency(town, settings.FoodShortageDays);
+        bool foodPressure = town.FoodChange <= 0f;
 
         if (loyaltyEmergency)
         {
@@ -527,11 +700,18 @@ public class TownManagementBehavior : CampaignBehaviorBase
                 AddEffectScore(building, BuildingEffectEnum.GarrisonCapacity, 250f, ref score);
                 break;
             case TownManagementStrategy.Economy:
-                AddEffectScore(building, BuildingEffectEnum.Prosperity, 800f, ref score);
-                AddEffectScore(building, BuildingEffectEnum.TaxPerDay, 700f, ref score);
-                AddEffectScore(building, BuildingEffectEnum.TariffIncome, 600f, ref score);
-                AddEffectScore(building, BuildingEffectEnum.WorkshopProduction, 550f, ref score);
-                AddEffectScore(building, BuildingEffectEnum.VillageProduction, 500f, ref score);
+                AddEffectScore(building, BuildingEffectEnum.TaxPerDay, 1400f, ref score);
+                AddEffectScore(building, BuildingEffectEnum.TariffIncome, 1250f, ref score);
+                AddEffectScore(building, BuildingEffectEnum.Prosperity, 1150f, ref score);
+                AddEffectScore(building, BuildingEffectEnum.WorkshopProduction, 1050f, ref score);
+                AddEffectScore(building, BuildingEffectEnum.VillageProduction, 950f, ref score);
+                AddEffectScore(building, BuildingEffectEnum.FoodStock,
+                    foodPressure ? 1500f : 600f, ref score);
+                AddEffectScore(building, BuildingEffectEnum.FoodProduction,
+                    foodPressure ? 1450f : 550f, ref score);
+                AddEffectScore(building, BuildingEffectEnum.GarrisonWageReduction, 900f, ref score);
+                AddEffectScore(building, BuildingEffectEnum.Militia, 250f, ref score);
+                AddEffectScore(building, BuildingEffectEnum.GarrisonAutoRecruitment, -350f, ref score);
                 break;
             case TownManagementStrategy.Military:
                 AddEffectScore(building, BuildingEffectEnum.GarrisonCapacity, 800f, ref score);
@@ -552,26 +732,69 @@ public class TownManagementBehavior : CampaignBehaviorBase
         return score;
     }
 
-    private static bool IsFoodEmergency(Town town, int shortageDays)
+    internal static bool IsLoyaltyEmergency(
+        Town town,
+        TownManagementSettlementSettings settings)
+        => town.InRebelliousState
+            || town.Loyalty <= settings.LoyaltyEmergencyThreshold;
+
+    internal static bool IsFoodEmergency(Town town, int shortageDays)
     {
+        if (town.FoodStocks <= 0f && town.FoodChange <= 0f)
+        {
+            return true;
+        }
+
+        if (shortageDays <= 0)
+        {
+            return false;
+        }
+
         float dailyLoss = Math.Max(0f, -town.FoodChange);
         return dailyLoss > 0f && town.FoodStocks <= dailyLoss * shortageDays;
+    }
+
+    internal static float FoodDaysRemaining(Town town)
+    {
+        if (town.FoodStocks <= 0f && town.FoodChange <= 0f)
+        {
+            return 0f;
+        }
+
+        float dailyLoss = Math.Max(0f, -town.FoodChange);
+        return dailyLoss <= 0f
+            ? float.PositiveInfinity
+            : Math.Max(0f, town.FoodStocks) / dailyLoss;
     }
 
     private static bool HasUsefulEmergencyDailyProject(
         Town town,
         TownManagementSettlementSettings settings)
-    {
-        bool loyaltyEmergency = town.Loyalty <= settings.LoyaltyEmergencyThreshold;
-        bool foodEmergency = IsFoodEmergency(town, settings.FoodShortageDays);
+        => town.Buildings.Any(building => building.BuildingType.IsDailyProject
+            && ProvidesEmergencyBenefit(building, town, settings));
 
-        return town.Buildings.Any(building => building.BuildingType.IsDailyProject
-            && ((loyaltyEmergency
-                    && (building.BuildingType.HasEffect(BuildingEffectEnum.Loyalty)
-                        || building.BuildingType.HasEffect(BuildingEffectEnum.SecurityPerDay)))
-                || (foodEmergency
-                    && (building.BuildingType.HasEffect(BuildingEffectEnum.FoodProduction)
-                        || building.BuildingType.HasEffect(BuildingEffectEnum.FoodConsumption)))));
+    private static bool HasUsefulEmergencyBuilding(
+        Town town,
+        TownManagementSettlementSettings settings)
+        => town.Buildings.Any(building => !building.BuildingType.IsDailyProject
+            && building.CurrentLevel < BuildingType.MaxLevel
+            && ProvidesEmergencyBenefit(building, town, settings));
+
+    private static bool ProvidesEmergencyBenefit(
+        Building building,
+        Town town,
+        TownManagementSettlementSettings settings)
+    {
+        bool loyaltyEmergency = IsLoyaltyEmergency(town, settings);
+        bool foodEmergency = IsFoodEmergency(town, settings.FoodShortageDays);
+        return (loyaltyEmergency
+                && (building.BuildingType.HasEffect(BuildingEffectEnum.Loyalty)
+                    || building.BuildingType.HasEffect(BuildingEffectEnum.SecurityPerDay)))
+            || (foodEmergency
+                && (building.BuildingType.HasEffect(BuildingEffectEnum.FoodStock)
+                    || building.BuildingType.HasEffect(BuildingEffectEnum.FoodProduction)
+                    || building.BuildingType.HasEffect(BuildingEffectEnum.FoodConsumption)
+                    || building.BuildingType.HasEffect(BuildingEffectEnum.VillageProduction)));
     }
 
     private static void AddEffectScore(
@@ -580,10 +803,39 @@ public class TownManagementBehavior : CampaignBehaviorBase
         float value,
         ref float score)
     {
-        if (building.BuildingType.HasEffect(effect))
+        if (!building.BuildingType.HasEffect(effect))
         {
-            score += value;
+            return;
         }
+
+        int nextLevel = Math.Min(BuildingType.MaxLevel, building.CurrentLevel + 1);
+        float nextAmount = building.BuildingType.GetBaseBuildingEffectAmount(
+            effect,
+            nextLevel);
+        float effectAmount;
+        if (building.BuildingType.IsDailyProject)
+        {
+            effectAmount = Math.Abs(nextAmount);
+        }
+        else
+        {
+            float currentAmount = building.CurrentLevel > 0
+                ? building.BuildingType.GetBaseBuildingEffectAmount(
+                    effect,
+                    building.CurrentLevel)
+                : 0f;
+            effectAmount = Math.Abs(nextAmount - currentAmount);
+        }
+
+        if (effectAmount <= 0.001f)
+        {
+            return;
+        }
+
+        float magnitude = 1f + Math.Min(
+            3f,
+            (float)Math.Log10(1f + effectAmount));
+        score += value * magnitude;
     }
 
     private static void DisplayGovernorRecommendation(Town town, Hero governor)

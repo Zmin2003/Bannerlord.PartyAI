@@ -20,10 +20,13 @@ public sealed class TownDefensePriorityDropdownVM : ViewModel
     }
 
     private SelectorVM<DefensePriorityItemVM> _sortOptions = null!;
+    private readonly Action<TownDefensePriority>? _onChanged;
 
-    public TownDefensePriorityDropdownVM(TownDefensePriority selected)
+    public TownDefensePriorityDropdownVM(
+        TownDefensePriority selected,
+        Action<TownDefensePriority>? onChanged = null)
     {
-        SortOptions = new SelectorVM<DefensePriorityItemVM>(-1, static _ => { });
+        SortOptions = new SelectorVM<DefensePriorityItemVM>(-1, OnSelected);
         SortOptions.AddItem(new DefensePriorityItemVM(
             new TextObject("{=PAI_TOWN_DEFENSE_PRIORITY_LOW}Low"),
             TownDefensePriority.Low));
@@ -37,6 +40,15 @@ public sealed class TownDefensePriorityDropdownVM : ViewModel
             new TextObject("{=PAI_TOWN_DEFENSE_PRIORITY_CRITICAL}Critical"),
             TownDefensePriority.Critical));
         SortOptions.SelectedIndex = Math.Max(0, Math.Min(SortOptions.ItemList.Count - 1, (int)selected));
+        _onChanged = onChanged;
+    }
+
+    private void OnSelected(SelectorVM<DefensePriorityItemVM> selector)
+    {
+        if (selector.SelectedItem is DefensePriorityItemVM selected)
+        {
+            _onChanged?.Invoke(selected.Priority);
+        }
     }
 
     [DataSourceProperty]

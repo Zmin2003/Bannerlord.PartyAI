@@ -73,6 +73,8 @@ public class PartyAIControlsMenuPartyVM : ViewModel
     [DataSourceProperty] public bool AllowEditComposition { get; set; }
     [DataSourceProperty] public bool AllowEditTemplate { get; set; }
     [DataSourceProperty] public HintViewModel ShowOnMapHint => new(new TextObject("{=aGJYQOef}Show hero's location on map."));
+    [DataSourceProperty] public virtual HintViewModel StatusHint => new(new TextObject(""));
+    [DataSourceProperty] public virtual bool StatusNeedsAttention => false;
     [DataSourceProperty]
     public virtual string ActiveOrder
     {
@@ -225,6 +227,8 @@ public class PartyAIControlsMenuPartyVM : ViewModel
 
         OnPropertyChanged("TemplateName");
         OnPropertyChanged("ActiveOrder");
+        OnPropertyChanged("StatusHint");
+        OnPropertyChanged("StatusNeedsAttention");
 
         Visual.RefreshValues();
     }

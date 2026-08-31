@@ -5,24 +5,24 @@
   <Window>
     <Widget DataSource="*DataSource" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" VerticalAlignment="Center" Sprite="BlankWhiteSquare_9" Color="#000000FF" AlphaFactor="0.75">
       <Children>
-        <Widget WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="760" MaxHeight="860" MarginTop="35" MarginBottom="35" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Widget WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="800" MaxHeight="900" MarginTop="28" MarginBottom="28" HorizontalAlignment="Center" VerticalAlignment="Center">
           <Children>
             <Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" ClipContents="true">
               <Children>
                 <Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" VerticalAlignment="Top" Sprite="StdAssets\Popup\canvas" />
               </Children>
             </Widget>
-            <ScrollablePanel WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginLeft="20" MarginRight="30" MarginTop="12" MarginBottom="12" AutoHideScrollBars="true" ClipRect="OptionsClip" InnerPanel="OptionsClip\InnerPanel" VerticalScrollbar="..\OptionsScrollbar\Scrollbar">
+            <AutoHideRichTextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="58" MarginLeft="24" MarginRight="24" MarginTop="10" Brush="Popup.Title.Text" Text="@TitleText" />
+            <Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="18" MarginLeft="20" MarginRight="20" MarginTop="58" Sprite="StdAssets\Popup\divider" />
+            <ScrollablePanel WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginLeft="20" MarginRight="30" MarginTop="78" MarginBottom="84" AutoHideScrollBars="true" ClipRect="OptionsClip" InnerPanel="OptionsClip\InnerPanel" VerticalScrollbar="..\OptionsScrollbar\Scrollbar">
               <Children>
                 <Widget Id="OptionsClip" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" ClipContents="true">
                   <Children>
                     <ListPanel Id="InnerPanel" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalTopToBottom">
                       <Children>
-                        <AutoHideRichTextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginTop="10" Brush="Popup.Title.Text" MinHeight="50" Text="@TitleText" WidgetToHideIfEmpty="..\TitleDivider" />
-                        <Widget Id="TitleDivider" WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="23" Sprite="StdAssets\Popup\divider" />
-
-                        <TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginLeft="14" MarginTop="4" Brush="PartyAI.Menu.PartyRowText" Text="@GeneralHeader" />
+                        <TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="38" MarginLeft="14" MarginTop="4" Brush="PartyAI.Menu.SectionHeader" Text="@GeneralHeader" />
                         <PartyAIOptionToggle Parameter.DataSource="{EnabledToggle}" />
+                        <PartyAIOptionToggle Parameter.DataSource="{ApplyDefaultsToExistingFiefsToggle}" />
                         <ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="38" MarginLeft="23" MarginTop="5" StackLayout.LayoutMethod="HorizontalLeftToRight">
                           <Children>
                             <TextWidget WidthSizePolicy="Fixed" SuggestedWidth="365" HeightSizePolicy="StretchToParent" VerticalAlignment="Center" Brush="Clan.Stat.Name.Text" Text="@DefaultStrategyText">
@@ -32,7 +32,7 @@
                           </Children>
                         </ListPanel>
 
-                        <TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginLeft="14" MarginTop="18" Brush="PartyAI.Menu.PartyRowText" Text="@ConstructionHeader" />
+                        <TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="38" MarginLeft="14" MarginTop="18" Brush="PartyAI.Menu.SectionHeader" Text="@ConstructionHeader" />
                         <PartyAIOptionToggle Parameter.DataSource="{ManageBuildingQueueToggle}" />
                         <PartyAIOptionToggle Parameter.DataSource="{ManageDailyProjectsToggle}" />
                         <PartyAIOptionToggle Parameter.DataSource="{AutoFundConstructionToggle}" />
@@ -73,7 +73,7 @@
                           </Children>
                         </ListPanel>
 
-                        <TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginLeft="14" MarginTop="18" Brush="PartyAI.Menu.PartyRowText" Text="@GovernorHeader" />
+                        <TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="38" MarginLeft="14" MarginTop="18" Brush="PartyAI.Menu.SectionHeader" Text="@GovernorHeader" />
                         <ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="38" MarginLeft="23" MarginTop="5" StackLayout.LayoutMethod="HorizontalLeftToRight">
                           <Children>
                             <TextWidget WidthSizePolicy="Fixed" SuggestedWidth="365" HeightSizePolicy="StretchToParent" VerticalAlignment="Center" Brush="Clan.Stat.Name.Text" Text="@GovernorModeText"><Children><HintWidget DataSource="{GovernorModeHint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" /></Children></TextWidget>
@@ -89,7 +89,7 @@
                           </Children>
                         </ListPanel>
 
-                        <TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginLeft="14" MarginTop="18" Brush="PartyAI.Menu.PartyRowText" Text="@DefenseHeader" />
+                        <TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="38" MarginLeft="14" MarginTop="18" Brush="PartyAI.Menu.SectionHeader" Text="@DefenseHeader" />
                         <PartyAIOptionToggle Parameter.DataSource="{AutoDefenseToggle}" />
                         <PartyAIOptionToggle Parameter.DataSource="{DefaultTownDefenseToggle}" />
                         <ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="38" MarginLeft="23" MarginTop="5" StackLayout.LayoutMethod="HorizontalLeftToRight">
@@ -144,7 +144,7 @@
                           <ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="30" SuggestedHeight="30" VerticalAlignment="Center" Command.Click="EditDefaultTargetDefenseStrength"><Children><HintWidget DataSource="{ChangeHint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" /><BrushWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="34" SuggestedHeight="34" Brush="PartyAI.Menu.EditButton" /></Children></ButtonWidget>
                         </Children></ListPanel>
 
-                        <TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginLeft="14" MarginTop="18" Brush="PartyAI.Menu.PartyRowText" Text="@DonationHeader" />
+                        <TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="38" MarginLeft="14" MarginTop="18" Brush="PartyAI.Menu.SectionHeader" Text="@DonationHeader" />
                         <PartyAIOptionToggle Parameter.DataSource="{AutoDonateTroopsToggle}" />
                         <ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="38" MarginLeft="23" StackLayout.LayoutMethod="HorizontalLeftToRight"><Children>
                           <TextWidget WidthSizePolicy="Fixed" SuggestedWidth="365" HeightSizePolicy="StretchToParent" VerticalAlignment="Center" Brush="Clan.Stat.Name.Text" Text="@DonationTargetTroopsText"><Children><HintWidget DataSource="{DonationTargetTroopsHint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" /></Children></TextWidget>
@@ -162,19 +162,20 @@
                           <ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="30" SuggestedHeight="30" VerticalAlignment="Center" Command.Click="EditMinimumTroopsAfterDonation"><Children><HintWidget DataSource="{ChangeHint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" /><BrushWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="34" SuggestedHeight="34" Brush="PartyAI.Menu.EditButton" /></Children></ButtonWidget>
                         </Children></ListPanel>
 
-                        <ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" MarginTop="24" MarginBottom="10" StackLayout.LayoutMethod="HorizontalLeftToRight">
-                          <Children>
-                            <ToggleButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="251" SuggestedHeight="64" Brush="Popup.Cancel.Button" Command.Click="CancelEditTownManagementOptions"><Children><TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="Popup.Button.Text" Text="@CancelText" MarginLeft="40" MarginRight="40" /></Children></ToggleButtonWidget>
-                            <ToggleButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="251" SuggestedHeight="64" Brush="Popup.Done.Button" Command.Click="AcceptEditTownManagementOptions"><Children><TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="Popup.Button.Text" Text="@AcceptText" MarginLeft="40" MarginRight="40" /></Children></ToggleButtonWidget>
-                          </Children>
-                        </ListPanel>
+                        <Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="14" />
                       </Children>
                     </ListPanel>
                   </Children>
                 </Widget>
               </Children>
             </ScrollablePanel>
-            <Standard.VerticalScrollbar Id="OptionsScrollbar" HeightSizePolicy="StretchToParent" HorizontalAlignment="Right" MarginTop="18" MarginBottom="18" MarginRight="8" />
+            <Standard.VerticalScrollbar Id="OptionsScrollbar" HeightSizePolicy="StretchToParent" HorizontalAlignment="Right" MarginTop="84" MarginBottom="90" MarginRight="8" />
+            <ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="Fixed" SuggestedHeight="64" HorizontalAlignment="Center" VerticalAlignment="Bottom" MarginBottom="12" StackLayout.LayoutMethod="HorizontalLeftToRight">
+              <Children>
+                <ToggleButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="251" Brush="Popup.Cancel.Button" Command.Click="CancelEditTownManagementOptions"><Children><TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="Popup.Button.Text" Text="@CancelText" MarginLeft="40" MarginRight="40" /></Children></ToggleButtonWidget>
+                <ToggleButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="251" Brush="Popup.Done.Button" Command.Click="AcceptEditTownManagementOptions"><Children><TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="Popup.Button.Text" Text="@AcceptText" MarginLeft="40" MarginRight="40" /></Children></ToggleButtonWidget>
+              </Children>
+            </ListPanel>
             <BrushWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="Popup.Frame" IsEnabled="false" />
           </Children>
         </Widget>

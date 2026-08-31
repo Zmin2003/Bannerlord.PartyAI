@@ -20,10 +20,13 @@ public sealed class AutoGovernorModeDropdownVM : ViewModel
     }
 
     private SelectorVM<GovernorModeItemVM> _sortOptions = null!;
+    private readonly Action<AutoGovernorMode>? _onChanged;
 
-    public AutoGovernorModeDropdownVM(AutoGovernorMode selected)
+    public AutoGovernorModeDropdownVM(
+        AutoGovernorMode selected,
+        Action<AutoGovernorMode>? onChanged = null)
     {
-        SortOptions = new SelectorVM<GovernorModeItemVM>(-1, static _ => { });
+        SortOptions = new SelectorVM<GovernorModeItemVM>(-1, OnSelected);
         SortOptions.AddItem(new GovernorModeItemVM(
             new TextObject("{=PAI_TOWN_GOVERNOR_OFF}Off"),
             AutoGovernorMode.Off));
@@ -34,6 +37,15 @@ public sealed class AutoGovernorModeDropdownVM : ViewModel
             new TextObject("{=PAI_TOWN_GOVERNOR_ASSIGN}Assign Automatically"),
             AutoGovernorMode.Assign));
         SortOptions.SelectedIndex = Math.Max(0, Math.Min(SortOptions.ItemList.Count - 1, (int)selected));
+        _onChanged = onChanged;
+    }
+
+    private void OnSelected(SelectorVM<GovernorModeItemVM> selector)
+    {
+        if (selector.SelectedItem is GovernorModeItemVM selected)
+        {
+            _onChanged?.Invoke(selected.Mode);
+        }
     }
 
     [DataSourceProperty]

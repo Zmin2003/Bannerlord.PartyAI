@@ -337,7 +337,10 @@ public class AutoDefenseBehavior : CampaignBehaviorBase
             DefenseNeed need = BuildDefenseNeed(assignment.TargetSettlement, options);
             float threatRatioAfterRelease = need.ThreatRatioAfterRemoving(party);
             if (need.IsUnderSiege
-                || threatRatioAfterRelease > options.ReleaseThreatThreshold)
+                || threatRatioAfterRelease > options.ReleaseThreatThreshold
+                || need.NeedsTargetDefenseAfterRemoving(
+                    party,
+                    options.ReleaseThreatThreshold))
             {
                 assignment.MarkThreatSeen();
             }
@@ -356,6 +359,9 @@ public class AutoDefenseBehavior : CampaignBehaviorBase
             if (!need.IsUnderSiege
                 && assignment.HasReachedTarget
                 && threatRatioAfterRelease <= options.ReleaseThreatThreshold
+                && !need.NeedsTargetDefenseAfterRemoving(
+                    party,
+                    options.ReleaseThreatThreshold)
                 && servedMinimumTime
                 && safeForGracePeriod
                 && !reinforcementStillTraveling
@@ -386,7 +392,12 @@ public class AutoDefenseBehavior : CampaignBehaviorBase
             .Where(IsManagedDefenseTarget)
             .Select(settlement => BuildDefenseNeed(settlement, options))
             .Where(need => need.RequiresDefender(options))
-            .OrderByDescending(need => need.PriorityScore)
+            .OrderByDescending(need => need.IsUnderSiege)
+            .ThenByDescending(need => need.RequiresCombatReinforcement(options))
+            .ThenByDescending(need => need.ThreatUrgency)
+            .ThenByDescending(need => need.Priority)
+            .ThenByDescending(need => need.DefenseDeficit)
+            .ThenByDescending(need => need.GarrisonDeficit)
             .ThenBy(need => need.Settlement.StringId)
             .ToList();
 
@@ -487,8 +498,7 @@ public class AutoDefenseBehavior : CampaignBehaviorBase
         IEnumerable<DefenderCandidate> candidates,
         TownManagementOptions options)
     {
-        float desiredStrength = Math.Max(1f, need.DefenseDeficit);
-        return candidates
+        List<DefenderCandidate> available = candidates
             .Select(candidate =>
             {
                 candidate.Distance = GetAdjustedDistance(
@@ -499,6 +509,33 @@ public class AutoDefenseBehavior : CampaignBehaviorBase
             .Where(candidate => candidate.Distance < float.MaxValue)
             .Where(candidate => !need.RequiresDonorOnly(options)
                 || candidate.DonationCapacity > 0)
+            .ToList();
+
+        if (need.RequiresDonorOnly(options))
+        {
+            int desiredDonation = Math.Max(1, need.GarrisonDeficit);
+            DefenderCandidate? sufficientDonor = available
+                .Where(candidate =>
+                    candidate.DonationCapacity >= desiredDonation)
+                .OrderBy(candidate => candidate.Distance)
+                .ThenBy(candidate => Math.Abs(
+                    candidate.DonationCapacity - desiredDonation))
+                .ThenBy(candidate => candidate.Party.LeaderHero?.StringId)
+                .FirstOrDefault();
+            if (sufficientDonor is not null)
+            {
+                return sufficientDonor;
+            }
+
+            return available
+                .OrderByDescending(candidate => candidate.DonationCapacity)
+                .ThenBy(candidate => candidate.Distance)
+                .ThenBy(candidate => candidate.Party.LeaderHero?.StringId)
+                .FirstOrDefault();
+        }
+
+        float desiredStrength = Math.Max(1f, need.DefenseDeficit);
+        return available
             .OrderByDescending(candidate => candidate.Strength >= desiredStrength)
             .ThenBy(candidate => candidate.Distance)
             .ThenBy(candidate => Math.Abs(candidate.Strength - desiredStrength))
@@ -811,7 +848,7 @@ public class AutoDefenseBehavior : CampaignBehaviorBase
         return new DefenseNeed(
             settlement,
             settings.DefensePriority,
-            settings.TargetDefenseStrength,
+            EffectiveDefenseTarget(settlement, settings),
             targetGarrisonTroops,
             enemyThreat,
             defenseStrength,
@@ -823,6 +860,29 @@ public class AutoDefenseBehavior : CampaignBehaviorBase
     private static int EffectiveDonationTarget(
         TownManagementSettlementSettings settings)
         => Math.Max(0, settings.TargetGarrisonTroops);
+
+    private static float EffectiveDefenseTarget(
+        Settlement settlement,
+        TownManagementSettlementSettings settings)
+    {
+        if (settings.TargetDefenseStrength > 0f)
+        {
+            return settings.TargetDefenseStrength;
+        }
+
+        float baseTarget = settlement.IsTown ? 450f : 300f;
+        float prosperityAdjustment = Math.Min(
+            250f,
+            Math.Max(0f, settlement.Town?.Prosperity ?? 0f) * 0.03f);
+        float priorityMultiplier = settings.DefensePriority switch
+        {
+            TownDefensePriority.Low => 0.8f,
+            TownDefensePriority.High => 1.2f,
+            TownDefensePriority.Critical => 1.5f,
+            _ => 1f
+        };
+        return (baseTarget + prosperityAdjustment) * priorityMultiplier;
+    }
 
     private static float GetAdjustedDistance(
         MobileParty party,
@@ -898,10 +958,11 @@ public class AutoDefenseBehavior : CampaignBehaviorBase
             0f,
             Math.Max(TargetDefenseStrength, EnemyThreat * DefenseSafetyMargin)
                 - DefenseStrength);
-        internal float PriorityScore => (IsUnderSiege ? 10000f : 0f)
-            + (int)Priority * 1000f
-            + ThreatRatio * 100f
-            + DefenseDeficit;
+        internal int GarrisonDeficit => Math.Max(
+            0,
+            TargetGarrisonTroops - ProjectedGarrisonTroops);
+        internal float ThreatUrgency => Math.Min(10f, ThreatRatio)
+            * (1f + (int)Priority * 0.25f);
 
         internal DefenseNeed(
             Settlement settlement,
@@ -935,15 +996,39 @@ public class AutoDefenseBehavior : CampaignBehaviorBase
                 / Math.Max(MinimumDefenseDenominator, remainingDefense);
         }
 
-        internal bool RequiresDefender(TownManagementOptions options)
+        internal bool NeedsTargetDefenseAfterRemoving(
+            MobileParty party,
+            float minimumThreatRatio)
+        {
+            if (EnemyThreat <= 0f)
+            {
+                return false;
+            }
+
+            float contribution = party.CurrentSettlement == Settlement
+                ? party.Party.EstimatedStrength
+                : party.Party.EstimatedStrength * IncomingDefenderStrengthFactor;
+            float remainingDefense = Math.Max(0f, DefenseStrength - contribution);
+            float remainingThreatRatio = EnemyThreat
+                / Math.Max(MinimumDefenseDenominator, remainingDefense);
+            return remainingThreatRatio > minimumThreatRatio
+                && remainingDefense < TargetDefenseStrength;
+        }
+
+        internal bool RequiresCombatReinforcement(TownManagementOptions options)
             => IsUnderSiege
                 || ThreatRatio >= options.DispatchThreatThreshold
+                || (EnemyThreat > 0f
+                    && ThreatRatio > options.ReleaseThreatThreshold
+                    && DefenseStrength < TargetDefenseStrength);
+
+        internal bool RequiresDefender(TownManagementOptions options)
+            => RequiresCombatReinforcement(options)
                 || (options.AutoDonateTroops
                     && ProjectedGarrisonTroops < TargetGarrisonTroops);
 
         internal bool RequiresDonorOnly(TownManagementOptions options)
-            => !IsUnderSiege
-                && ThreatRatio < options.DispatchThreatThreshold
+            => !RequiresCombatReinforcement(options)
                 && options.AutoDonateTroops
                 && ProjectedGarrisonTroops < TargetGarrisonTroops;
 

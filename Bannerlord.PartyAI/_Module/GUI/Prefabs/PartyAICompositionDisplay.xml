@@ -1,13 +1,12 @@
 <Prefab>
   <Constants>
-    <Constant Name="Icon.Width" Value="30" />
+    <Constant Name="Icon.Width" Value="26" />
     <Constant Name="Icon.Height" Value="34" />
 	<Constant Name="EditIcon.Width" Value="20" />
     <Constant Name="EditIcon.Height" Value="22" />
-    <Constant Name="Text.Width" Value="45" />
+    <Constant Name="Text.Width" Value="42" />
     <Constant Name="Text.Height" Value="34" />
     <Constant Name="Text.Brush" Value="PartyAI.Menu.PartyRowText" />
-    <Constant Name="Text.FontSize" Value="24" />
     <Constant Name="Element.Spacing" Value="0" />
   </Constants>
   <Parameters>

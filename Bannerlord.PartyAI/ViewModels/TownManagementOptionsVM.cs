@@ -26,19 +26,19 @@ public sealed class TownManagementOptionsVM : ViewModel
         ManageBuildingQueueToggle = Toggle(
             "{=PAI_TOWN_DEFAULT_BUILD_QUEUE}Default: Manage Building Queue",
             _options.ManageBuildingQueue,
-            "{=PAI_TOWN_DEFAULT_BUILD_QUEUE_HINT}Enable building-queue management when Town AI settings are first created for a settlement.");
+            "{=PAI_TOWN_DEFAULT_BUILD_QUEUE_HINT}Enable building-queue management for fiefs that follow global defaults.");
         ManageDailyProjectsToggle = Toggle(
             "{=PAI_TOWN_DEFAULT_DAILY_PROJECTS}Default: Manage Daily Projects",
             _options.ManageDailyProjects,
-            "{=PAI_TOWN_DEFAULT_DAILY_PROJECTS_HINT}Enable daily-project management when Town AI settings are first created for a settlement.");
+            "{=PAI_TOWN_DEFAULT_DAILY_PROJECTS_HINT}Enable daily-project management for fiefs that follow global defaults.");
         AutoFundConstructionToggle = Toggle(
             "{=PAI_TOWN_DEFAULT_AUTO_FUND}Default: Fund Construction",
             _options.AutoFundConstruction,
-            "{=PAI_TOWN_DEFAULT_AUTO_FUND_HINT}Enable automatic construction funding when Town AI settings are first created for a settlement.");
+            "{=PAI_TOWN_DEFAULT_AUTO_FUND_HINT}Enable automatic construction funding for fiefs that follow global defaults.");
         AllowGovernorReassignmentToggle = Toggle(
             "{=PAI_TOWN_DEFAULT_GOVERNOR_REASSIGN}Default: Allow Governor Reassignment",
             _options.AllowGovernorReassignment,
-            "{=PAI_TOWN_DEFAULT_GOVERNOR_REASSIGN_HINT}Allow governor reassignment by default when Town AI settings are first created for a settlement.");
+            "{=PAI_TOWN_DEFAULT_GOVERNOR_REASSIGN_HINT}Allow governor replacement for fiefs that follow global defaults. Empty governor slots use unassigned heroes first.");
         AutoDefenseToggle = Toggle(
             "{=PAI_TOWN_AUTO_DEFENSE}Dispatch Defenders Automatically",
             _options.AutoDefenseEnabled,
@@ -50,7 +50,11 @@ public sealed class TownManagementOptionsVM : ViewModel
         DefaultTownDefenseToggle = Toggle(
             "{=PAI_TOWN_DEFAULT_DEFENSE}Default: Enable Automatic Defense",
             _options.DefaultTownDefenseEnabled,
-            "{=PAI_TOWN_DEFAULT_DEFENSE_HINT}Use automatic defense by default when settings are first created for a player-clan town or castle.");
+            "{=PAI_TOWN_DEFAULT_DEFENSE_HINT}Use automatic defense for fiefs that follow global defaults.");
+        ApplyDefaultsToExistingFiefsToggle = Toggle(
+            "{=PAI_TOWN_APPLY_DEFAULTS_EXISTING}Apply Defaults to Existing Fiefs on Save",
+            false,
+            "{=PAI_TOWN_APPLY_DEFAULTS_EXISTING_HINT}Make all current player-clan towns and castles follow these defaults. Each fief's enabled/disabled state is preserved.");
 
         DefaultStrategyDropdown = new TownManagementStrategyDropdownVM(_options.DefaultStrategy);
         GovernorModeDropdown = new AutoGovernorModeDropdownVM(_options.GovernorMode);
@@ -77,6 +81,7 @@ public sealed class TownManagementOptionsVM : ViewModel
     [DataSourceProperty] public PartyAIOptionToggleVM AutoDefenseToggle { get; }
     [DataSourceProperty] public PartyAIOptionToggleVM AutoDonateTroopsToggle { get; }
     [DataSourceProperty] public PartyAIOptionToggleVM DefaultTownDefenseToggle { get; }
+    [DataSourceProperty] public PartyAIOptionToggleVM ApplyDefaultsToExistingFiefsToggle { get; }
     [DataSourceProperty] public TownManagementStrategyDropdownVM DefaultStrategyDropdown { get; }
     [DataSourceProperty] public AutoGovernorModeDropdownVM GovernorModeDropdown { get; }
     [DataSourceProperty] public TownDefensePriorityDropdownVM DefaultDefensePriorityDropdown { get; }
@@ -84,9 +89,9 @@ public sealed class TownManagementOptionsVM : ViewModel
     [DataSourceProperty] public string DefaultStrategyText => new TextObject("{=PAI_TOWN_DEFAULT_STRATEGY}Default Strategy").ToString();
     [DataSourceProperty] public string GovernorModeText => new TextObject("{=PAI_TOWN_DEFAULT_GOVERNOR_MODE}Default Governor Mode").ToString();
     [DataSourceProperty] public string DefaultDefensePriorityText => new TextObject("{=PAI_TOWN_DEFAULT_DEFENSE_PRIORITY}Default Defense Priority").ToString();
-    [DataSourceProperty] public HintViewModel DefaultStrategyHint => Hint("{=PAI_TOWN_DEFAULT_STRATEGY_HINT}Strategy copied to a settlement when its Town AI settings are first created.");
-    [DataSourceProperty] public HintViewModel GovernorModeHint => Hint("{=PAI_TOWN_DEFAULT_GOVERNOR_MODE_HINT}Governor mode copied to a settlement when its Town AI settings are first created.");
-    [DataSourceProperty] public HintViewModel DefaultDefensePriorityHint => Hint("{=PAI_TOWN_DEFAULT_DEFENSE_PRIORITY_HINT}Priority copied to a settlement when its Town AI settings are first created.");
+    [DataSourceProperty] public HintViewModel DefaultStrategyHint => Hint("{=PAI_TOWN_DEFAULT_STRATEGY_HINT}Strategy used by new fiefs and existing fiefs that follow global defaults. Economy prioritizes prosperity and revenue from taxes, tariffs, workshops and villages.");
+    [DataSourceProperty] public HintViewModel GovernorModeHint => Hint("{=PAI_TOWN_DEFAULT_GOVERNOR_MODE_HINT}Governor mode used by new fiefs and existing fiefs that follow global defaults. Assign appoints eligible unassigned clan heroes automatically.");
+    [DataSourceProperty] public HintViewModel DefaultDefensePriorityHint => Hint("{=PAI_TOWN_DEFAULT_DEFENSE_PRIORITY_HINT}Defense priority used by new fiefs and existing fiefs that follow global defaults.");
     [DataSourceProperty] public HintViewModel ChangeHint => Hint("{=PAIXIv9UgAt}Change");
 
     [DataSourceProperty] public string PlayerGoldReserveText => new TextObject("{=PAI_TOWN_PLAYER_GOLD_RESERVE}Player Gold Reserve").ToString();
@@ -95,23 +100,23 @@ public sealed class TownManagementOptionsVM : ViewModel
 
     [DataSourceProperty] public string TownConstructionReserveTargetText => new TextObject("{=PAI_TOWN_DEFAULT_RESERVE_TARGET}Default Construction Reserve Target").ToString();
     [DataSourceProperty] public string TownConstructionReserveTargetAmount => _options.TownConstructionReserveTarget.ToString();
-    [DataSourceProperty] public HintViewModel TownConstructionReserveTargetHint => Hint("{=PAI_TOWN_DEFAULT_RESERVE_TARGET_HINT}Construction reserve target copied to newly created settlement settings.");
+    [DataSourceProperty] public HintViewModel TownConstructionReserveTargetHint => Hint("{=PAI_TOWN_DEFAULT_RESERVE_TARGET_HINT}Construction reserve target for fiefs that follow global defaults.");
 
     [DataSourceProperty] public string DailyConstructionDepositLimitText => new TextObject("{=PAI_TOWN_DEFAULT_DAILY_DEPOSIT_LIMIT}Default Daily Funding Limit").ToString();
     [DataSourceProperty] public string DailyConstructionDepositLimitAmount => _options.DailyConstructionDepositLimit.ToString();
-    [DataSourceProperty] public HintViewModel DailyConstructionDepositLimitHint => Hint("{=PAI_TOWN_DEFAULT_DAILY_DEPOSIT_LIMIT_HINT}Daily construction funding limit copied to newly created settlement settings.");
+    [DataSourceProperty] public HintViewModel DailyConstructionDepositLimitHint => Hint("{=PAI_TOWN_DEFAULT_DAILY_DEPOSIT_LIMIT_HINT}Daily construction funding limit for fiefs that follow global defaults.");
 
     [DataSourceProperty] public string LoyaltyEmergencyThresholdText => new TextObject("{=PAI_TOWN_DEFAULT_LOYALTY_THRESHOLD}Default Loyalty Emergency Threshold").ToString();
     [DataSourceProperty] public string LoyaltyEmergencyThresholdAmount => ((int)_options.LoyaltyEmergencyThreshold).ToString();
-    [DataSourceProperty] public HintViewModel LoyaltyEmergencyThresholdHint => Hint("{=PAI_TOWN_DEFAULT_LOYALTY_THRESHOLD_HINT}Loyalty emergency threshold copied to newly created settlement settings.");
+    [DataSourceProperty] public HintViewModel LoyaltyEmergencyThresholdHint => Hint("{=PAI_TOWN_DEFAULT_LOYALTY_THRESHOLD_HINT}Loyalty emergency threshold for fiefs that follow global defaults.");
 
     [DataSourceProperty] public string FoodShortageDaysText => new TextObject("{=PAI_TOWN_DEFAULT_FOOD_SHORTAGE_DAYS}Default Food Emergency Days").ToString();
     [DataSourceProperty] public string FoodShortageDaysAmount => _options.FoodShortageDays.ToString();
-    [DataSourceProperty] public HintViewModel FoodShortageDaysHint => Hint("{=PAI_TOWN_DEFAULT_FOOD_SHORTAGE_DAYS_HINT}Food-emergency horizon copied to newly created settlement settings.");
+    [DataSourceProperty] public HintViewModel FoodShortageDaysHint => Hint("{=PAI_TOWN_DEFAULT_FOOD_SHORTAGE_DAYS_HINT}Food-emergency horizon for fiefs that follow global defaults.");
 
     [DataSourceProperty] public string GovernorCooldownText => new TextObject("{=PAI_TOWN_DEFAULT_GOVERNOR_COOLDOWN}Default Governor Cooldown").ToString();
     [DataSourceProperty] public string GovernorCooldownAmount => Days(_options.GovernorAssignmentCooldownDays);
-    [DataSourceProperty] public HintViewModel GovernorCooldownHint => Hint("{=PAI_TOWN_DEFAULT_GOVERNOR_COOLDOWN_HINT}Governor reassignment cooldown copied to newly created settlement settings.");
+    [DataSourceProperty] public HintViewModel GovernorCooldownHint => Hint("{=PAI_TOWN_DEFAULT_GOVERNOR_COOLDOWN_HINT}Governor reassignment cooldown for fiefs that follow global defaults. Empty governor slots ignore reassignment cooldown.");
 
     [DataSourceProperty] public string ThreatRadiusText => new TextObject("{=PAI_TOWN_THREAT_RADIUS}Threat Radius").ToString();
     [DataSourceProperty] public string ThreatRadiusAmount => ((int)_options.ThreatRadius).ToString();
@@ -147,11 +152,11 @@ public sealed class TownManagementOptionsVM : ViewModel
 
     [DataSourceProperty] public string DefaultTargetDefenseStrengthText => new TextObject("{=PAI_TOWN_DEFAULT_DEFENSE_STRENGTH}Default Target Defense Strength").ToString();
     [DataSourceProperty] public string DefaultTargetDefenseStrengthAmount => ((int)_options.DefaultTargetDefenseStrength).ToString();
-    [DataSourceProperty] public HintViewModel DefaultTargetDefenseStrengthHint => Hint("{=PAI_TOWN_DEFAULT_DEFENSE_STRENGTH_HINT}Desired combined defense strength copied to new settlement settings. Zero lets Town AI calculate a target.");
+    [DataSourceProperty] public HintViewModel DefaultTargetDefenseStrengthHint => Hint("{=PAI_TOWN_DEFAULT_DEFENSE_STRENGTH_HINT}Desired combined defense strength for fiefs following global defaults. Zero calculates a target from fief type, prosperity and priority.");
 
     [DataSourceProperty] public string DonationTargetTroopsText => new TextObject("{=PAI_TOWN_DEFAULT_GARRISON_TARGET}Default Target Garrison Troops").ToString();
     [DataSourceProperty] public string DonationTargetTroopsAmount => _options.DonationTargetTroops.ToString();
-    [DataSourceProperty] public HintViewModel DonationTargetTroopsHint => Hint("{=PAI_TOWN_DEFAULT_GARRISON_TARGET_HINT}Target garrison troop count copied to newly created settlement settings. Zero disables the fixed target.");
+    [DataSourceProperty] public HintViewModel DonationTargetTroopsHint => Hint("{=PAI_TOWN_DEFAULT_GARRISON_TARGET_HINT}Target garrison troop count for fiefs following global defaults. Zero disables the fixed target.");
 
     [DataSourceProperty] public string MaxDonationRatioText => new TextObject("{=PAI_TOWN_MAX_DONATION_RATIO}Maximum Donation Share").ToString();
     [DataSourceProperty] public string MaxDonationRatioAmount => Percentage(_options.MaxDonationRatio);
@@ -268,6 +273,15 @@ public sealed class TownManagementOptionsVM : ViewModel
         _options.DefaultDefensePriority = DefaultDefensePriorityDropdown.SortOptions.SelectedItem.Priority;
 
         SubModule.TownManagementBehavior.UpdateOptions(_options);
+        if (ApplyDefaultsToExistingFiefsToggle.IsSelected)
+        {
+            SubModule.TownManagementBehavior.ApplyGlobalDefaultsToAllFiefs();
+        }
+        else
+        {
+            SubModule.TownManagementBehavior
+                .TryAssignMissingGovernorsFollowingGlobalDefaults();
+        }
         _onClose?.Invoke();
     }
 

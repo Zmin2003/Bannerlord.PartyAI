@@ -79,11 +79,13 @@ public class PartyAIControlsMenuScreen : ScreenBase, IGameStateListener
             dataSource.ExecuteDone();
         }
 
-        if (layer.Input.IsKeyDown(TaleWorlds.InputSystem.InputKey.LeftControl) && layer.Input.IsKeyDown(TaleWorlds.InputSystem.InputKey.C))
+        if (layer.Input.IsKeyDown(TaleWorlds.InputSystem.InputKey.LeftControl)
+            && layer.Input.IsKeyReleased(TaleWorlds.InputSystem.InputKey.C))
         {
             dataSource.Copy();
         }
-        if (layer.Input.IsKeyDown(TaleWorlds.InputSystem.InputKey.LeftControl) && layer.Input.IsKeyDown(TaleWorlds.InputSystem.InputKey.V))
+        if (layer.Input.IsKeyDown(TaleWorlds.InputSystem.InputKey.LeftControl)
+            && layer.Input.IsKeyReleased(TaleWorlds.InputSystem.InputKey.V))
         {
             dataSource.Paste();
         }

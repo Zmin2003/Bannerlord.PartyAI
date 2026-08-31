@@ -275,6 +275,7 @@
 	<string id="PAI_TEMPLATE_IMPORT_PENDING" text="A template download is already running."/>
 	<string id="PAI_TEMPLATE_IMPORT_SUCCESS" text="Imported template: {NAME}"/>
 	<string id="PAI_TOWN_MANAGEMENT_BUTTON" text="Town Management"/>
+	<string id="PAI_TOWN_COPY_SETTINGS" text="Town Management"/>
 	<string id="PAI_TOWN_OPTIONS_TITLE" text="Town Management"/>
 	<string id="PAI_TOWN_SETTLEMENT_OPTIONS_TITLE" text="Town Management for {SETTLEMENT}"/>
 	<string id="PAI_TOWN_GENERAL_HEADER" text="General"/>
@@ -288,9 +289,9 @@
 	<string id="PAI_TOWN_SETTLEMENT_ENABLED" text="Enable Town AI for This Fief"/>
 	<string id="PAI_TOWN_SETTLEMENT_ENABLED_HINT" text="Allow Town AI to manage this settlement while global town management is enabled."/>
 	<string id="PAI_TOWN_DEFAULT_STRATEGY" text="Default Strategy"/>
-	<string id="PAI_TOWN_DEFAULT_STRATEGY_HINT" text="Strategy copied to a settlement when its Town AI settings are first created."/>
+	<string id="PAI_TOWN_DEFAULT_STRATEGY_HINT" text="Strategy used by new fiefs and existing fiefs that follow global defaults. Economy prioritizes prosperity and revenue from taxes, tariffs, workshops and villages."/>
 	<string id="PAI_TOWN_STRATEGY" text="Management Strategy"/>
-	<string id="PAI_TOWN_STRATEGY_HINT" text="Balanced develops the weakest areas; Stability protects loyalty, security and food; Economy favors prosperity; Military favors walls and militia."/>
+	<string id="PAI_TOWN_STRATEGY_HINT" text="Balanced covers food, security, prosperity and defense; Stability protects loyalty, security and food; Economy prioritizes prosperity and revenue from taxes, tariffs, workshops and villages; Military prioritizes walls, militia and garrisons. Loyalty and food emergencies override the selected focus."/>
 	<string id="PAI_TOWN_STRATEGY_BALANCED" text="Balanced"/>
 	<string id="PAI_TOWN_STRATEGY_STABILITY" text="Stability"/>
 	<string id="PAI_TOWN_STRATEGY_ECONOMY" text="Economy"/>
@@ -327,11 +328,11 @@
 	<string id="PAI_TOWN_SETTLEMENT_AUTO_DEFENSE" text="Defend This Fief Automatically"/>
 	<string id="PAI_TOWN_SETTLEMENT_AUTO_DEFENSE_HINT" text="Allow Town AI to assign suitable player-clan parties when this settlement is threatened."/>
 	<string id="PAI_TOWN_DEFAULT_DEFENSE" text="Default: Enable Automatic Defense"/>
-	<string id="PAI_TOWN_DEFAULT_DEFENSE_HINT" text="Use automatic defense by default when settings are first created for a player-clan town or castle."/>
+	<string id="PAI_TOWN_DEFAULT_DEFENSE_HINT" text="Use automatic defense for fiefs that follow global defaults."/>
 	<string id="PAI_TOWN_DEFENSE_PRIORITY" text="Defense Priority"/>
 	<string id="PAI_TOWN_DEFENSE_PRIORITY_HINT" text="Higher-priority settlements receive available defenders before lower-priority settlements with similar threats."/>
 	<string id="PAI_TOWN_DEFAULT_DEFENSE_PRIORITY" text="Default Defense Priority"/>
-	<string id="PAI_TOWN_DEFAULT_DEFENSE_PRIORITY_HINT" text="Priority copied to a settlement when its Town AI settings are first created."/>
+	<string id="PAI_TOWN_DEFAULT_DEFENSE_PRIORITY_HINT" text="Defense priority used by new fiefs and existing fiefs that follow global defaults."/>
 	<string id="PAI_TOWN_DEFENSE_PRIORITY_LOW" text="Low"/>
 	<string id="PAI_TOWN_DEFENSE_PRIORITY_NORMAL" text="Normal"/>
 	<string id="PAI_TOWN_DEFENSE_PRIORITY_HIGH" text="High"/>
@@ -353,7 +354,7 @@
 	<string id="PAI_TOWN_REASSIGNMENT_COOLDOWN" text="Party Reassignment Cooldown"/>
 	<string id="PAI_TOWN_REASSIGNMENT_COOLDOWN_HINT" text="Wait this many days after release before automatically assigning the same party again."/>
 	<string id="PAI_TOWN_DEFAULT_DEFENSE_STRENGTH" text="Default Target Defense Strength"/>
-	<string id="PAI_TOWN_DEFAULT_DEFENSE_STRENGTH_HINT" text="Desired combined defense strength copied to new settlement settings. Zero lets Town AI calculate a target."/>
+	<string id="PAI_TOWN_DEFAULT_DEFENSE_STRENGTH_HINT" text="Desired combined defense strength for fiefs following global defaults. Zero calculates a target from fief type, prosperity and priority."/>
 	<string id="PAI_TOWN_TARGET_DEFENSE_STRENGTH" text="Target Defense Strength"/>
 	<string id="PAI_TOWN_TARGET_DEFENSE_STRENGTH_HINT" text="Desired combined local defense strength. Zero lets Town AI calculate a target."/>
 	<string id="PAI_TOWN_AUTO_DONATE" text="Donate Garrison Troops Automatically"/>
@@ -368,29 +369,71 @@
 	<string id="PAI_TOWN_TARGET_GARRISON_TROOPS_HINT" text="Desired garrison troop count for automatic reinforcement. Zero disables the fixed target."/>
 	<string id="PAI_TOWN_DAYS" text="{DAYS} days"/>
 	<string id="PAI_TOWN_NO_GARRISON" text="No Garrison"/>
+	<string id="PAI_TOWN_GARRISON_ONLY" text="Garrison management only"/>
+	<string id="PAI_TOWN_GARRISON_ONLY_HINT" text="Only garrison troops are managed here because this fief does not belong to the player clan."/>
 	<string id="PAI_town_governor_recommendation" text="{HERO} is recommended as governor of {SETTLEMENT}."/>
 	<string id="PAI_town_governor_assigned" text="{HERO} has been assigned as governor of {SETTLEMENT}."/>
+	<string id="PAI_TOWN_APPLY_DEFAULTS_EXISTING" text="Apply Defaults to Existing Fiefs on Save"/>
+	<string id="PAI_TOWN_APPLY_DEFAULTS_EXISTING_HINT" text="Make all current player-clan towns and castles follow these defaults. Each fief's enabled/disabled state is preserved."/>
+	<string id="PAI_TOWN_USE_GLOBAL_DEFAULTS" text="Follow Global Town Defaults"/>
+	<string id="PAI_TOWN_USE_GLOBAL_DEFAULTS_HINT" text="Keep this fief synchronized with global construction, governor and defense defaults. The fief enable switch remains independent."/>
+	<string id="PAI_TOWN_MANAGEMENT_STATUS_HINT" text="Global enable is the master switch. A fief may either follow the global defaults or keep explicit local settings."/>
+	<string id="PAI_TOWN_GOVERNOR_STATUS_HINT" text="Automatic mode assigns an eligible unassigned player-clan hero on the next daily town update. Recommend mode only reports the best candidate."/>
+	<string id="PAI_TOWN_ECONOMY_STATUS_HINT" text="Food or loyalty emergencies temporarily outrank profit. Economy strategy otherwise favors taxes, tariffs, prosperity, workshops, villages and lower garrison costs. Listed net income is an operational estimate, not the clan finance total."/>
+	<string id="PAI_TOWN_FOOD_STABLE" text="infinite"/>
+	<string id="PAI_TOWN_STATUS_GLOBAL_PAUSED" text="Paused: global town management is off."/>
+	<string id="PAI_TOWN_STATUS_LOCAL_PAUSED" text="Paused for this fief."/>
+	<string id="PAI_TOWN_STATUS_GLOBAL_ACTIVE" text="Active: following global defaults."/>
+	<string id="PAI_TOWN_STATUS_CUSTOM_ACTIVE" text="Active: using custom fief settings."/>
+	<string id="PAI_TOWN_STATUS_GOVERNOR_ASSIGNED" text="Governor: {HERO}."/>
+	<string id="PAI_TOWN_STATUS_NO_GOVERNOR_PAUSED" text="No governor; Town AI is paused."/>
+	<string id="PAI_TOWN_STATUS_NO_GOVERNOR_OFF" text="No governor; governor management is off."/>
+	<string id="PAI_TOWN_STATUS_NO_GOVERNOR_CANDIDATE" text="No governor; no eligible unassigned clan hero is available."/>
+	<string id="PAI_TOWN_STATUS_GOVERNOR_RECOMMENDED" text="No governor; recommended: {HERO}. Switch to Assign to appoint automatically."/>
+	<string id="PAI_TOWN_STATUS_GOVERNOR_PENDING" text="No governor; {HERO} will be assigned when these settings are saved or on the next daily update."/>
+	<string id="PAI_TOWN_STATUS_FOOD_EMERGENCY" text="Food emergency: {FOOD} stock, {CHANGE}/day; estimated days remaining: {DAYS}. Stabilization has priority."/>
+	<string id="PAI_TOWN_STATUS_LOYALTY_EMERGENCY" text="Loyalty emergency: {LOYALTY}. Stability has priority over profit."/>
+	<string id="PAI_TOWN_STATUS_ECONOMY" text="Prosperity {PROSPERITY}; food change {FOOD}; tariffs {TARIFFS}, projects {PROJECTS}, villages {VILLAGES}, garrison wage {WAGE}; listed net {NET}."/>
 	<string id="PAI_TOWN_DEFAULT_BUILD_QUEUE" text="Default: Manage Building Queue"/>
-	<string id="PAI_TOWN_DEFAULT_BUILD_QUEUE_HINT" text="Enable building-queue management when Town AI settings are first created for a settlement."/>
+	<string id="PAI_TOWN_DEFAULT_BUILD_QUEUE_HINT" text="Enable building-queue management for fiefs that follow global defaults."/>
 	<string id="PAI_TOWN_DEFAULT_DAILY_PROJECTS" text="Default: Manage Daily Projects"/>
-	<string id="PAI_TOWN_DEFAULT_DAILY_PROJECTS_HINT" text="Enable daily-project management when Town AI settings are first created for a settlement."/>
+	<string id="PAI_TOWN_DEFAULT_DAILY_PROJECTS_HINT" text="Enable daily-project management for fiefs that follow global defaults."/>
 	<string id="PAI_TOWN_DEFAULT_AUTO_FUND" text="Default: Fund Construction"/>
-	<string id="PAI_TOWN_DEFAULT_AUTO_FUND_HINT" text="Enable automatic construction funding when Town AI settings are first created for a settlement."/>
+	<string id="PAI_TOWN_DEFAULT_AUTO_FUND_HINT" text="Enable automatic construction funding for fiefs that follow global defaults."/>
 	<string id="PAI_TOWN_DEFAULT_GOVERNOR_REASSIGN" text="Default: Allow Governor Reassignment"/>
-	<string id="PAI_TOWN_DEFAULT_GOVERNOR_REASSIGN_HINT" text="Allow governor reassignment by default when Town AI settings are first created for a settlement."/>
+	<string id="PAI_TOWN_DEFAULT_GOVERNOR_REASSIGN_HINT" text="Allow governor replacement for fiefs that follow global defaults. Empty governor slots use unassigned heroes first."/>
 	<string id="PAI_TOWN_DEFAULT_GOVERNOR_MODE" text="Default Governor Mode"/>
-	<string id="PAI_TOWN_DEFAULT_GOVERNOR_MODE_HINT" text="Governor mode copied to a settlement when its Town AI settings are first created."/>
+	<string id="PAI_TOWN_DEFAULT_GOVERNOR_MODE_HINT" text="Governor mode used by new fiefs and existing fiefs that follow global defaults. Assign appoints eligible unassigned clan heroes automatically."/>
 	<string id="PAI_TOWN_DEFAULT_RESERVE_TARGET" text="Default Construction Reserve Target"/>
-	<string id="PAI_TOWN_DEFAULT_RESERVE_TARGET_HINT" text="Construction reserve target copied to newly created settlement settings."/>
+	<string id="PAI_TOWN_DEFAULT_RESERVE_TARGET_HINT" text="Construction reserve target for fiefs that follow global defaults."/>
 	<string id="PAI_TOWN_DEFAULT_DAILY_DEPOSIT_LIMIT" text="Default Daily Funding Limit"/>
-	<string id="PAI_TOWN_DEFAULT_DAILY_DEPOSIT_LIMIT_HINT" text="Daily construction funding limit copied to newly created settlement settings."/>
+	<string id="PAI_TOWN_DEFAULT_DAILY_DEPOSIT_LIMIT_HINT" text="Daily construction funding limit for fiefs that follow global defaults."/>
 	<string id="PAI_TOWN_DEFAULT_LOYALTY_THRESHOLD" text="Default Loyalty Emergency Threshold"/>
-	<string id="PAI_TOWN_DEFAULT_LOYALTY_THRESHOLD_HINT" text="Loyalty emergency threshold copied to newly created settlement settings."/>
+	<string id="PAI_TOWN_DEFAULT_LOYALTY_THRESHOLD_HINT" text="Loyalty emergency threshold for fiefs that follow global defaults."/>
 	<string id="PAI_TOWN_DEFAULT_FOOD_SHORTAGE_DAYS" text="Default Food Emergency Days"/>
-	<string id="PAI_TOWN_DEFAULT_FOOD_SHORTAGE_DAYS_HINT" text="Food-emergency horizon copied to newly created settlement settings."/>
+	<string id="PAI_TOWN_DEFAULT_FOOD_SHORTAGE_DAYS_HINT" text="Food-emergency horizon for fiefs that follow global defaults."/>
 	<string id="PAI_TOWN_DEFAULT_GOVERNOR_COOLDOWN" text="Default Governor Cooldown"/>
-	<string id="PAI_TOWN_DEFAULT_GOVERNOR_COOLDOWN_HINT" text="Governor reassignment cooldown copied to newly created settlement settings."/>
+	<string id="PAI_TOWN_DEFAULT_GOVERNOR_COOLDOWN_HINT" text="Governor reassignment cooldown for fiefs that follow global defaults. Empty governor slots ignore reassignment cooldown."/>
 	<string id="PAI_TOWN_DEFAULT_GARRISON_TARGET" text="Default Target Garrison Troops"/>
-	<string id="PAI_TOWN_DEFAULT_GARRISON_TARGET_HINT" text="Target garrison troop count copied to newly created settlement settings. Zero disables the fixed target."/>
+	<string id="PAI_TOWN_DEFAULT_GARRISON_TARGET_HINT" text="Target garrison troop count for fiefs following global defaults. Zero disables the fixed target."/>
+	<string id="PAI_UI_COPY" text="Copy"/>
+	<string id="PAI_UI_PASTE" text="Paste"/>
+	<string id="PAI_UI_SELECT_ALL" text="All"/>
+	<string id="PAI_UI_EMPTY_TITLE" text="No manageable parties or fiefs"/>
+	<string id="PAI_UI_EMPTY_TEXT" text="Create a clan party, enable caravan management, or acquire a fief to manage it here."/>
+	<string id="PAI_UI_COLUMN_NAME" text="Party / Fief"/>
+	<string id="PAI_UI_COLUMN_STRENGTH" text="Strength"/>
+	<string id="PAI_UI_COLUMN_COMPOSITION" text="Composition"/>
+	<string id="PAI_UI_COLUMN_TEMPLATE" text="Template"/>
+	<string id="PAI_UI_COLUMN_STATUS" text="Order / Town status"/>
+	<string id="PAI_UI_COPY_IDLE" text="Select one row to copy its settings."/>
+	<string id="PAI_UI_COPY_READY" text="One source selected. Copy to continue."/>
+	<string id="PAI_UI_PASTE_IDLE" text="Copied from {SOURCE}. Select one or more compatible targets."/>
+	<string id="PAI_UI_PASTE_READY" text="Copied from {SOURCE}. {COUNT} target(s) selected."/>
+	<string id="PAI_TOWN_STATUS_DISABLED" text="Town AI off"/>
+	<string id="PAI_TOWN_NO_GOVERNOR" text="No governor"/>
+	<string id="PAI_TOWN_ROW_SUMMARY" text="{MANAGEMENT} | {GOVERNOR} | Prosperity {PROSPERITY}"/>
+	<string id="PAI_TOWN_FOOD_FALLING" text="{FOOD} ({CHANGE}/day)"/>
+	<string id="PAI_TOWN_ROW_HINT" text="{SETTLEMENT}&#10;Management: {MANAGEMENT}&#10;Governor: {GOVERNOR}&#10;Prosperity: {PROSPERITY}&#10;Loyalty: {LOYALTY}&#10;Food: {FOOD}&#10;Garrison wage: {WAGE}"/>
 </strings>
 </base>

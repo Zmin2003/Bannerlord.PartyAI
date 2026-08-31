@@ -23,6 +23,7 @@ public class TownManagementSettlementSettings
     [SaveableProperty(15)] public TownDefensePriority DefensePriority { get; set; } = TownDefensePriority.Normal;
     [SaveableProperty(16)] public float TargetDefenseStrength { get; set; } = 500f;
     [SaveableProperty(17)] public int TargetGarrisonTroops { get; set; } = 300;
+    [SaveableProperty(18)] public bool UseGlobalDefaults { get; set; }
 
     public TownManagementSettlementSettings()
     {
@@ -32,6 +33,13 @@ public class TownManagementSettlementSettings
     {
         Settlement = settlement;
         Enabled = true;
+        UseGlobalDefaults = true;
+        ApplyDefaults(options);
+        Normalize();
+    }
+
+    public void ApplyDefaults(TownManagementOptions options)
+    {
         Strategy = options.DefaultStrategy;
         ManageBuildingQueue = options.ManageBuildingQueue;
         ManageDailyProjects = options.ManageDailyProjects;
@@ -47,7 +55,6 @@ public class TownManagementSettlementSettings
         DefensePriority = options.DefaultDefensePriority;
         TargetDefenseStrength = options.DefaultTargetDefenseStrength;
         TargetGarrisonTroops = options.DonationTargetTroops;
-        Normalize();
     }
 
     public TownManagementSettlementSettings(TownManagementSettlementSettings source)
@@ -69,6 +76,7 @@ public class TownManagementSettlementSettings
         DefensePriority = source.DefensePriority;
         TargetDefenseStrength = source.TargetDefenseStrength;
         TargetGarrisonTroops = source.TargetGarrisonTroops;
+        UseGlobalDefaults = source.UseGlobalDefaults;
         Normalize();
     }
 
@@ -77,6 +85,18 @@ public class TownManagementSettlementSettings
         TownManagementOptions options) => new(settlement, options);
 
     public TownManagementSettlementSettings DeepCopy() => new(this);
+
+    public TownManagementSettlementSettings Resolve(TownManagementOptions options)
+    {
+        var resolved = new TownManagementSettlementSettings(this);
+        if (resolved.UseGlobalDefaults)
+        {
+            resolved.ApplyDefaults(options);
+            resolved.Normalize();
+        }
+
+        return resolved;
+    }
 
     public void Normalize()
     {
@@ -100,7 +120,7 @@ public class TownManagementSettlementSettings
         LoyaltyEmergencyThreshold = Clamp(LoyaltyEmergencyThreshold, 0f, 100f, 35f);
         FoodShortageDays = Math.Max(0, Math.Min(100, FoodShortageDays));
         GovernorAssignmentCooldownDays = Math.Max(0, GovernorAssignmentCooldownDays);
-        TargetDefenseStrength = Clamp(TargetDefenseStrength, 0f, 1000000f, 500f);
+        TargetDefenseStrength = Clamp(TargetDefenseStrength, 0f, 100000f, 500f);
         TargetGarrisonTroops = Math.Max(0, TargetGarrisonTroops);
     }
 

@@ -26,6 +26,8 @@ public class PartyAIControlsMenuVM : ViewModel
     private HintViewModel _showAllHeroesHint = null!;
     private bool _showAllHeroes;
     private List<InquiryElement>? _copySource;
+    private string _copySourceName = string.Empty;
+    private string _selectionStatusText = string.Empty;
 
     public PartyAIControlsMenuVM()
     {
@@ -43,6 +45,9 @@ public class PartyAIControlsMenuVM : ViewModel
 
     [DataSourceProperty]
     public bool EnablePartyList => PartyList.Count > 0;
+
+    [DataSourceProperty]
+    public bool ShowEmptyState => !EnablePartyList;
 
     [DataSourceProperty]
     public bool ShowAllHeroes
@@ -70,6 +75,31 @@ public class PartyAIControlsMenuVM : ViewModel
     [DataSourceProperty] public bool AllowCopy { get; private set; }
     [DataSourceProperty] public bool AllowPaste { get; private set; }
     [DataSourceProperty] public bool CanCancelCopy { get; private set; }
+    [DataSourceProperty] public string CopyText => new TextObject("{=PAI_UI_COPY}Copy").ToString();
+    [DataSourceProperty] public string PasteText => new TextObject("{=PAI_UI_PASTE}Paste").ToString();
+    [DataSourceProperty] public string CancelCopyText => GameTexts.FindText("str_cancel").ToString();
+    [DataSourceProperty] public string SelectAllText => new TextObject("{=PAI_UI_SELECT_ALL}All").ToString();
+    [DataSourceProperty] public string EmptyStateTitle => new TextObject("{=PAI_UI_EMPTY_TITLE}No manageable parties or fiefs").ToString();
+    [DataSourceProperty] public string EmptyStateText => new TextObject("{=PAI_UI_EMPTY_TEXT}Create a clan party, enable caravan management, or acquire a fief to manage it here.").ToString();
+    [DataSourceProperty] public string NameColumnText => new TextObject("{=PAI_UI_COLUMN_NAME}Party / Fief").ToString();
+    [DataSourceProperty] public string StrengthColumnText => new TextObject("{=PAI_UI_COLUMN_STRENGTH}Strength").ToString();
+    [DataSourceProperty] public string CompositionColumnText => new TextObject("{=PAI_UI_COLUMN_COMPOSITION}Composition").ToString();
+    [DataSourceProperty] public string TemplateColumnText => new TextObject("{=PAI_UI_COLUMN_TEMPLATE}Template").ToString();
+    [DataSourceProperty] public string StatusColumnText => new TextObject("{=PAI_UI_COLUMN_STATUS}Order / Town status").ToString();
+
+    [DataSourceProperty]
+    public string SelectionStatusText
+    {
+        get => _selectionStatusText;
+        private set
+        {
+            if (value != _selectionStatusText)
+            {
+                _selectionStatusText = value;
+                OnPropertyChangedWithValue(value, nameof(SelectionStatusText));
+            }
+        }
+    }
 
     [DataSourceProperty]
     public bool CanCreateNewParty
@@ -286,12 +316,14 @@ public class PartyAIControlsMenuVM : ViewModel
         CreateClanPartyHint.HintText = stockVM.CreateNewPartyActionHint?.HintText ?? new TextObject("");
 
         OnPropertyChanged("EnablePartyList");
+        OnPropertyChanged("ShowEmptyState");
         OnPropertyChanged("PartyList");
 
         AllowCopy = false;
         AllowPaste = false;
         CanCancelCopy = false;
         _copySource = null;
+        _copySourceName = string.Empty;
         OnPropertyChanged("AllowCopy");
         OnPropertyChanged("CanCancelCopy");
         OnPropertyChanged("AllowPaste");
@@ -300,6 +332,7 @@ public class PartyAIControlsMenuVM : ViewModel
         OnPropertyChanged("SelectAllToggle");
 
         RefreshValues();
+        UpdateSelectionStatus();
     }
 
     private void OnSortDirectionChanged(PartySortDirection direction)
@@ -372,8 +405,17 @@ public class PartyAIControlsMenuVM : ViewModel
                     }
                 }
             }
+
+            CanCancelCopy = status;
+            OnPropertyChanged("CanCancelCopy");
+        }
+        else
+        {
+            AllowPaste = SelectedCountWithPendingChange(vm, status) > 0;
+            OnPropertyChanged("AllowPaste");
         }
         OnPropertyChanged("AllowCopy");
+        UpdateSelectionStatus(vm, status);
     }
 
     internal void Copy()
@@ -384,32 +426,37 @@ public class PartyAIControlsMenuVM : ViewModel
         CopyPaste.CopyCallback(vm.Settings, (List<InquiryElement> list) =>
         {
             _copySource = list;
+            _copySourceName = vm.LeaderName;
+            bool copiesTownManagement = list.Any(source => source.Identifier
+                is Bannerlord.PartyAI.Models.TownManagementSettlementSettings);
             vm.CopyPasteToggle.IsSelected = false;
             vm.CopyPasteToggle.IsDisabled = true;
             AllowCopy = false;
-            AllowPaste = true;
+            AllowPaste = false;
 
             foreach (PartyAIControlsMenuPartyVM item in PartyList)
             {
                 if (item != vm)
                 {
                     item.CopyPasteToggle.IsSelected = false;
-                    if (item.IsLordParty == vm.IsLordParty && item.IsCaravan == vm.IsCaravan && item.IsSettlement == vm.IsSettlement)
-                    {
-                        item.CopyPasteToggle.IsDisabled = false;
-                    }
-                    else
-                    {
-                        item.CopyPasteToggle.IsDisabled = true;
-                    }
+                    bool sameEntityType = item.IsLordParty == vm.IsLordParty
+                        && item.IsCaravan == vm.IsCaravan
+                        && item.IsSettlement == vm.IsSettlement;
+                    bool acceptsTownManagement = !copiesTownManagement
+                        || (item.Settlement is Settlement settlement
+                            && SubModule.TownManagementBehavior.IsTownManageable(settlement));
+                    item.CopyPasteToggle.IsDisabled = !sameEntityType
+                        || !acceptsTownManagement;
                 }
             }
 
             OnPropertyChanged("AllowCopy");
             OnPropertyChanged("CanCancelCopy");
             OnPropertyChanged("AllowPaste");
-            SelectAllToggle.IsDisabled = false;
+            SelectAllToggle.IsDisabled = !PartyList.Any(item =>
+                !item.CopyPasteToggle.IsDisabled);
             OnPropertyChanged("SelectAllToggle");
+            UpdateSelectionStatus();
         });
     }
 
@@ -426,6 +473,7 @@ public class PartyAIControlsMenuVM : ViewModel
             }
         }
         _copySource = null;
+        _copySourceName = string.Empty;
         AllowPaste = false;
         CanCancelCopy = false;
         OnPropertyChanged("AllowPaste");
@@ -444,6 +492,47 @@ public class PartyAIControlsMenuVM : ViewModel
                 p.CopyPasteToggle.IsSelected = selected;
             }
         }
+
+        UpdateSelectionStatus();
+    }
+
+    private int SelectedCountWithPendingChange(PartyAIControlsMenuPartyVM? pendingVm = null, bool? pendingStatus = null)
+    {
+        int count = PartyList.Count(p => p.CopyPasteToggle.IsSelected);
+        if (pendingVm is not null
+            && pendingStatus.HasValue
+            && pendingVm.CopyPasteToggle.IsSelected != pendingStatus.Value)
+        {
+            count += pendingStatus.Value ? 1 : -1;
+        }
+
+        return Math.Max(0, count);
+    }
+
+    private void UpdateSelectionStatus(PartyAIControlsMenuPartyVM? pendingVm = null, bool? pendingStatus = null)
+    {
+        if (!EnablePartyList)
+        {
+            SelectionStatusText = string.Empty;
+            return;
+        }
+
+        int selectedCount = SelectedCountWithPendingChange(pendingVm, pendingStatus);
+        if (_copySource is null)
+        {
+            SelectionStatusText = selectedCount == 0
+                ? new TextObject("{=PAI_UI_COPY_IDLE}Select one row to copy its settings.").ToString()
+                : new TextObject("{=PAI_UI_COPY_READY}One source selected. Copy to continue.").ToString();
+            return;
+        }
+
+        TextObject status = selectedCount == 0
+            ? new TextObject("{=PAI_UI_PASTE_IDLE}Copied from {SOURCE}. Select one or more compatible targets.")
+            : new TextObject("{=PAI_UI_PASTE_READY}Copied from {SOURCE}. {COUNT} target(s) selected.");
+        SelectionStatusText = status
+            .SetTextVariable("SOURCE", _copySourceName)
+            .SetTextVariable("COUNT", selectedCount)
+            .ToString();
     }
 
     public override void RefreshValues()

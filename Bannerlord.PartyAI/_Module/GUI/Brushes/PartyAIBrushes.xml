@@ -1,8 +1,60 @@
 <Brushes>
-  <Brush Name="PartyAI.Menu.PartyRowText" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Left" TextVerticalAlignment="Bottom">
+  <Brush Name="PartyAI.Menu.PartyRowText" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Left" TextVerticalAlignment="Center">
     <Styles>
-      <Style Name="Default" FontColor="#F4E1C4FF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" TextShadowOffset="0" TextShadowAngle="60" FontSize="30" />
+      <Style Name="Default" FontColor="#F4E1C4FF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" TextShadowOffset="0" TextShadowAngle="60" FontSize="25" />
+      <Style Name="Disabled" FontColor="#8C8277FF" TextOutlineAmount="0" FontSize="25" />
     </Styles>
+  </Brush>
+
+  <Brush Name="PartyAI.Menu.SectionHeader" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Left" TextVerticalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#FEC157FF" TextOutlineAmount="0" TextGlowRadius="0" FontSize="27" />
+      <Style Name="Disabled" FontColor="#8C7657FF" TextOutlineAmount="0" FontSize="27" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="PartyAI.Menu.SecondaryText" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Left" TextVerticalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#C9BBA8FF" TextOutlineAmount="0" FontSize="21" />
+      <Style Name="Disabled" FontColor="#776F66FF" TextOutlineAmount="0" FontSize="21" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="PartyAI.Menu.TableHeaderText" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Left" TextVerticalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#B9A78FFF" TextOutlineAmount="0" FontSize="20" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="PartyAI.Menu.StatusText" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Left" TextVerticalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#E9D6B7FF" TextOutlineAmount="0" FontSize="22" />
+      <Style Name="Disabled" FontColor="#82786CFF" TextOutlineAmount="0" FontSize="22" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="PartyAI.Menu.WarningText" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Left" TextVerticalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#FF9B83FF" TextOutlineAmount="0" FontSize="22" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="PartyAI.Menu.Row.Background">
+    <Layers>
+      <BrushLayer Name="Background" Sprite="BlankWhiteSquare_9" Color="#17130FCC" />
+    </Layers>
+  </Brush>
+
+  <Brush Name="PartyAI.Menu.Row.Selected">
+    <Layers>
+      <BrushLayer Name="Background" Sprite="BlankWhiteSquare_9" Color="#78592799" />
+    </Layers>
+  </Brush>
+
+  <Brush Name="PartyAI.Menu.Summary.Background">
+    <Layers>
+      <BrushLayer Name="Background" Sprite="BlankWhiteSquare_9" Color="#1E1914E6" />
+    </Layers>
   </Brush>
 
   <Brush Name="PartyAI.Menu.EditButton">

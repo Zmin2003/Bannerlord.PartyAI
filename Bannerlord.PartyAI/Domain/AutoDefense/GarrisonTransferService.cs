@@ -65,18 +65,8 @@ internal static class GarrisonTransferService
             return 0;
         }
 
-        if (settlement.Town.GarrisonParty is null)
-        {
-            settlement.AddGarrisonParty();
-        }
-
         MobileParty? garrison = settlement.Town.GarrisonParty;
-        if (garrison?.MemberRoster is null)
-        {
-            return 0;
-        }
-
-        int currentGarrisonTroops = garrison.MemberRoster.TotalManCount;
+        int currentGarrisonTroops = garrison?.MemberRoster?.TotalManCount ?? 0;
         int needed = Math.Max(0, targetGarrisonTroops - currentGarrisonTroops);
         int requested = Math.Min(
             needed,
@@ -94,6 +84,17 @@ internal static class GarrisonTransferService
         GarrisonTroopsCampaignBehavior? behavior = Campaign.Current
             .GetCampaignBehavior<GarrisonTroopsCampaignBehavior>();
         if (behavior is null || LeaveTroopsToGarrisonMethod is null)
+        {
+            return 0;
+        }
+
+        if (garrison is null)
+        {
+            settlement.AddGarrisonParty();
+            garrison = settlement.Town.GarrisonParty;
+        }
+
+        if (garrison?.MemberRoster is null)
         {
             return 0;
         }
