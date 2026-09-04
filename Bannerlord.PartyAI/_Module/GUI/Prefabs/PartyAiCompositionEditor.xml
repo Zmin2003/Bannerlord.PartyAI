@@ -1,0 +1,26 @@
+<Prefab>
+  <Parameters>
+    <Parameter Name="DataSource" DefaultValue="" />
+  </Parameters>
+  <Window>
+    <Widget DataSource="*DataSource" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginTop="3">
+      <Children>
+        <BrushWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="PartyAI.Menu.Row.Background" IsEnabled="false" />
+        <ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginLeft="10" MarginRight="10" MarginTop="6" MarginBottom="8" StackLayout.LayoutMethod="VerticalTopToBottom">
+          <Children>
+            <Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="36">
+              <Children>
+                <TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="PartyAI.Menu.PartyRowText" Text="@Title" />
+                <HintWidget DataSource="{TitleHint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" />
+              </Children>
+            </Widget>
+            <PartyAiCompositionSlider Parameter.DataSource="{Infantry}" />
+            <PartyAiCompositionSlider Parameter.DataSource="{Ranged}" />
+            <PartyAiCompositionSlider Parameter.DataSource="{Cavalry}" />
+            <PartyAiCompositionSlider Parameter.DataSource="{HorseArcher}" />
+          </Children>
+        </ListPanel>
+      </Children>
+    </Widget>
+  </Window>
+</Prefab>

@@ -1,0 +1,109 @@
+﻿<Prefab>
+  <Window>
+    <Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginTop="3" UpdateChildrenStates="true">
+      <Children>
+
+        <!-- Section header -->
+        <Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="46" IsVisible="@IsHeader">
+          <Children>
+            <TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginLeft="8" MarginTop="12" Brush="PartyAI.Menu.SectionHeader" Text="@Label" />
+            <Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="2" VerticalAlignment="Bottom" Sprite="BlankWhiteSquare_9" Color="#7A5F3A99" IsEnabled="false" />
+          </Children>
+        </Widget>
+
+        <!-- Control row -->
+        <Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" IsVisible="@IsControl">
+          <Children>
+            <BrushWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="PartyAI.Menu.Row.Background" IsEnabled="false" />
+
+            <ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginLeft="10" MarginRight="10" StackLayout.LayoutMethod="HorizontalLeftToRight">
+              <Children>
+
+                <!-- Label + hint -->
+                <Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="300" SuggestedHeight="48" VerticalAlignment="Top">
+                  <Children>
+                    <ScrollingRichTextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="PartyAI.Menu.PartyRowText" Text="@Label" IsAutoScrolling="false" ScrollOnHoverWidget=".." />
+                    <HintWidget DataSource="{Hint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" />
+                  </Children>
+                </Widget>
+
+                <!-- Control area -->
+                <Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginLeft="10" IsEnabled="@IsEnabled" UpdateChildrenStates="true">
+                  <Children>
+
+                    <!-- Toggle -->
+                    <Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="48" IsVisible="@IsToggle">
+                      <Children>
+                        <ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="36" SuggestedHeight="36" HorizontalAlignment="Left" VerticalAlignment="Center" Brush="SPOptions.Checkbox.Empty.Button" ButtonType="Toggle" IsSelected="@IsSelected" ToggleIndicator="ToggleIndicator" UpdateChildrenStates="true">
+                          <Children>
+                            <ImageWidget Id="ToggleIndicator" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="SPOptions.Checkbox.Full.Button" />
+                          </Children>
+                        </ButtonWidget>
+                      </Children>
+                    </Widget>
+
+                    <!-- Number: slider + typed value -->
+                    <ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="48" IsVisible="@IsNumber" StackLayout.LayoutMethod="HorizontalLeftToRight">
+                      <Children>
+                        <Standard.Slider WidthSizePolicy="Fixed" SuggestedWidth="300" VerticalAlignment="Center" Parameter.ValueInt="@Value" Parameter.MinValue="@Min" Parameter.MaxValue="@Max" Parameter.IsDiscrete="true" />
+                        <ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="110" SuggestedHeight="36" MarginLeft="14" VerticalAlignment="Center" Brush="ButtonBrush2" Command.Click="ExecuteEditValue" UpdateChildrenStates="true">
+                          <Children>
+                            <TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="Kingdom.GeneralButtons.Text" Text="@ValueText" />
+                          </Children>
+                        </ButtonWidget>
+                      </Children>
+                    </ListPanel>
+
+                    <!-- Selector -->
+                    <Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" IsVisible="@IsSelector">
+                      <Children>
+                        <Standard.DropdownWithHorizontalControl HorizontalAlignment="Left" VerticalAlignment="Center" Parameter.SelectorDataSource="{Selector}" Parameter.ShowNextAndPrevious="false" Parameter.IsCustomWidth="true" Parameter.CustomWidth="320" />
+                      </Children>
+                    </Widget>
+
+                    <!-- Hotkey -->
+                    <ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="48" IsVisible="@IsHotkey" StackLayout.LayoutMethod="HorizontalLeftToRight">
+                      <Children>
+                        <ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="150" SuggestedHeight="36" VerticalAlignment="Center" Brush="ButtonBrush2" Command.Click="ExecuteEditModifier" IsVisible="@HasModifier" UpdateChildrenStates="true">
+                          <Children>
+                            <TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="Kingdom.GeneralButtons.Text" Text="@ModifierText" />
+                          </Children>
+                        </ButtonWidget>
+                        <TextWidget WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="24" Brush="PartyAI.Menu.PartyRowText" Brush.TextHorizontalAlignment="Center" Text="+" IsVisible="@HasModifier" />
+                        <ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="150" SuggestedHeight="36" VerticalAlignment="Center" Brush="ButtonBrush2" Command.Click="ExecuteEditKey" UpdateChildrenStates="true">
+                          <Children>
+                            <TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="Kingdom.GeneralButtons.Text" Text="@KeyText" />
+                          </Children>
+                        </ButtonWidget>
+                      </Children>
+                    </ListPanel>
+
+                    <!-- Action button -->
+                    <Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="48" IsVisible="@IsAction">
+                      <Children>
+                        <ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="200" SuggestedHeight="36" HorizontalAlignment="Left" VerticalAlignment="Center" Brush="ButtonBrush2" Command.Click="ExecuteAction" UpdateChildrenStates="true">
+                          <Children>
+                            <TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="Kingdom.GeneralButtons.Text" Text="@ButtonText" />
+                          </Children>
+                        </ButtonWidget>
+                      </Children>
+                    </Widget>
+
+                    <!-- Read-only info -->
+                    <Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" IsVisible="@IsInfo">
+                      <Children>
+                        <RichTextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginTop="12" MarginBottom="12" Brush="PartyAI.Menu.StatusText" Text="@InfoText" />
+                      </Children>
+                    </Widget>
+
+                  </Children>
+                </Widget>
+              </Children>
+            </ListPanel>
+          </Children>
+        </Widget>
+
+      </Children>
+    </Widget>
+  </Window>
+</Prefab>

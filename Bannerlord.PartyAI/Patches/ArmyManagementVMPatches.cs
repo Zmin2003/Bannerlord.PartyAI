@@ -12,7 +12,7 @@ using TaleWorlds.Core;
 
 namespace Bannerlord.PartyAI.Patches;
 
-internal class ArmyManagementVMPatches
+internal static class ArmyManagementVMPatches
 {
     public static void Apply(Harmony harmony)
     {

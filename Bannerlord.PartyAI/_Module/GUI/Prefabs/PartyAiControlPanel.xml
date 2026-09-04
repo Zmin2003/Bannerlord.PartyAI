@@ -1,0 +1,59 @@
+<Prefab>
+  <Constants>
+    <Constant Name="Tab.Width" Value="190" />
+  </Constants>
+  <Window>
+    <Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent">
+      <Children>
+        <Standard.Background />
+
+        <Standard.TopPanel Parameter.Title="@TitleText">
+          <Children>
+            <ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="Fixed" SuggestedHeight="52" HorizontalAlignment="Center" VerticalAlignment="Top" MarginTop="58" StackLayout.LayoutMethod="HorizontalLeftToRight">
+              <Children>
+                <ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="!Tab.Width" Brush="Header.Tab.Left" Command.Click="SetSelectedTab" CommandParameter.Click="0" IsSelected="@IsPartiesSelected" UpdateChildrenStates="true">
+                  <Children>
+                    <TextWidget DataSource="{Parties}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="Clan.TabControl.Text" Text="@Title" />
+                  </Children>
+                </ButtonWidget>
+                <ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="!Tab.Width" Brush="Header.Tab.Center" Command.Click="SetSelectedTab" CommandParameter.Click="1" IsSelected="@IsFiefsSelected" UpdateChildrenStates="true">
+                  <Children>
+                    <TextWidget DataSource="{Fiefs}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="Clan.TabControl.Text" Text="@Title" />
+                  </Children>
+                </ButtonWidget>
+                <ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="!Tab.Width" Brush="Header.Tab.Center" Command.Click="SetSelectedTab" CommandParameter.Click="2" IsSelected="@IsTemplatesSelected" UpdateChildrenStates="true">
+                  <Children>
+                    <TextWidget DataSource="{Templates}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="Clan.TabControl.Text" Text="@Title" />
+                  </Children>
+                </ButtonWidget>
+                <ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="!Tab.Width" Brush="Header.Tab.Center" Command.Click="SetSelectedTab" CommandParameter.Click="3" IsSelected="@IsEconomySelected" UpdateChildrenStates="true">
+                  <Children>
+                    <TextWidget DataSource="{Economy}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="Clan.TabControl.Text" Text="@Title" />
+                  </Children>
+                </ButtonWidget>
+                <ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="!Tab.Width" Brush="Header.Tab.Right" Command.Click="SetSelectedTab" CommandParameter.Click="4" IsSelected="@IsSettingsSelected" UpdateChildrenStates="true">
+                  <Children>
+                    <TextWidget DataSource="{Settings}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="Clan.TabControl.Text" Text="@Title" />
+                  </Children>
+                </ButtonWidget>
+              </Children>
+            </ListPanel>
+          </Children>
+        </Standard.TopPanel>
+
+        <!-- Pages -->
+        <Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginLeft="36" MarginRight="36" MarginTop="124" MarginBottom="92">
+          <Children>
+            <PartyAiPartiesPage Parameter.DataSource="{Parties}" />
+            <PartyAiFiefsPage Parameter.DataSource="{Fiefs}" />
+            <PartyAiTemplatesPage Parameter.DataSource="{Templates}" />
+            <PartyAiEconomyPage Parameter.DataSource="{Economy}" />
+            <PartyAiSettingsPage Parameter.DataSource="{Settings}" />
+          </Children>
+        </Widget>
+
+        <Standard.DialogCloseButtons Parameter.ShowCancel="false" Parameter.DoneButtonAction="ExecuteDone" Parameter.DoneButtonText="@DoneText" />
+      </Children>
+    </Widget>
+  </Window>
+</Prefab>

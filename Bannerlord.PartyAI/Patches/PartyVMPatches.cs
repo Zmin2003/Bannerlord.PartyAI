@@ -5,7 +5,7 @@ using TaleWorlds.Localization;
 
 namespace Bannerlord.PartyAI.Patches;
 
-internal class PartyVMPatches
+internal static class PartyVMPatches
 {
     public static void Apply(Harmony harmony)
     {

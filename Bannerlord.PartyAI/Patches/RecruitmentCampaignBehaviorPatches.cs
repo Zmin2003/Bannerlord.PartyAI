@@ -1,13 +1,8 @@
-﻿using Bannerlord.PartyAI.Domain;
-using Bannerlord.PartyAI.Domain.Models;
-using Bannerlord.PartyAI.Models;
+﻿using Bannerlord.PartyAI.Parties;
+using Bannerlord.PartyAI.Parties.Orders;
+using Bannerlord.PartyAI.Parties.Recruitment;
 using HarmonyLib;
-using HarmonyLib.BUTR.Extensions;
 using HarmonyLib.PatchBuilder;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.CampaignBehaviors;
 using TaleWorlds.CampaignSystem.Party;
@@ -16,149 +11,57 @@ using static TaleWorlds.CampaignSystem.CampaignBehaviors.RecruitmentCampaignBeha
 
 namespace Bannerlord.PartyAI.Patches;
 
-internal class RecruitmentCampaignBehaviorPatches
+/// <summary>
+/// Filters vanilla AI recruitment through the party's template/composition rules and takes over
+/// recruitment entirely while a party is executing a recruit order.
+/// </summary>
+internal static class RecruitmentCampaignBehaviorPatches
 {
-    private static MethodInfo GetRecruitVolunteerFromIndividualMethod = default!;
-
     public static void Apply(Harmony harmony)
-    {
-        GetRecruitVolunteerFromIndividualMethod = AccessTools2.Method(
-            typeof(RecruitmentCampaignBehavior),
-            "GetRecruitVolunteerFromIndividual")
-            ?? throw new Exception("GetRecruitVolunteerFromIndividual is missing from RecruitmentCampaignBehavior");
-
-        harmony.Patch<RecruitmentCampaignBehavior>()
+        => harmony.Patch<RecruitmentCampaignBehavior>()
             .Method("ApplyInternal")
                 .Prefix(ApplyInternalPrefix)
             .Method("RecruitVolunteersFromNotable")
                 .Prefix(RecruitVolunteersFromNotablePrefix);
-    }
 
     private static bool ApplyInternalPrefix(MobileParty side1Party, Settlement settlement, Hero individual, CharacterObject troop, int number, int bitCode, RecruitingDetail detail)
     {
-        if (!SubModule.PartySettingsManager.IsManageable(side1Party.LeaderHero))
+        if (!PartyAi.IsActive || !PartyAi.Parties.IsManageable(side1Party.LeaderHero))
         {
             return true;
         }
 
-        PartyAiEntitySettings heroSettings = SubModule.PartySettingsManager.Settings(side1Party.LeaderHero);
-
-        if (!heroSettings.AllowRecruitment)
+        PartyProfile profile = PartyAi.Parties.Profile(side1Party.LeaderHero);
+        if (!profile.AllowRecruitment)
         {
             return false;
         }
 
-        // if we're going to convert the troop anyway, it doesn't matter
-        if ((SubModule.PartySettingsManager.AllowTroopConversion
-                || heroSettings.SettlementAutomation == SettlementAutomationLevel.Full)
-            && heroSettings.PartyTemplate != null)
+        if (PartyAi.Parties.AllowsConversion(profile))
         {
             return true;
         }
 
-        PartyComposition comp = Recruitment.GetPartyComposition(side1Party.Party, heroSettings);
-        if (!Recruitment.ShouldRecruit(comp, heroSettings, troop, side1Party.Party))
-        {
-            return false;
-        }
-
-        return true;
+        PartyComposition composition = RecruitmentRules.GetPartyComposition(side1Party.Party, profile);
+        return RecruitmentRules.ShouldRecruit(composition, profile, troop, side1Party.Party);
     }
 
-    private static bool RecruitVolunteersFromNotablePrefix(
-        RecruitmentCampaignBehavior __instance,
-        MobileParty mobileParty,
-        Settlement settlement)
+    private static bool RecruitVolunteersFromNotablePrefix(MobileParty mobileParty, Settlement settlement)
     {
-        var hero = mobileParty.LeaderHero;
-        if (hero is null || !SubModule.PartySettingsManager.IsManageable(hero))
+        Hero? hero = mobileParty.LeaderHero;
+        if (!PartyAi.IsActive || !PartyAi.Parties.IsManageable(hero))
         {
             return true;
         }
 
-        var settings = SubModule.PartySettingsManager.Settings(hero);
-        if (settings.Order?.Behavior != PartyAiOrderType.RecruitFromTemplate)
+        PartyProfile profile = PartyAi.Parties.Profile(hero);
+        if (profile.Order?.Behavior != PartyOrderType.RecruitFromTemplate
+            || mobileParty.Party.NumberOfAllMembers >= mobileParty.Party.PartySizeLimit)
         {
             return true;
         }
 
-        var missingMembers = mobileParty.Party.PartySizeLimit - mobileParty.Party.NumberOfAllMembers;
-        if (missingMembers <= 0)
-        {
-            return true;
-        }
-
-        RecruitEligibleVolunteers(__instance, mobileParty, settlement, settings);
-
+        VolunteerRecruiter.Recruit(mobileParty, settlement, profile);
         return false;
     }
-
-    internal static int RecruitEligibleVolunteers(
-        RecruitmentCampaignBehavior behavior,
-        MobileParty mobileParty,
-        Settlement settlement,
-        PartyAiEntitySettings settings)
-    {
-        if (behavior is null
-            || mobileParty?.Party is null
-            || settlement is null
-            || !settings.AllowRecruitment)
-        {
-            return 0;
-        }
-
-        int freeSlots = mobileParty.Party.PartySizeLimit - mobileParty.Party.NumberOfAllMembers;
-        if (freeSlots <= 0)
-        {
-            return 0;
-        }
-
-        PartyComposition composition = Recruitment.GetPartyComposition(mobileParty.Party, settings);
-        List<NotableVolunteer> volunteers = Recruitment
-            .CollectEligibleVolunteers(mobileParty, settlement, settings, composition)
-            .OrderByDescending(volunteer => Recruitment.GetRecruitmentPriority(composition, settings, volunteer.Troop))
-            .ToList();
-
-        int recruited = 0;
-        foreach (NotableVolunteer volunteer in volunteers)
-        {
-            if (recruited >= freeSlots
-                || mobileParty.Party.NumberOfAllMembers >= mobileParty.Party.PartySizeLimit)
-            {
-                break;
-            }
-
-            if (volunteer.Index < 0
-                || volunteer.Index >= volunteer.Notable.VolunteerTypes.Length
-                || volunteer.Notable.VolunteerTypes[volunteer.Index] != volunteer.Troop)
-            {
-                continue;
-            }
-
-            PartyComposition currentComposition = Recruitment.GetPartyComposition(
-                mobileParty.Party,
-                settings);
-            if (!Recruitment.CanAffordVolunteer(mobileParty, volunteer.Troop)
-                || !Recruitment.ShouldRecruit(
-                    currentComposition,
-                    settings,
-                    volunteer.Troop,
-                    mobileParty.Party,
-                    allowConversionFallback: true))
-            {
-                continue;
-            }
-
-            int partySizeBefore = mobileParty.Party.NumberOfAllMembers;
-            GetRecruitVolunteerFromIndividualMethod.Invoke(
-                behavior,
-                [mobileParty, volunteer.Troop, volunteer.Notable, volunteer.Index]);
-            recruited += Math.Max(
-                0,
-                mobileParty.Party.NumberOfAllMembers - partySizeBefore);
-        }
-
-        return recruited;
-    }
-
 }

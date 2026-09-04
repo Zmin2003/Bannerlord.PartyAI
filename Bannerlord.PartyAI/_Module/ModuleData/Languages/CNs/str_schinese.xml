@@ -4,436 +4,516 @@
     <tag language="简体中文"/>
   </tags>
   <strings>
-    <string id="PAIZZ1tGdbA" text="无执行中命令"/>
-    <string id="PAIdTWGYLu0" text="驻留于 {TARGET_SETTLEMENT}"/>
-    <string id="PAI0oBFsSJO" text="正在巡逻家族领地"/>
-    <string id="PAIImuFNGIe" text="正在招募士兵"/>
-    <string id="PAIzp4R8TTM" text="正在前往 {SETTLEMENT}"/>
-    <string id="PAISXYCwfO9" text="命令队列为空"/>
-    <string id="PAIpc5Yu18Z" text="巡逻 {TARGET_SETTLEMENT} 周边"/>
-    <string id="PAIPMS0nSSq" text="围攻 {TARGET_SETTLEMENT}"/>
-    <string id="PAITOricrPO" text="防守 {TARGET_SETTLEMENT}"/>
-    <string id="PAIj66iTjmT" text="驻留于 {TARGET_SETTLEMENT}"/>
-    <string id="PAINt8jD9tc" text="跟随 {TARGET_PARTY}"/>
-    <string id="PAIDycETWvm" text="攻击 {TARGET_SETTLEMENT}"/>
-    <string id="PAIgvZTEG1V" text="巡逻家族领地"/>
-    <string id="PAIhBXucHBM" text="招募士兵"/>
-    <string id="PAIRyxa5pnP" text="前往 {SETTLEMENT}"/>
-    <string id="PAIEUwVpMPm" text="感谢使用部队 AI 控制！按 {KEYBIND} 打开设置面板。"/>
-    <string id="PAIFHytp3D7" text="选择要直接指挥的部队"/>
-    <string id="PAIRzSgh49H" text="只有可管理且在视野范围内的部队才会显示于此。"/>
-    <string id="PAIykz3Pc1F" text="编辑默认设置"/>
-    <string id="PAIOMxOAsTY" text="家族部队"/>
-    <string id="PAId8ZsX3ID" text="家族商队"/>
-    <string id="PAIKf5y8Z4K" text="家族驻军"/>
-    <string id="PAIObdiWWBa" text="王国部队"/>
-    <string id="PAIJkUlgNUw" text="王国驻军"/>
-    <string id="PAI4eHNvDEM" text="{HERO} 部队的命令队列"/>
-    <string id="PAI_ORDER_QUEUE" text="命令队列"/>
-    <string id="PAI9PHY91SP" text="添加命令"/>
-    <string id="PAIl7GEAaaD" text="清空队列"/>
-    <string id="PAIv8ekJ4gs" text="确定吗？"/>
-    <string id="PAIYkuWNX8E" text="管理家族驻军。"/>
-    <string id="PAIy0nVMLXY" text="如果你是王国统治者，则管理整个王国的驻军，而不只是家族驻军。"/>
-    <string id="PAIRZkSlIxH" text="必须启用兵种转换才能管理驻军。"/>
-    <string id="PAIWV53ONlQ" text="编辑模组选项"/>
-    <string id="PAIt2WLwtca" text="部队数量上限"/>
-    <string id="PAIsBxGgiYZ" text="领队名单"/>
-    <string id="PAIhmt3dhI6" text="领主部队"/>
-    <string id="PAIlflf9B0n" text="允许领主部队转换兵种。管理领主部队构成已不再依赖此选项；请使用招募命令确保部队招募你需要的兵种。"/>
-    <string id="PAIIraDmoi5" text="商队"/>
-    <string id="PAIr7ucbc6X" text="允许商队转换兵种。目前必须启用此项才能管理商队的兵种构成。"/>
-    <string id="PAIxcNer6Hm" text="驻军"/>
-    <string id="PAIc99C3VmP" text="允许驻军转换兵种。目前必须启用此项才能管理驻军的兵种构成。"/>
-    <string id="PAIFQeuWjXA" text="家族驻军"/>
-    <string id="PAI68ZMWYZS" text="商队"/>
-    <string id="PAIlZXTnEd8" text="管理家族商队。商队设置与普通部队设置分别保存，因此同一英雄可同时拥有两套设置。要正确管理商队兵员，必须启用商队兵种转换。"/>
-    <string id="PAIeJ3goSqx" text="王国部队"/>
-    <string id="PAI8l5Lt9g3" text="如果你是王国统治者，则管理整个王国的部队，而不只是家族部队。"/>
-    <string id="PAIGJEcA4MB" text="王国驻军"/>
-    <string id="PAI9BPfqnUx" text="主动巡逻"/>
-    <string id="PAIFxvrVYlD" text="启用后，所有 AI 巡逻队都会主动攻击进入范围且能够追上的目标。此项会让“巡逻某地周边”的 AI 行为主动搜寻目标，而不是漫无目的地移动。该效果会应用于所有相关部队，建议等到附庸或王国阶段、地图上强盗较多时再启用。"/>
-    <string id="PAIbSXqbr08" text="AI 巡逻家族领地"/>
-    <string id="PAIj0xo4vLJ" text="AI 无事可做时会改为巡逻所属家族领地。适用于所有未由本模组管理的领主部队。"/>
-    <string id="PAIsUcGJNnV" text="自动创建家族部队"/>
-    <string id="PAIurMNhxmp" text="自动为可用英雄创建家族部队。位于玩家部队中的英雄不会被选中。"/>
-    <string id="PAIQNbMherW" text="打开此控制面板的快捷键。如果按键组合失效导致无法打开，可在控制台输入 partyai.open 返回此处修改。"/>
-    <string id="PAIdjKjbD9Y" text="选择要直接指挥的部队。默认按 ALT+X 选择附近部队，再按住 ALT 对其下令。"/>
-    <string id="PAIY9zrtsqV" text="指挥附近部队的快捷键。默认按 ALT+X 选择附近部队，再按住 ALT 对其下令。"/>
-    <string id="PAIBKfwhLn2" text="允许自动创建部队的领队英雄。留空则会考虑所有可用英雄。"/>
-    <string id="PAIi4vuS6na" text="限制自动创建的家族部队最大数量。"/>
-    <string id="PAIQNUqwt4C" text="编辑"/>
-    <string id="PAIn0vtnqMG" text="允许将士兵自动转换为指定部队模板中的兵种；所需费用会相应调整。"/>
-    <string id="PAIdJOXgi68" text="启用或停用对各类部队的管理。可随时更改；停用曾管理过的类别后，其设置会被忽略，重新启用后恢复生效。"/>
-    <string id="PAIrJoL4fjj" text="兵种转换"/>
-    <string id="PAI2Kzocn92" text="管理范围"/>
-    <string id="PAIwNqKC63z" text="AI 调整"/>
-    <string id="PAIKbIc509P" text="快捷键"/>
-    <string id="PAIuVpJ2Fxq" text=" - 每日 - "/>
-    <string id="PAIdNxjNCZ8" text="控制面板："/>
-    <string id="PAIMPBJJFE1" text="选择部队："/>
-    <string id="PAIYaTRiKbo" text="指挥部队："/>
-    <string id="PAImiSXBh3N" text="每天转换到部队模板的士兵数量。该数值按每支部队分别计算，适用于所有受管理的部队、商队和驻军，可避免更换模板时费用突然暴增，也不会瞬间凭空转换数百名士兵。"/>
-    <string id="PAILiYi3RTj" text="全部"/>
-    <string id="PAIcd2NB574" text="每日转换士兵数"/>
-    <string id="PAIEADvfPTN" text="输入 0 表示不设上限。"/>
-    <string id="PAI84jzPSvb" text="数量必须是数字"/>
-    <string id="PAIPRrfz8d9" text="数量必须介于 0 到 100000 之间"/>
-    <string id="PAIAbEyy75G" text="选择可自动创建部队的英雄"/>
-    <string id="PAIDWLDk2e4" text="部队 AI 控制：你已更改控制面板快捷键。如果意外导致面板无法打开，请在控制台运行 partyai.open 返回控制面板。"/>
-    <string id="PAgaRahFHeV" text="编辑部队构成"/>
-    <string id="PAIqJ0819Nl" text="显示所有能够带领部队的英雄，便于提前为潜在领队分配设置。"/>
-    <string id="PAIuPlFS64X" text="排序"/>
-    <string id="PAIY2tmN6Vq" text="将一支部队的设置复制到另一支。勾选部队旁的复选框，然后按 CTRL+C 或点击此按钮。"/>
-    <string id="PAIlmndQPWI" text="将已复制的设置粘贴到其他部队。复制后，勾选所有目标部队，再按 CTRL+V 或点击此按钮。"/>
-    <string id="PAImg9cMpVB" text="取消复制/粘贴操作"/>
-    <string id="PAIQlzQNwtn" text="全选"/>
-    <string id="PAIe2AmH8ga" text="部队 AI 控制"/>
-    <string id="PAIVTBDYD5s" text="创建模板"/>
-    <string id="PAR1D0VvXKZ" text="删除模板"/>
-    <string id="PAIwK2enPSp" text="微调模板"/>
-    <string id="PAIzjCcuvQw" text="从已选择的升级路线中指定要纳入部队模板的兵种。列表最上方的兵种会作为模板旁的头像。"/>
-    <string id="PAIyBVEFgXu" text="模组选项"/>
-    <string id="PAI34RDUeMT" text="默认设置"/>
-    <string id="PAIlKT8heH9" text="显示所有英雄"/>
-    <string id="PAI5D5Ofcoo" text="{CHARACTER} 与 {TARGET} 之间没有升级路线"/>
-    <string id="PAI91kcf3yB" text="必须至少选择一个可升级为 {CHARACTER} 的兵种"/>
-    <string id="PAIAAm1PQy1" text="模板中的兵种不足。"/>
-    <string id="PAIekKoDXkq" text="选择按键"/>
-    <string id="PAIC76hjKpD" text="编辑 {HERO} 部队的商队选项"/>
-    <string id="PAI2mEbIPHQ" text="编辑商队选项"/>
-    <string id="PAI7L3x9T3p" text="筛选贸易定居点"/>
-    <string id="PAIRrqrDxYm" text="商队只会前往此列表中的定居点。"/>
-    <string id="PAIjkqd24XT" text=" - 已选择："/>
-    <string id="PAIn4UJJg3a" text="最高兵种等级"/>
-    <string id="PAIKeTFa2PX" text="士兵可升级到的最高等级。若降低此设置，部队中超出等级的士兵会被降级。"/>
-    <string id="PAIr1WS36dp" text="可前往的定居点"/>
-    <string id="PAImajjVs8d" text="北方"/>
-    <string id="PAISzVDwcWu" text="南方"/>
-    <string id="PAIHQQPyo2M" text="东方"/>
-    <string id="PAIWGp1Ti1N" text="西方"/>
-    <string id="PAI7v81Hher" text="目前位于你的{DIRECTION}。"/>
-    <string id="PAI5VM6usUh" text="编辑 {SETTLEMENT} 的驻军选项"/>
-    <string id="PAIy61wxVLV" text="编辑驻军选项"/>
-    <string id="PAITKllkp3Y" text="（相对于部队人数上限）"/>
-    <string id="PAIANrHs1Zb" text="编辑 {HERO} 部队的选项"/>
-    <string id="PAIgiGgAlAm" text="编辑部队选项"/>
+    <string id="I2LlBDKr" text="游戏模型错误：请在加载顺序中把 {THIS} 移到 {OTHER} 之后，以确保模组兼容。"/>
+    <string id="PA3a9D3vJpb" text="已选兵种"/>
+    <string id="PAbGk5vWaqM" text="最多 {MAX} 个字符"/>
+    <string id="PABrUnTTy9r" text="模板“{TEMPLATE}”中的兵种"/>
     <string id="PAClaZBMEprx" text="允许加入军团"/>
     <string id="PAD5Oih6uaW" text="允许此部队加入王国军团。即使关闭此选项，该部队仍可加入你的军团。"/>
-    <string id="PAhInSCxPlc" text="允许向驻军捐赠士兵"/>
-    <string id="PAIYcYomRnV" text="允许此部队向友方驻军捐赠士兵。"/>
-    <string id="PAIJB8EuhJN" text="允许围城"/>
-    <string id="PAIHANhrppA" text="允许此部队围攻城镇和城堡。关闭后，部队会离开正在围城的军团，并将影响力返还给军团领袖。"/>
-    <string id="PArB6kGmInk" text="允许劫掠村庄"/>
-    <string id="PAIG8Ela5BJ" text="允许此部队劫掠敌对村庄。关闭后，部队会离开正在劫掠的军团，并将影响力返还给军团领袖。"/>
-    <string id="PAIv3zQDvLn" text="允许俘虏领主"/>
-    <string id="PAIgE8T3Qxh" text="允许此部队在战后俘虏敌方领主。关闭后，部队会释放俘获的领主。"/>
-    <string id="PAIBMzCXm1l" text="允许招募士兵"/>
-    <string id="PAIhSoz6d1X" text="允许此部队招募士兵。若关闭此项，你必须手动补充兵员，否则 AI 可能作出很不合理的行为。"/>
-    <string id="PAIWXzJxqgi" text="购买马匹"/>
-    <string id="PAIK3xNilPb" text="购买足够的马匹供步行士兵使用，以提高地图移动速度。将预算设为 0 仍可阻止部队不必要地出售马匹。请注意，部分马匹（如原版的驮马）不计入速度加成；只有游戏本身或当前大型模组认可的马匹才会被本功能视为提供速度加成。"/>
-    <string id="PAIpTraw5lq" text="低于此比例时招募："/>
-    <string id="PAIMah8wd6z" text="当部队人数低于上限的指定百分比时，自动添加招募命令。仅当命令队列中没有现有招募命令，且你未直接指挥该部队时才会添加。"/>
-    <string id="PAID8JkoxK0" text=" - 预算："/>
-    <string id="PAIcyDMxg8t" text="每日买马预算。"/>
-    <string id="PAIqGqAFj9G" text="后备命令："/>
-    <string id="PAIDJ1aQnLC" text="部队不在军团中且没有当前命令时执行的命令。"/>
-    <string id="PAIn8Kp9KPp" text="输入自动招募比例"/>
-    <string id="PAIdpT9SuVN" text="当部队人数低于人数上限的该百分比时，会开始招募。"/>
-    <string id="PAIXIv9UgAt" text="更改"/>
-    <string id="PAIIAZIrPw0" text="除非在模组选项中启用商队兵种转换，否则这些数值对商队无效。"/>
-    <string id="PAIQAHEYKZ2" text="除非在模组选项中启用商队兵种转换，否则模板对商队无效。"/>
-    <string id="PATZD6SvrZr" text="无模板"/>
-    <string id="PAI8qha4sZa" text="该英雄是军团领袖，对其部队下达的命令将作用于整个军团。"/>
-    <string id="PAIQnwbXcqc" text="选项"/>
-    <string id="PAIIqVpFFAi" text="上限"/>
-    <string id="PAI4pLNfNa1" text="升序"/>
-    <string id="PAIdc8T9Up8" text="降序"/>
-    <string id="PAIrkbpwijb" text="模板"/>
-    <string id="PAITCqVHXaz" text="选择要微调的模板"/>
-    <string id="PAI6hwc2LSt" text="为 {LEADER} 的部队选择新模板"/>
-    <string id="PAI1HObVpcg" text="为 {SETTLEMENT} 的驻军选择新模板"/>
-    <string id="PAI9HyjJ7ss" text="选择新模板"/>
-    <string id="PAIZScpdz8d" text="选择目标"/>
-    <string id="PAIb2F6Hyfs" text="巡逻家族领地"/>
-    <string id="PAIUq8Q1n8k" text="选择要添加的命令类型"/>
-    <string id="PAIaOu88dqT" text="区域巡逻"/>
-    <string id="PAIIL6JG6Na" text="前往定居点"/>
-    <string id="PAI1Et6heEa" text="护送部队"/>
-    <string id="PAIyzzBSM4P" text="招募"/>
-    <string id="PAIHJFAtbk8" text="命令部队领袖专注于招募士兵。如果分配了兵种模板，部队只会前往提供模板兵种的定居点；这些定居点可能非常遥远。"/>
-    <string id="PAIOzsG1s1J" text="驻留定居点"/>
-    <string id="PAIPQxGUfhd" text="巡逻目标定居点周边。部队会前往村庄和城镇补充兵员与物资；若领队认为能够追上强盗或其他敌人，就会主动追击，并保护巡逻半径内的村庄、城堡和城镇免遭劫掠或围攻。"/>
-    <string id="PAIljAEpAKF" text="前往定居点，但不在其中驻留。"/>
-    <string id="PAIEI3gTLMP" text="护送一支部队"/>
-    <string id="PAIVeQlQhCC" text="驻留在定居点内。如果定居点遭到围攻，而部队仍在城墙外，则不会参与防守。"/>
-    <string id="PAIgXDbzpdD" text="围攻定居点"/>
-    <string id="PAIzxQXNul8" text="部队或军团将围攻目标定居点。占领目标或进攻军团被击败后，此命令会被清除。"/>
-    <string id="PAIgNGL6W5j" text="防守定居点"/>
-    <string id="PAITZmUFJSB" text="驻留在定居点的驻军中。如果当地食物不足，部队可能偶尔前往其他定居点购买食物。"/>
-    <string id="PAIEv0gLuYi" text="选择要复制的设置。"/>
-    <string id="PAIZZEi6e9F" text="可以选择多个选项。"/>
-    <string id="PAI42PrfM04" text="部队构成"/>
-    <string id="PAI6XKZojTt" text="命令"/>
-    <string id="PAIdpg5Dset" text="选择要复制设置到哪些部队"/>
-    <string id="PAI0HrENRV2" text="选择要删除的模板"/>
-    <string id="PAIFofWXL3f" text="删除"/>
     <string id="PAGIUuSgSnB" text="确定要删除模板 {TEMPLATE} 吗？"/>
-    <string id="PAIlfXfoNTy" text="选择要查看的模板"/>
-    <string id="PABrUnTTy9r" text="模板“{TEMPLATE}”中的兵种"/>
-    <string id="PAoNJx6fAYq" text="查看模板"/>
-    <string id="PAZ8yCnPyxh" text="创建新兵种模板"/>
-    <string id="PAO0HGBsJZd" text="输入新部队兵种模板的名称。"/>
-    <string id="PAHxbYi6Awy" text="至少 {MIN} 个字符"/>
-    <string id="PAbGk5vWaqM" text="最多 {MAX} 个字符"/>
-    <string id="PAuu16DcbWX" text="已存在同名模板。"/>
-    <string id="PAirAdxXSc5" text="可选兵种"/>
-    <string id="PA3a9D3vJpb" text="已选兵种"/>
     <string id="PAH9JlPJqJC" text="创建新模板"/>
-    <string id="PAYjAC3mQzN" text="创建"/>
-    <string id="PAISIjwQiXw" text="复制到"/>
-    <string id="PAS8COe7Ysl" text="设置"/>
-    <string id="PAQVXq6izAW" text="删除"/>
-    <string id="PAkCYmU0Qtl" text="查看"/>
-    <string id="PAHiRSTCnkv" text="编辑部队构成"/>
-    <string id="PAhmBRjnrwV" text="兵种模板：{NAME}"/>
-    <string id="PA08v16flk8" text="显示"/>
-    <string id="PA635e8pPkz" text="隐藏"/>
-    <string id="PAIxKOXkgPU" text="全选"/>
-    <string id="PAIc1pTxSOA" text="{NAME} 超出直接指挥范围"/>
-    <string id="PAIoLtvzpKU" text="部队 AI 控制：无需成为附庸即可组建军团的功能与 Banner Kings 不兼容。"/>
-    <string id="PAIJPxU5978" text="{HERO} 已在 {SETTLEMENT} 附近创建一支新部队"/>
-    <string id="PAIOEWao2aI" text="{PARTY} 因被召集至 {ARMY}，已停止执行“{ORDER}”"/>
-    <string id="PAIw38SHHlH" text="{PARTY} 因食物不足，已停止执行“{ORDER}”。"/>
-    <string id="PAIxfQuD90U" text="让我检查一下你部队的物品栏。"/>
-    <string id="PAI5m8VhtcI" text="百分比必须大于 0"/>
-    <string id="PAI9084MrFx" text="百分比必须小于 99"/>
-    <string id="PAI5AWANWod" text="必须输入数字"/>
-    <string id="PAIxE5LIta2" text="微调模板"/>
+    <string id="PAhInSCxPlc" text="允许向驻军捐赠士兵"/>
+    <string id="PAhQoukaUbN" text="允许从定居点带走士兵"/>
+    <string id="PAHxbYi6Awy" text="至少 {MIN} 个字符"/>
+    <string id="PAI_ALL_TOWNS" text="所有城镇"/>
+    <string id="PAI_AN_ARMY" text="一支军队"/>
+    <string id="PAI_APPLY" text="应用"/>
     <string id="PAI_AUTO_BATTLE_COMMANDER" text="自动战场指挥官"/>
     <string id="PAI_AUTO_BATTLE_COMMANDER_HINT" text="部署结束后，自动将玩家所有编队交给游戏原生战术 AI 指挥。你仍然亲自控制主角，并可随时使用战场指挥官快捷键切换指挥权。"/>
-    <string id="PAI_BATTLE_COMMANDER_KEY" text="战场指挥官："/>
-    <string id="PAI_BATTLE_COMMANDER_KEY_HINT" text="在战斗中切换原生 AI 指挥，并在关闭时恢复此前的编队控制状态。"/>
-    <string id="PAI_BATTLE_COMMANDER_ENABLED" text="战场 AI 已接管你的编队，你仍可控制主角。按 {KEYBIND} 收回指挥权。"/>
+    <string id="PAI_AUTO_CARAVAN_CREATED" text="{HERO} 已在 {SETTLEMENT} 自动组建商队，花费 {COST}{GOLD_ICON}。"/>
+    <string id="PAI_AUTO_CARAVAN_LIMIT" text="商队数量上限"/>
+    <string id="PAI_AUTO_CARAVAN_LIMIT_HINT" text="玩家家族可同时存在的商队上限。“最大”表示不限制。"/>
+    <string id="PAI_AUTO_CARAVANS_HINT" text="主部队停留在安全城镇时，每天最多自动组建一支商队，直到达到设定上限，且花费不会突破金币储备。会按贸易、侦察和战术技能挑选最合适的同伴。"/>
+    <string id="PAI_AUTO_CREATE_CARAVANS" text="自动组建家族商队"/>
+    <string id="PAI_AUTO_ELITE_CARAVANS" text="组建精锐商队"/>
+    <string id="PAI_AUTO_ELITE_CARAVANS_HINT" text="使用价格更高、初始护卫更强的精锐商队。"/>
+    <string id="PAI_AUTO_OFFENSE" text="自动发起围城"/>
+    <string id="PAI_AUTO_OFFENSE_HINT" text="每天评估一次：当你空闲的家族部队明显强于附近的敌方城堡或城镇时，派它们前去围攻。会保留城镇防御中设定的预备部队，你的领地被围时不会出动，围城结束、遭遇援军或拖得太久时部队恢复原命令。你自己的部队永远不会被派出。"/>
+    <string id="PAI_AUTO_PARTIES_HINT" text="自动为空闲的英雄创建家族部队。只有当金币高于储备、且预计日收支能承担新部队的工资时才会组建。"/>
+    <string id="PAI_AUTO_RECRUIT" text="兵力不足时自动招募"/>
+    <string id="PAI_AUTO_RECRUIT_THRESHOLD" text="低于此比例时招募（占部队上限%）"/>
+    <string id="PAI_AUTOMATION_FULL" text="完全自动"/>
+    <string id="PAI_AUTOMATION_LEVEL" text="定居点自动化"/>
+    <string id="PAI_AUTOMATION_LEVEL_HINT" text="部队进入城镇或村庄时的行为。“招募”按模板和编成补满部队；“招募+升级”还会消耗经验、金币和所需装备进行升级；“全自动”还会转换不符合模板的士兵，并用部队物品栏为英雄重新配装。"/>
+    <string id="PAI_AUTOMATION_OFF" text="关闭"/>
+    <string id="PAI_AUTOMATION_RECRUIT" text="仅招募"/>
+    <string id="PAI_AUTOMATION_RESULT" text="部队 AI：招募 {RECRUITED}，升级 {UPGRADED}，配兵 {BALANCED}，换装 {EQUIPPED}。"/>
+    <string id="PAI_AUTOMATION_UPGRADE" text="招募并升级"/>
+    <string id="PAI_AUTOPILOT" text="我不操作时自动驾驭我的部队"/>
+    <string id="PAI_AUTOPILOT_AT_GATES" text="自动驾驭：你的部队已到达{SETTLEMENT}。是否围城由你决定；清除命令或点击其他地方即可继续。"/>
+    <string id="PAI_AUTOPILOT_AUTO_RECRUIT_HINT" text="开启自动驾驭后，部队低于阈值时自动排入一次招募行程。"/>
+    <string id="PAI_AUTOPILOT_DRIVING" text="自动驾驭中"/>
+    <string id="PAI_AUTOPILOT_DRIVING_ORDER" text="自动驾驭：{ORDER}"/>
+    <string id="PAI_AUTOPILOT_ENTER" text="允许进入定居点"/>
+    <string id="PAI_AUTOPILOT_ENTER_HINT" text="允许招募和前往命令把你的部队带进城镇和村庄。进入时执行定居点自动化，之后自动离开。“驻留于定居点”命令则始终把访问交还给你。"/>
+    <string id="PAI_AUTOPILOT_HEADER" text="自动驾驭"/>
+    <string id="PAI_AUTOPILOT_HINT" text="你的部队会像家族部队一样执行自己的命令队列和待机命令，但只在你没有操作时进行。在地图上任意点击即可收回控制；部队停下并空闲达到设定时间后自动驾驭恢复。暂停游戏时也会停止。"/>
+    <string id="PAI_AUTOPILOT_IDLE" text="自动驾驭空闲：没有命令，也没有待机命令"/>
+    <string id="PAI_AUTOPILOT_LEAVING" text="自动驾驭：正在结束访问"/>
+    <string id="PAI_AUTOPILOT_NO_RECRUITS" text="自动驾驭：附近没有值得前往招募的定居点。"/>
+    <string id="PAI_AUTOPILOT_OFF" text="自动驾驭已关闭"/>
+    <string id="PAI_AUTOPILOT_RESUME" text="空闲多久后恢复"/>
+    <string id="PAI_AUTOPILOT_RESUME_HINT" text="你上次操作后，部队需要静止多少现实秒数，自动驾驭才会接管。"/>
+    <string id="PAI_AUTOPILOT_UNREACHABLE" text="自动驾驭找不到通往{SETTLEMENT}的路线。"/>
+    <string id="PAI_AUTOPILOT_WAITING" text="自动驾驭暂停：你正在操作"/>
+    <string id="PAI_AVOID_SIEGE_ARTILLERY" text="规避攻城火炮"/>
+    <string id="PAI_AVOID_SIEGE_ARTILLERY_HINT" text="预测重型攻城炮弹落点，让危险区内的 AI 士兵短暂散开，随后恢复原生攻城行为。正在近战、攀爬或操作器械的士兵不会被打断。"/>
+    <string id="PAI_BALANCE_HEADER" text="每日收支"/>
+    <string id="PAI_BATTLE_ASSESSMENT" text="战力估算：我方 {ALLY} 人，敌方 {ENEMY} 人；我方实际战力约为敌军的 {POWER}%。"/>
+    <string id="PAI_BATTLE_COMMANDER_CANNOT_RESUME" text="主角失去战斗能力后无法收回编队指挥权。"/>
     <string id="PAI_BATTLE_COMMANDER_DISABLED" text="你已收回编队指挥权。"/>
+    <string id="PAI_BATTLE_COMMANDER_ENABLED" text="战场 AI 已接管你的编队，你仍可控制主角。按 {KEYBIND} 收回指挥权。"/>
+    <string id="PAI_BATTLE_COMMANDER_KEY_HINT" text="在战斗中切换原生 AI 指挥，并在关闭时恢复此前的编队控制状态。"/>
     <string id="PAI_BATTLE_COMMANDER_UNAVAILABLE" text="此任务中无法使用战场 AI 指挥。"/>
+    <string id="PAI_BATTLE_HEADER" text="战斗"/>
+    <string id="PAI_BEHAVIOR_HEADER" text="行为"/>
+    <string id="PAI_BUILTIN_CULTURE" text="内置：{CULTURE} 最优解"/>
+    <string id="PAI_BUILTIN_STRONGEST" text="内置：v1.5.2 全阵营最强"/>
+    <string id="PAI_CARAVAN_GOLD" text="贸易资金 {GOLD}"/>
+    <string id="PAI_CARAVAN_OF" text="{HERO}的商队"/>
+    <string id="PAI_CLAN_AUTOMATION" text="家族自动化"/>
+    <string id="PAI_CLEAR_FALLBACK" text="移除待机命令"/>
+    <string id="PAI_CLEAR_ORDERS_PROMPT" text="移除当前命令和所有排队中的命令？"/>
+    <string id="PAI_COMPOSITION_HINT" text="各兵种的目标占比。招募、升级和兵种转换都会朝这些比例靠拢。"/>
+    <string id="PAI_COPY_HINT" text="复制所选条目的设置（Ctrl+C），然后勾选要粘贴到的条目。"/>
+    <string id="PAI_COPY_PART_HINT" text="{HERO}的{OPTION}"/>
+    <string id="PAI_DAILY_CHANGE" text="预计每日变化：{CHANGE}"/>
+    <string id="PAI_DEFAULTS_SUBTITLE" text="新条目的默认设置"/>
+    <string id="PAI_DISMISS_THRESHOLD" text="高于此比例时遣散（占部队上限%）"/>
+    <string id="PAI_DISMISS_UNWANTED" text="遣散不符合模板的士兵"/>
+    <string id="PAI_ECONOMY" text="经济"/>
+    <string id="PAI_EDIT_ROSTER" text="选择部队领袖"/>
+    <string id="PAI_EDIT_TRADE_TOWNS" text="选择贸易城镇"/>
+    <string id="PAI_ENHANCED_BATTLE_AI" text="自适应野战 AI"/>
+    <string id="PAI_ENHANCED_BATTLE_AI_HINT" text="加入按实际战力判断的混合兵种战术，并与原生战术正常竞争，不再强制覆盖全部原生战术。检测到 Realistic Battle AI 时仍由其优先接管。"/>
+    <string id="PAI_ENTER_VALUE_RANGE" text="请输入 {MIN} 到 {MAX} 之间的数值。"/>
+    <string id="PAI_EQUAL_NUMBERS_WARNING" text="双方人数接近，但兵阶、装备和兵种克制使我方实际处于明显劣势。"/>
+    <string id="PAI_GLOBAL_DEFAULTS" text="全局默认"/>
+    <string id="PAI_GLOBAL_TOWN_NOTE" text="这些数值适用于所有跟随全局默认的领地。使用自定义设置的领地保留各自的数值。"/>
+    <string id="PAI_GOLD" text="金币：{GOLD}"/>
+    <string id="PAI_GOLD_RESERVE" text="金币储备"/>
+    <string id="PAI_GOLD_RESERVE_HINT" text="自动化（建设拨款、组建商队、士兵升级与转换、工坊转产）花钱时绝不会让你的金币低于此数值。"/>
+    <string id="PAI_GOVERNOR" text="总督"/>
+    <string id="PAI_GOVERNOR_ASSIGN" text="自动任命"/>
+    <string id="PAI_GOVERNOR_OFF" text="关闭"/>
+    <string id="PAI_GOVERNOR_RECOMMEND" text="仅推荐"/>
+    <string id="PAI_HORSE_BUDGET" text="每日购马预算"/>
+    <string id="PAI_KEY_BATTLE_COMMANDER" text="战场指挥官"/>
+    <string id="PAI_KEY_CHOOSE_PARTIES" text="选择要指挥的部队"/>
+    <string id="PAI_KEY_COMMAND_PARTIES" text="指挥部队（按住）"/>
+    <string id="PAI_KEY_CONTROL_PANEL" text="控制面板"/>
+    <string id="PAI_LOCK_FORMATION_HINT" text="锁定这一兵种，其他滑块调整时不会改变它。"/>
     <string id="PAI_locked_formation" text="此部队模板未使用该编队类型。"/>
+    <string id="PAI_LOGISTICS_HEADER" text="后勤"/>
+    <string id="PAI_MIN_DAILY_BALANCE" text="最低日收支"/>
+    <string id="PAI_MIN_DAILY_BALANCE_HINT" text="会增加长期工资开销的自动化（新建家族部队、补充驻军）必须让预计日收支不低于此数值。设为正数可以持续积累财富；设为负数则允许一定赤字。"/>
+    <string id="PAI_NO_PARTY" text="没有部队"/>
+    <string id="PAI_NO_WORKSHOPS" text="你没有任何工坊。"/>
+    <string id="PAI_NOTE" text="说明"/>
+    <string id="PAI_OFFENSE_ARMY" text="组建军团"/>
+    <string id="PAI_OFFENSE_ARMY_HINT" text="当你的家族属于某个王国时，进攻部队会合并为一支由最强部队领导的军团，一起作战。召集自家部队不花影响力，但维持军团凝聚力可能会。没有王国时各部队并肩围城。"/>
+    <string id="PAI_OFFENSE_AS_ARMY" text="（编为一支军团）"/>
+    <string id="PAI_OFFENSE_CANCEL" text="取消当前进攻"/>
+    <string id="PAI_OFFENSE_CANCEL_BUTTON" text="取消"/>
+    <string id="PAI_OFFENSE_CANCELLED" text="已取消对{TARGET}的进攻。"/>
+    <string id="PAI_OFFENSE_CAPTURED" text="{TARGET}已被攻陷。进攻结束，部队恢复原命令。"/>
+    <string id="PAI_OFFENSE_DISABLED" text="自动进攻已关闭；取消对{TARGET}的围城。"/>
+    <string id="PAI_OFFENSE_IDLE" text="当前没有进攻行动；每天重新评估目标。"/>
+    <string id="PAI_OFFENSE_LAUNCHED" text="进攻：{COUNT} 支部队（战力 {OURS}）向{TARGET}进军（防御 {DEFENSE}）{ARMY}。"/>
+    <string id="PAI_OFFENSE_LED_BY" text="，由{LEADER}率领的军团"/>
+    <string id="PAI_OFFENSE_MAX_DAYS" text="放弃时限"/>
+    <string id="PAI_OFFENSE_MAX_DAYS_HINT" text="围城超过这么多天仍未成功就放弃，部队恢复原命令。"/>
+    <string id="PAI_OFFENSE_MAX_PARTIES" text="每次进攻的部队数"/>
+    <string id="PAI_OFFENSE_MAX_PARTIES_HINT" text="一次围城最多投入的家族部队数量。"/>
+    <string id="PAI_OFFENSE_NO_PARTIES" text="对{TARGET}的进攻结束：已无可用部队。"/>
+    <string id="PAI_OFFENSE_OFF" text="自动进攻已关闭。"/>
+    <string id="PAI_OFFENSE_PEACE" text="已与{FACTION}和谈；解除对{TARGET}的围城。"/>
+    <string id="PAI_OFFENSE_RADIUS" text="搜索半径"/>
+    <string id="PAI_OFFENSE_RADIUS_HINT" text="只考虑与你的某座领地或空闲部队距离在此范围内的敌方要塞。"/>
+    <string id="PAI_OFFENSE_RATIO" text="所需战力优势"/>
+    <string id="PAI_OFFENSE_RATIO_HINT" text="我方集结战力至少要达到目标防御力（驻军、民兵、城内领主以及附近敌方领主的一半）的这个倍数。"/>
+    <string id="PAI_OFFENSE_RELIEF" text="{TARGET}的援军（{RELIEF}）强于我方的 {OURS}；放弃围城。"/>
+    <string id="PAI_OFFENSE_STATUS" text="{COUNT} 支部队正围攻{TARGET}，已持续 {DAYS} 天{ARMY}。"/>
+    <string id="PAI_OFFENSE_TARGET_CHANGED" text="{TARGET}已易主；进攻取消。"/>
+    <string id="PAI_OFFENSE_TARGET_FRIENDLY" text="{TARGET}不再是敌方；进攻结束。"/>
+    <string id="PAI_OFFENSE_TIMEOUT" text="对{TARGET}的围城已拖了 {DAYS} 天；放弃。"/>
+    <string id="PAI_ORDER_AUTOMATIC_HINT" text="由自动防御或自动进攻下达。结束后会恢复之前的命令。"/>
+    <string id="PAI_ORDER_DELETE" text="移除命令"/>
+    <string id="PAI_ORDER_MOVE_DOWN" text="下移"/>
+    <string id="PAI_ORDER_MOVE_UP" text="上移"/>
+    <string id="PAI_ORDER_PATROL_CLAN_HINT" text="在家族领地之间巡游，每天前往下一处领地。"/>
     <string id="PAI_order_stopped_invalid_target" text="{PARTY} 因目标无效，已停止执行“{ORDER}”。"/>
     <string id="PAI_order_stopped_no_valid_targets" text="{PARTY} 因找不到合适目标，已停止执行“{ORDER}”。"/>
     <string id="PAI_order_stopped_peace" text="{PARTY} 因目标所属阵营已不再是敌人，已停止执行“{ORDER}”。"/>
     <string id="PAI_order_stopped_siege" text="{PARTY} 因目标正遭围攻，已停止执行“{ORDER}”。"/>
     <string id="PAI_order_stopped_unreachable" text="{PARTY} 因无法抵达目标，已停止执行“{ORDER}”。"/>
     <string id="PAI_order_stopped_war" text="{PARTY} 因目标所属阵营已成为敌人，已停止执行“{ORDER}”。"/>
-    <string id="PAI0m3MyqBm" text="必须先载入存档才能使用此菜单。"/>
-    <string id="PAI4nxGNBim" text="编辑"/>
-    <string id="PAIFq36oGcZ" text=" - 每日预算："/>
-    <string id="PAIGHyxwrgx" text="巡逻半径"/>
-    <string id="PAIh3IMyAgt" text="启用兵种转换后无需遣散多余士兵，因为他们可以直接转换为你需要的兵种。"/>
-    <string id="PAIhtLyrJ96" text="巡逻半径：{PERCENTAGE}%"/>
-    <string id="PAIi6it5mnL" text="输入遣散多余士兵的比例"/>
-    <string id="PAIkYqZ80Dt" text="数值必须大于 {MINVALUE}"/>
-    <string id="PAIMaf6ECHe" text="调整巡逻命令的半径，直到得到满意效果。百分比以默认巡逻半径为基准。"/>
-    <string id="PAIQVkiTiSf" text="超过此比例时遣散多余士兵："/>
-    <string id="PAIRCSZxGNl" text="允许此部队从你的驻军中带走士兵。"/>
-    <string id="PAIrFBBz1kW" text="遣散不符合部队模板或指定兵种比例的士兵。只有当部队人数超过指定比例后才会执行，以免部队陷入兵力不足。"/>
-    <string id="PAItU2CGhot" text="当部队人数超过人数上限的该百分比后，开始遣散不符合模板的士兵。"/>
-    <string id="PAIu0g5Z5Yk" text="允许此部队从敌方定居点招募士兵。这对深入敌后的部队可能有用，但也有风险。"/>
-    <string id="PAIY2oX1c1Y" text="从敌方定居点招募"/>
-    <string id="PAIZX2CAEyH" text="数值必须小于 {MAXVALUE}"/>
-    <string id="PAhQoukaUbN" text="允许从定居点带走士兵"/>
-    <string id="PAI_BUY_HORSES_BUDGET_TITLE" text="买马预算"/>
-    <string id="PAI_ENHANCED_BATTLE_AI" text="自适应野战 AI"/>
-    <string id="PAI_ENHANCED_BATTLE_AI_HINT" text="加入按实际战力判断的混合兵种战术，并与原生战术正常竞争，不再强制覆盖全部原生战术。检测到 Realistic Battle AI 时仍由其优先接管。"/>
-    <string id="PAI_BATTLE_COMMANDER_CANNOT_RESUME" text="主角失去战斗能力后无法收回编队指挥权。"/>
-    <string id="PAI_AVOID_SIEGE_ARTILLERY" text="规避攻城火炮"/>
-    <string id="PAI_AVOID_SIEGE_ARTILLERY_HINT" text="预测重型攻城炮弹落点，让危险区内的 AI 士兵短暂散开，随后恢复原生攻城行为。正在近战、攀爬或操作器械的士兵不会被打断。"/>
-    <string id="PAI_BATTLE_ASSESSMENT" text="战力估算：我方 {ALLY} 人，敌方 {ENEMY} 人；我方实际战力约为敌军的 {POWER}%。"/>
-    <string id="PAI_EQUAL_NUMBERS_WARNING" text="双方人数接近，但兵阶、装备和兵种克制使我方实际处于明显劣势。"/>
-    <string id="PAI_AUTO_CREATE_CARAVANS" text="自动组建家族商队"/>
-    <string id="PAI_CLAN_AUTOMATION" text="家族自动化"/>
-    <string id="PAI_AUTO_CREATE_CARAVANS_HINT" text="玩家主队停留在安全城镇时，每天最多付费组建一支商队，直至达到上限。系统会按贸易、侦察和战术技能自动选择最合适的同伴。"/>
-    <string id="PAI_AUTO_ELITE_CARAVANS" text="组建精锐商队"/>
-    <string id="PAI_AUTO_ELITE_CARAVANS_HINT" text="使用价格更高、初始护卫更强的精锐商队。"/>
-    <string id="PAI_AUTO_CARAVAN_LIMIT" text="商队数量上限"/>
-    <string id="PAI_AUTO_CARAVAN_LIMIT_HINT" text="玩家家族可同时存在的商队上限。“最大”表示不限制。"/>
-    <string id="PAI_AUTO_CARAVAN_RESERVE" text="保留金币"/>
-    <string id="PAI_AUTO_CARAVAN_RESERVE_HINT" text="只有支付组建费用后仍能保留这些金币时，才会自动建立商队。"/>
-    <string id="PAI_AUTO_CARAVAN_CREATED" text="{HERO} 已在 {SETTLEMENT} 自动组建商队，花费 {COST}{GOLD_ICON}。"/>
-    <string id="PAI_AUTOMATION_LEVEL" text="定居点自动化"/>
-    <string id="PAI_AUTOMATION_LEVEL_HINT" text="设置部队进入城市或村庄后自动执行的操作。完全自动还会按模板配兵，并用队伍库存为队内英雄更换更优装备。"/>
-    <string id="PAI_AUTOMATION_OFF" text="关闭"/>
-    <string id="PAI_AUTOMATION_RECRUIT" text="仅招募"/>
-    <string id="PAI_AUTOMATION_UPGRADE" text="招募并升级"/>
-    <string id="PAI_AUTOMATION_FULL" text="完全自动"/>
-    <string id="PAI_AUTOMATION_RESULT" text="部队 AI：招募 {RECRUITED}，升级 {UPGRADED}，配兵 {BALANCED}，换装 {EQUIPPED}。"/>
-    <string id="PAI_BUILTIN_STRONGEST" text="内置：v1.5.2 全阵营最强"/>
-    <string id="PAI_BUILTIN_CULTURE" text="内置：{CULTURE} 最优解"/>
+    <string id="PAI_ORDERS_HEADER" text="命令"/>
+    <string id="PAI_PASTE_HINT" text="把复制的设置粘贴到所有勾选的条目（Ctrl+V）。"/>
+    <string id="PAI_PASTED" text="设置已粘贴到 {COUNT} 个条目。"/>
+    <string id="PAI_PLAYER_STATUS_HINT" text="自动驾驭状态；未开启时显示进城自动化等级。"/>
+    <string id="PAI_POLICY_HEADER" text="财政策略"/>
+    <string id="PAI_PRIORITY_CRITICAL" text="最高"/>
+    <string id="PAI_PRIORITY_HIGH" text="高"/>
+    <string id="PAI_PRIORITY_LOW" text="低"/>
+    <string id="PAI_PRIORITY_NORMAL" text="正常"/>
+    <string id="PAI_QUEUED_ORDERS" text="队列中还有 {COUNT} 条命令。"/>
+    <string id="PAI_RECOMMENDED_COMPOSITION" text="推荐编成"/>
+    <string id="PAI_RESERVE_STATUS" text="储备 {RESERVE}；自动化可动用 {SPENDABLE}"/>
+    <string id="PAI_ROSTER_ANYONE" text="任何符合条件的英雄"/>
+    <string id="PAI_SALES_SUMMARY" text="在{TOWN}出售：俘虏 {PRISONERS} 金币，物品 {LOOT} 金币。"/>
+    <string id="PAI_SECONDS" text="{SECONDS} 秒"/>
+    <string id="PAI_SELL_GOODS" text="同时出售贸易品"/>
+    <string id="PAI_SELL_GOODS_HINT" text="同时卖掉贸易品（不含食物）。如果你手动跑商，请关闭此项。"/>
+    <string id="PAI_SELL_LOOT" text="进城时出售武器和护甲"/>
+    <string id="PAI_SELL_LOOT_HINT" text="卖掉部队物品栏中的全部武器、护甲和马具（坐骑、食物、书籍和旗帜绝不出售）。在物品栏中锁定物品即可保留。请先给同伴配装：开启完全自动化后这一步会自动完成。"/>
+    <string id="PAI_SELL_PRISONERS" text="进城时出售俘虏"/>
+    <string id="PAI_SELL_PRISONERS_HINT" text="进入城镇时把所有非英雄俘虏卖给城镇。在部队界面锁定的俘虏会保留。"/>
+    <string id="PAI_SELL_PRISONERS_KEEP" text="保留符合模板的俘虏"/>
+    <string id="PAI_SELL_PRISONERS_KEEP_HINT" text="处于部队模板升级路线上的俘虏会被保留，以便日后招募。"/>
+    <string id="PAI_STATUS" text="状态"/>
+    <string id="PAI_TAB_ECONOMY" text="经济"/>
+    <string id="PAI_TAB_FIEFS" text="领地"/>
+    <string id="PAI_TAB_PARTIES" text="部队"/>
+    <string id="PAI_TAB_SETTINGS" text="设置"/>
+    <string id="PAI_TAB_TEMPLATES" text="模板"/>
+    <string id="PAI_TEMPLATE_BUILTIN" text="内置"/>
+    <string id="PAI_TEMPLATE_CUSTOM" text="自定义"/>
+    <string id="PAI_TEMPLATE_DELETE_HINT" text="使用此模板的部队将重置为无模板。"/>
+    <string id="PAI_TEMPLATE_HINT" text="这支部队追求的顶级兵种。招募、升级和转换都会优先选择通往这些兵种的升级路线。"/>
     <string id="PAI_TEMPLATE_IMPORT_BUTTON" text="在线模板"/>
     <string id="PAI_TEMPLATE_IMPORT_HINT" text="从 HTTPS JSON 地址导入并校验兵种模板及配兵比例。"/>
-    <string id="PAI_TEMPLATE_IMPORT_TITLE" text="导入在线模板"/>
-    <string id="PAI_TEMPLATE_IMPORT_PROMPT" text="粘贴 Party AI 模板 JSON 文件的 HTTPS 地址。"/>
     <string id="PAI_TEMPLATE_IMPORT_PENDING" text="已有模板正在下载。"/>
+    <string id="PAI_TEMPLATE_IMPORT_PROMPT" text="粘贴 Party AI 模板 JSON 文件的 HTTPS 地址。"/>
     <string id="PAI_TEMPLATE_IMPORT_SUCCESS" text="已导入模板：{NAME}"/>
-    <string id="PAI_TOWN_MANAGEMENT_BUTTON" text="城镇管理"/>
-    <string id="PAI_TOWN_COPY_SETTINGS" text="城镇管理设置"/>
-    <string id="PAI_TOWN_OPTIONS_TITLE" text="城镇管理"/>
-    <string id="PAI_TOWN_SETTLEMENT_OPTIONS_TITLE" text="管理 {SETTLEMENT}"/>
-    <string id="PAI_TOWN_GENERAL_HEADER" text="通用"/>
-    <string id="PAI_TOWN_CONSTRUCTION_HEADER" text="建设"/>
-    <string id="PAI_TOWN_GOVERNOR_HEADER" text="总督"/>
-    <string id="PAI_TOWN_DEFENSE_HEADER" text="自动派防"/>
-    <string id="PAI_TOWN_DONATION_HEADER" text="补充驻军"/>
-    <string id="PAI_TOWN_GARRISON_HEADER" text="驻军"/>
-    <string id="PAI_TOWN_ENABLED" text="启用城镇管理"/>
-    <string id="PAI_TOWN_ENABLED_HINT" text="允许 Party AI 按以下设置管理玩家家族的城镇与城堡。"/>
-    <string id="PAI_TOWN_SETTLEMENT_ENABLED" text="为此封地启用城镇 AI"/>
-    <string id="PAI_TOWN_SETTLEMENT_ENABLED_HINT" text="全局城镇管理开启时，允许城镇 AI 管理此定居点。"/>
-    <string id="PAI_TOWN_DEFAULT_STRATEGY" text="默认策略"/>
-    <string id="PAI_TOWN_DEFAULT_STRATEGY_HINT" text="新封地及选择跟随全局默认的现有封地会采用此策略。经济策略会优先提升繁荣，以及税收、关税、工坊和村庄带来的收益。"/>
-    <string id="PAI_TOWN_STRATEGY" text="管理策略"/>
-    <string id="PAI_TOWN_STRATEGY_HINT" text="均衡兼顾粮食、治安、繁荣与防务；稳定侧重忠诚、治安与粮食；经济侧重繁荣，以及税收、关税、工坊和村庄带来的收益；军事侧重城墙、民兵与驻军。忠诚或粮食危机会优先于所选方向。"/>
-    <string id="PAI_TOWN_STRATEGY_BALANCED" text="均衡"/>
-    <string id="PAI_TOWN_STRATEGY_STABILITY" text="稳定"/>
-    <string id="PAI_TOWN_STRATEGY_ECONOMY" text="经济"/>
-    <string id="PAI_TOWN_STRATEGY_MILITARY" text="军事"/>
-    <string id="PAI_TOWN_BUILD_QUEUE" text="管理建筑队列"/>
-    <string id="PAI_TOWN_BUILD_QUEUE_HINT" text="根据所选策略和当前紧急状况选择并重排建设项目。"/>
-    <string id="PAI_TOWN_DAILY_PROJECTS" text="管理每日项目"/>
-    <string id="PAI_TOWN_DAILY_PROJECTS_HINT" text="无需建设建筑或出现紧急状况时，自动选择持续项目。"/>
-    <string id="PAI_TOWN_AUTO_FUND" text="自动投入建设资金"/>
-    <string id="PAI_TOWN_AUTO_FUND_HINT" text="从玩家金币向定居点建设储备投入资金，但不会低于设定的玩家保留金币。"/>
-    <string id="PAI_TOWN_AUTO_FUND_SETTLEMENT_HINT" text="在全局玩家保留金币限制内，自动向此定居点的建设储备投入资金。"/>
-    <string id="PAI_TOWN_PLAYER_GOLD_RESERVE" text="玩家保留金币"/>
-    <string id="PAI_TOWN_PLAYER_GOLD_RESERVE_HINT" text="自动投入建设资金时，不会让玩家金币低于此数值。"/>
-    <string id="PAI_TOWN_RESERVE_TARGET" text="建设储备目标"/>
-    <string id="PAI_TOWN_RESERVE_TARGET_HINT" text="定居点建设储备达到此数值后停止投入。"/>
-    <string id="PAI_TOWN_SETTLEMENT_RESERVE_TARGET_HINT" text="此定居点的建设储备达到该数值后停止投入。"/>
-    <string id="PAI_TOWN_DAILY_DEPOSIT_LIMIT" text="每日投入上限"/>
-    <string id="PAI_TOWN_DAILY_DEPOSIT_LIMIT_HINT" text="城镇 AI 每天可向单个定居点投入的建设资金上限。"/>
-    <string id="PAI_TOWN_LOYALTY_THRESHOLD" text="忠诚紧急阈值"/>
-    <string id="PAI_TOWN_LOYALTY_THRESHOLD_HINT" text="忠诚低于此数值时，稳定类项目会优先于所选策略。"/>
-    <string id="PAI_TOWN_FOOD_SHORTAGE_DAYS" text="缺粮预警天数"/>
-    <string id="PAI_TOWN_FOOD_SHORTAGE_DAYS_HINT" text="预计在这些天数内缺粮时，将其视为紧急状况。"/>
-    <string id="PAI_TOWN_GOVERNOR_MODE" text="总督模式"/>
-    <string id="PAI_TOWN_GOVERNOR_MODE_HINT" text="推荐合适的总督，或自动任命总督。自动任命只会使用符合条件的玩家家族英雄。"/>
-    <string id="PAI_TOWN_GOVERNOR_OFF" text="关闭"/>
-    <string id="PAI_TOWN_GOVERNOR_RECOMMEND" text="仅推荐"/>
-    <string id="PAI_TOWN_GOVERNOR_ASSIGN" text="自动任命"/>
-    <string id="PAI_TOWN_GOVERNOR_REASSIGN" text="允许更换总督"/>
-    <string id="PAI_TOWN_GOVERNOR_REASSIGN_HINT" text="自动总督模式可在出现明显更优人选时替换现任总督。"/>
-    <string id="PAI_TOWN_GOVERNOR_COOLDOWN" text="更换总督冷却"/>
-    <string id="PAI_TOWN_GOVERNOR_COOLDOWN_HINT" text="城镇 AI 更换其自动任命的总督前至少等待的天数。"/>
+    <string id="PAI_TEMPLATE_IMPORT_TITLE" text="导入在线模板"/>
+    <string id="PAI_TEMPLATE_IMPORTED" text="已导入"/>
+    <string id="PAI_TEMPLATE_TARGETS" text="目标兵种"/>
+    <string id="PAI_TEMPLATE_TROOPS" text="升级路线上的兵种"/>
+    <string id="PAI_TEMPLATE_USED_BY" text="{COUNT} 个条目使用中"/>
+    <string id="PAI_TIER" text="{TIER} 级"/>
+    <string id="PAI_TOWN_APPLY_DEFAULTS_EXISTING" text="把默认设置应用到所有领地"/>
+    <string id="PAI_TOWN_APPLY_DEFAULTS_EXISTING_HINT" text="让玩家家族当前所有城镇与城堡开始跟随这些全局默认设置。各封地的启用或停用状态保持不变。"/>
     <string id="PAI_TOWN_AUTO_DEFENSE" text="自动调遣守军"/>
     <string id="PAI_TOWN_AUTO_DEFENSE_HINT" text="将合适的玩家家族部队临时调往受威胁定居点，结束后恢复其原有命令。"/>
-    <string id="PAI_TOWN_SETTLEMENT_AUTO_DEFENSE" text="自动防守此封地"/>
-    <string id="PAI_TOWN_SETTLEMENT_AUTO_DEFENSE_HINT" text="此定居点受到威胁时，允许城镇 AI 调遣合适的玩家家族部队。"/>
-    <string id="PAI_TOWN_DEFAULT_DEFENSE" text="全局默认：启用自动防务"/>
+    <string id="PAI_TOWN_AUTO_DONATE" text="自动补充驻军"/>
+    <string id="PAI_TOWN_AUTO_DONATE_HINT" text="允许部队选项中准许捐赠的防守部队在抵达时一次性转移士兵，同时保留最低兵力。当新增的驻军工资会让日收支低于财政下限时停止捐赠。"/>
+    <string id="PAI_TOWN_AUTO_FUND" text="自动投入建设资金"/>
+    <string id="PAI_TOWN_AUTO_FUND_SETTLEMENT_HINT" text="在全局金币储备之内，把玩家金币转入这座领地的建设储备。"/>
+    <string id="PAI_TOWN_BUILD_QUEUE" text="管理建筑队列"/>
+    <string id="PAI_TOWN_BUILD_QUEUE_HINT" text="根据所选策略和当前紧急状况选择并重排建设项目。"/>
+    <string id="PAI_TOWN_CONSTRUCTION_HEADER" text="建设"/>
+    <string id="PAI_TOWN_DAILY_DEPOSIT_LIMIT" text="每日投入上限"/>
+    <string id="PAI_TOWN_DAILY_DEPOSIT_LIMIT_HINT" text="城镇 AI 每天可向单个定居点投入的建设资金上限。"/>
+    <string id="PAI_TOWN_DAILY_PROJECTS" text="管理每日项目"/>
+    <string id="PAI_TOWN_DAILY_PROJECTS_HINT" text="无需建设建筑或出现紧急状况时，自动选择持续项目。"/>
+    <string id="PAI_TOWN_DAYS" text="{DAYS} 天"/>
+    <string id="PAI_TOWN_DEFAULT_AUTO_FUND_HINT" text="为跟随全局默认的领地启用自动建设拨款。拨款绝不会花到财政金币储备以下。"/>
+    <string id="PAI_TOWN_DEFAULT_BUILD_QUEUE_HINT" text="对跟随全局默认设置的封地启用建筑队列管理。"/>
+    <string id="PAI_TOWN_DEFAULT_DAILY_DEPOSIT_LIMIT_HINT" text="跟随全局默认设置的封地会采用此每日建设投入上限。"/>
+    <string id="PAI_TOWN_DEFAULT_DAILY_PROJECTS_HINT" text="对跟随全局默认设置的封地启用每日项目管理。"/>
+    <string id="PAI_TOWN_DEFAULT_DEFENSE" text="默认防守领地"/>
     <string id="PAI_TOWN_DEFAULT_DEFENSE_HINT" text="对跟随全局默认设置的封地启用自动防务。"/>
-    <string id="PAI_TOWN_DEFENSE_PRIORITY" text="防务优先级"/>
-    <string id="PAI_TOWN_DEFENSE_PRIORITY_HINT" text="威胁相近时，可用防守部队会优先派往优先级更高的定居点。"/>
     <string id="PAI_TOWN_DEFAULT_DEFENSE_PRIORITY" text="全局默认防务优先级"/>
     <string id="PAI_TOWN_DEFAULT_DEFENSE_PRIORITY_HINT" text="新封地及选择跟随全局默认的现有封地会采用此防务优先级。"/>
-    <string id="PAI_TOWN_DEFENSE_PRIORITY_LOW" text="低"/>
-    <string id="PAI_TOWN_DEFENSE_PRIORITY_NORMAL" text="普通"/>
-    <string id="PAI_TOWN_DEFENSE_PRIORITY_HIGH" text="高"/>
-    <string id="PAI_TOWN_DEFENSE_PRIORITY_CRITICAL" text="最高"/>
-    <string id="PAI_TOWN_THREAT_RADIUS" text="威胁半径"/>
-    <string id="PAI_TOWN_THREAT_RADIUS_HINT" text="统计定居点附近敌军时采用的地图半径。"/>
-    <string id="PAI_TOWN_DISPATCH_THRESHOLD" text="派防威胁比例"/>
-    <string id="PAI_TOWN_DISPATCH_THRESHOLD_HINT" text="附近敌军战力达到本地防御战力的此比例时派出防守部队。"/>
-    <string id="PAI_TOWN_RELEASE_THRESHOLD" text="解除派防比例"/>
-    <string id="PAI_TOWN_RELEASE_THRESHOLD_HINT" text="威胁低于此比例后恢复防守部队的原有命令。应低于派防比例。"/>
-    <string id="PAI_TOWN_MIN_PARTY_RATIO" text="最低部队兵力"/>
-    <string id="PAI_TOWN_MIN_PARTY_RATIO_HINT" text="只有人数达到部队上限此比例的部队才会被自动派防。"/>
-    <string id="PAI_TOWN_RESERVE_PARTIES" text="机动预备部队"/>
-    <string id="PAI_TOWN_RESERVE_PARTIES_HINT" text="城镇 AI 必须保留且不派防的合适家族部队数量。"/>
-    <string id="PAI_TOWN_MAX_DEFENDERS" text="每个封地最多派防部队"/>
-    <string id="PAI_TOWN_MAX_DEFENDERS_HINT" text="城镇 AI 同时可向单个定居点派遣的家族部队上限。"/>
-    <string id="PAI_TOWN_MIN_ASSIGNMENT_DAYS" text="最短驻守天数"/>
-    <string id="PAI_TOWN_MIN_ASSIGNMENT_DAYS_HINT" text="除非命令失效，否则防守部队至少驻守这些天数。"/>
-    <string id="PAI_TOWN_REASSIGNMENT_COOLDOWN" text="部队再次派防冷却"/>
-    <string id="PAI_TOWN_REASSIGNMENT_COOLDOWN_HINT" text="解除驻守后，经过这些天数才能再次自动调遣同一支部队。"/>
     <string id="PAI_TOWN_DEFAULT_DEFENSE_STRENGTH" text="全局默认目标防御战力"/>
     <string id="PAI_TOWN_DEFAULT_DEFENSE_STRENGTH_HINT" text="跟随全局默认设置的封地会采用此总防御战力目标。设为 0 时，根据封地类型、繁荣度和优先级自动计算目标。"/>
-    <string id="PAI_TOWN_TARGET_DEFENSE_STRENGTH" text="目标防御战力"/>
-    <string id="PAI_TOWN_TARGET_DEFENSE_STRENGTH_HINT" text="期望的本地总防御战力。设为 0 由城镇 AI 自动计算。"/>
-    <string id="PAI_TOWN_AUTO_DONATE" text="自动补充驻军"/>
-    <string id="PAI_TOWN_AUTO_DONATE_HINT" text="允许部队选项中准许捐兵的派防部队在抵达时移交一次士兵，同时保留最低兵力。"/>
-    <string id="PAI_TOWN_DONATION_TARGET" text="驻军补充目标"/>
-    <string id="PAI_TOWN_DONATION_TARGET_HINT" text="驻军达到此人数后停止自动移交士兵。设为 0 时使用各定居点目标。"/>
-    <string id="PAI_TOWN_MAX_DONATION_RATIO" text="最大移交比例"/>
-    <string id="PAI_TOWN_MAX_DONATION_RATIO_HINT" text="一次驻守任务中最多可从被派遣部队移交的士兵比例。"/>
-    <string id="PAI_TOWN_MIN_REMAINING_TROOPS" text="部队最低留兵"/>
-    <string id="PAI_TOWN_MIN_REMAINING_TROOPS_HINT" text="向驻军移交士兵时，绝不会让被派遣部队低于此人数。"/>
-    <string id="PAI_TOWN_TARGET_GARRISON_TROOPS" text="目标驻军人数"/>
-    <string id="PAI_TOWN_TARGET_GARRISON_TROOPS_HINT" text="自动补充驻军的目标人数。设为 0 关闭固定人数目标。"/>
-    <string id="PAI_TOWN_DAYS" text="{DAYS} 天"/>
-    <string id="PAI_TOWN_NO_GARRISON" text="无驻军"/>
-    <string id="PAI_TOWN_GARRISON_ONLY" text="仅驻军管理"/>
-    <string id="PAI_TOWN_GARRISON_ONLY_HINT" text="此封地不属于玩家家族，因此这里只管理驻军兵种与模板。"/>
-    <string id="PAI_town_governor_recommendation" text="建议任命 {HERO} 为 {SETTLEMENT} 的总督。"/>
-    <string id="PAI_town_governor_assigned" text="已任命 {HERO} 为 {SETTLEMENT} 的总督。"/>
-    <string id="PAI_TOWN_APPLY_DEFAULTS_EXISTING" text="保存时将全局默认应用到现有封地"/>
-    <string id="PAI_TOWN_APPLY_DEFAULTS_EXISTING_HINT" text="让玩家家族当前所有城镇与城堡开始跟随这些全局默认设置。各封地的启用或停用状态保持不变。"/>
-    <string id="PAI_TOWN_USE_GLOBAL_DEFAULTS" text="跟随全局城镇默认设置"/>
-    <string id="PAI_TOWN_USE_GLOBAL_DEFAULTS_HINT" text="让此封地与全局建设、总督和防务默认设置保持同步。此封地的启用开关仍独立生效。"/>
-    <string id="PAI_TOWN_MANAGEMENT_STATUS_HINT" text="全局启用是总开关。每个封地可以跟随全局默认设置，也可以保留明确的本地设置。"/>
-    <string id="PAI_TOWN_GOVERNOR_STATUS_HINT" text="自动任命模式会在下一次每日城镇更新时任命一名符合条件且尚未任职的玩家家族英雄。仅推荐模式只会显示最佳候选人。"/>
-    <string id="PAI_TOWN_ECONOMY_STATUS_HINT" text="缺粮或忠诚危机会暂时优先于收益。否则经济策略会侧重税收、关税、繁荣、工坊、村庄产出和降低驻军成本。参考净收益仅为经营估算，并非家族财务总额。"/>
-    <string id="PAI_TOWN_FOOD_STABLE" text="无限"/>
-    <string id="PAI_TOWN_STATUS_GLOBAL_PAUSED" text="已暂停：全局城镇管理已关闭。"/>
-    <string id="PAI_TOWN_STATUS_LOCAL_PAUSED" text="此封地的城镇管理已暂停。"/>
-    <string id="PAI_TOWN_STATUS_GLOBAL_ACTIVE" text="运行中：正在跟随全局默认设置。"/>
-    <string id="PAI_TOWN_STATUS_CUSTOM_ACTIVE" text="运行中：正在使用封地自定义设置。"/>
-    <string id="PAI_TOWN_STATUS_GOVERNOR_ASSIGNED" text="总督：{HERO}。"/>
-    <string id="PAI_TOWN_STATUS_NO_GOVERNOR_PAUSED" text="无总督；城镇 AI 已暂停。"/>
-    <string id="PAI_TOWN_STATUS_NO_GOVERNOR_OFF" text="无总督；总督管理已关闭。"/>
-    <string id="PAI_TOWN_STATUS_NO_GOVERNOR_CANDIDATE" text="无总督；当前没有符合条件且未任职的家族英雄。"/>
-    <string id="PAI_TOWN_STATUS_GOVERNOR_RECOMMENDED" text="无总督；推荐人选：{HERO}。切换为“自动任命”即可自动任命。"/>
-    <string id="PAI_TOWN_STATUS_GOVERNOR_PENDING" text="无总督；保存这些设置时或下次每日更新时将自动任命 {HERO}。"/>
-    <string id="PAI_TOWN_STATUS_FOOD_EMERGENCY" text="粮食危机：库存 {FOOD}，每日变化 {CHANGE}，预计剩余天数：{DAYS}。稳定措施优先。"/>
-    <string id="PAI_TOWN_STATUS_LOYALTY_EMERGENCY" text="忠诚危机：当前忠诚 {LOYALTY}。稳定措施优先于收益。"/>
-    <string id="PAI_TOWN_STATUS_ECONOMY" text="繁荣 {PROSPERITY}；粮食变化 {FOOD}；关税 {TARIFFS}，项目收入 {PROJECTS}，村庄收入 {VILLAGES}，驻军工资 {WAGE}；参考净收益 {NET}。"/>
-    <string id="PAI_TOWN_DEFAULT_BUILD_QUEUE" text="全局默认：管理建筑队列"/>
-    <string id="PAI_TOWN_DEFAULT_BUILD_QUEUE_HINT" text="对跟随全局默认设置的封地启用建筑队列管理。"/>
-    <string id="PAI_TOWN_DEFAULT_DAILY_PROJECTS" text="全局默认：管理每日项目"/>
-    <string id="PAI_TOWN_DEFAULT_DAILY_PROJECTS_HINT" text="对跟随全局默认设置的封地启用每日项目管理。"/>
-    <string id="PAI_TOWN_DEFAULT_AUTO_FUND" text="全局默认：投入建设资金"/>
-    <string id="PAI_TOWN_DEFAULT_AUTO_FUND_HINT" text="对跟随全局默认设置的封地启用自动建设投入。"/>
-    <string id="PAI_TOWN_DEFAULT_GOVERNOR_REASSIGN" text="全局默认：允许更换总督"/>
-    <string id="PAI_TOWN_DEFAULT_GOVERNOR_REASSIGN_HINT" text="允许为跟随全局默认设置的封地更换总督。空缺总督职位会优先使用未任职的英雄。"/>
-    <string id="PAI_TOWN_DEFAULT_GOVERNOR_MODE" text="全局默认总督模式"/>
-    <string id="PAI_TOWN_DEFAULT_GOVERNOR_MODE_HINT" text="新封地及选择跟随全局默认的现有封地会采用此总督模式。“自动任命”会自动任命符合条件且未任职的家族英雄。"/>
-    <string id="PAI_TOWN_DEFAULT_RESERVE_TARGET" text="全局默认建设储备目标"/>
-    <string id="PAI_TOWN_DEFAULT_RESERVE_TARGET_HINT" text="跟随全局默认设置的封地会采用此建设储备目标。"/>
-    <string id="PAI_TOWN_DEFAULT_DAILY_DEPOSIT_LIMIT" text="全局默认每日投入上限"/>
-    <string id="PAI_TOWN_DEFAULT_DAILY_DEPOSIT_LIMIT_HINT" text="跟随全局默认设置的封地会采用此每日建设投入上限。"/>
-    <string id="PAI_TOWN_DEFAULT_LOYALTY_THRESHOLD" text="全局默认忠诚紧急阈值"/>
-    <string id="PAI_TOWN_DEFAULT_LOYALTY_THRESHOLD_HINT" text="跟随全局默认设置的封地会采用此忠诚紧急阈值。"/>
-    <string id="PAI_TOWN_DEFAULT_FOOD_SHORTAGE_DAYS" text="全局默认缺粮预警天数"/>
     <string id="PAI_TOWN_DEFAULT_FOOD_SHORTAGE_DAYS_HINT" text="跟随全局默认设置的封地会采用此缺粮预警天数。"/>
-    <string id="PAI_TOWN_DEFAULT_GOVERNOR_COOLDOWN" text="全局默认更换总督冷却"/>
-    <string id="PAI_TOWN_DEFAULT_GOVERNOR_COOLDOWN_HINT" text="跟随全局默认设置的封地会采用此总督更换冷却。空缺总督职位不受更换冷却限制。"/>
     <string id="PAI_TOWN_DEFAULT_GARRISON_TARGET" text="全局默认目标驻军人数"/>
     <string id="PAI_TOWN_DEFAULT_GARRISON_TARGET_HINT" text="跟随全局默认设置的封地会采用此目标驻军人数。设为 0 关闭固定人数目标。"/>
-    <string id="PAI_UI_COPY" text="复制"/>
-    <string id="PAI_UI_PASTE" text="粘贴"/>
-    <string id="PAI_UI_SELECT_ALL" text="全选"/>
-    <string id="PAI_UI_EMPTY_TITLE" text="暂无可管理的部队或封地"/>
-    <string id="PAI_UI_EMPTY_TEXT" text="创建家族部队、启用商队管理，或取得封地后即可在此管理。"/>
-    <string id="PAI_UI_COLUMN_NAME" text="部队 / 封地"/>
-    <string id="PAI_UI_COLUMN_STRENGTH" text="兵力"/>
-    <string id="PAI_UI_COLUMN_COMPOSITION" text="兵种构成"/>
-    <string id="PAI_UI_COLUMN_TEMPLATE" text="模板"/>
-    <string id="PAI_UI_COLUMN_STATUS" text="命令 / 城镇状态"/>
-    <string id="PAI_UI_COPY_IDLE" text="选择一行以复制其设置。"/>
-    <string id="PAI_UI_COPY_READY" text="已选择一个复制来源，点击“复制”继续。"/>
-    <string id="PAI_UI_PASTE_IDLE" text="已复制 {SOURCE} 的设置。请选择一个或多个兼容目标。"/>
-    <string id="PAI_UI_PASTE_READY" text="已复制 {SOURCE} 的设置，当前选择 {COUNT} 个目标。"/>
-    <string id="PAI_TOWN_STATUS_DISABLED" text="城镇 AI 已关闭"/>
-    <string id="PAI_TOWN_NO_GOVERNOR" text="无总督"/>
-    <string id="PAI_TOWN_ROW_SUMMARY" text="{MANAGEMENT} | {GOVERNOR} | 繁荣 {PROSPERITY}"/>
+    <string id="PAI_TOWN_DEFAULT_GOVERNOR_COOLDOWN_HINT" text="跟随全局默认设置的封地会采用此总督更换冷却。空缺总督职位不受更换冷却限制。"/>
+    <string id="PAI_TOWN_DEFAULT_GOVERNOR_MODE_HINT" text="新封地及选择跟随全局默认的现有封地会采用此总督模式。“自动任命”会自动任命符合条件且未任职的家族英雄。"/>
+    <string id="PAI_TOWN_DEFAULT_GOVERNOR_REASSIGN_HINT" text="允许为跟随全局默认设置的封地更换总督。空缺总督职位会优先使用未任职的英雄。"/>
+    <string id="PAI_TOWN_DEFAULT_LOYALTY_THRESHOLD_HINT" text="跟随全局默认设置的封地会采用此忠诚紧急阈值。"/>
+    <string id="PAI_TOWN_DEFAULT_RESERVE_TARGET_HINT" text="跟随全局默认设置的封地会采用此建设储备目标。"/>
+    <string id="PAI_TOWN_DEFAULT_STRATEGY" text="默认策略"/>
+    <string id="PAI_TOWN_DEFAULT_STRATEGY_HINT" text="新封地及选择跟随全局默认的现有封地会采用此策略。经济策略会优先提升繁荣，以及税收、关税、工坊和村庄带来的收益。"/>
+    <string id="PAI_TOWN_DEFAULTS_APPLIED" text="所有领地现已跟随全局城镇默认设置。"/>
+    <string id="PAI_TOWN_DEFENSE_HEADER" text="自动派防"/>
+    <string id="PAI_TOWN_DEFENSE_PRIORITY" text="防务优先级"/>
+    <string id="PAI_TOWN_DEFENSE_PRIORITY_HINT" text="威胁相近时，可用防守部队会优先派往优先级更高的定居点。"/>
+    <string id="PAI_TOWN_DISPATCH_THRESHOLD" text="派防威胁比例"/>
+    <string id="PAI_TOWN_DISPATCH_THRESHOLD_HINT" text="附近敌军战力达到本地防御战力的此比例时派出防守部队。"/>
+    <string id="PAI_TOWN_DONATION_HEADER" text="补充驻军"/>
+    <string id="PAI_TOWN_ECONOMY_STATUS_HINT" text="缺粮或忠诚危机会暂时优先于收益。否则经济策略会侧重税收、关税、繁荣、工坊、村庄产出和降低驻军成本。参考净收益仅为经营估算，并非家族财务总额。"/>
+    <string id="PAI_TOWN_ENABLED" text="启用城镇管理"/>
+    <string id="PAI_TOWN_ENABLED_HINT" text="允许 Party AI 按以下设置管理玩家家族的城镇与城堡。"/>
     <string id="PAI_TOWN_FOOD_FALLING" text="{FOOD}（每日 {CHANGE}）"/>
-    <string id="PAI_TOWN_ROW_HINT" text="{SETTLEMENT}&#10;管理：{MANAGEMENT}&#10;总督：{GOVERNOR}&#10;繁荣：{PROSPERITY}&#10;忠诚：{LOYALTY}&#10;粮食：{FOOD}&#10;驻军工资：{WAGE}"/>
+    <string id="PAI_TOWN_FOOD_SHORTAGE_DAYS" text="缺粮预警天数"/>
+    <string id="PAI_TOWN_FOOD_SHORTAGE_DAYS_HINT" text="预计在这些天数内缺粮时，将其视为紧急状况。"/>
+    <string id="PAI_TOWN_FOOD_STABLE" text="无限"/>
+    <string id="PAI_TOWN_GARRISON_HEADER" text="驻军"/>
+    <string id="PAI_TOWN_GARRISON_ONLY" text="仅驻军管理"/>
+    <string id="PAI_TOWN_GARRISON_ONLY_HINT" text="此封地不属于玩家家族，因此这里只管理驻军兵种与模板。"/>
+    <string id="PAI_town_governor_assigned" text="已任命 {HERO} 为 {SETTLEMENT} 的总督。"/>
+    <string id="PAI_TOWN_GOVERNOR_COOLDOWN" text="更换总督冷却"/>
+    <string id="PAI_TOWN_GOVERNOR_COOLDOWN_HINT" text="城镇 AI 更换其自动任命的总督前至少等待的天数。"/>
+    <string id="PAI_TOWN_GOVERNOR_HEADER" text="总督"/>
+    <string id="PAI_TOWN_GOVERNOR_MODE" text="总督模式"/>
+    <string id="PAI_TOWN_GOVERNOR_MODE_HINT" text="推荐合适的总督，或自动任命总督。自动任命只会使用符合条件的玩家家族英雄。"/>
+    <string id="PAI_TOWN_GOVERNOR_REASSIGN" text="允许更换总督"/>
+    <string id="PAI_TOWN_GOVERNOR_REASSIGN_HINT" text="自动总督模式可在出现明显更优人选时替换现任总督。"/>
+    <string id="PAI_town_governor_recommendation" text="建议任命 {HERO} 为 {SETTLEMENT} 的总督。"/>
+    <string id="PAI_TOWN_GOVERNOR_STATUS_HINT" text="自动任命模式会在下一次每日城镇更新时任命一名符合条件且尚未任职的玩家家族英雄。仅推荐模式只会显示最佳候选人。"/>
+    <string id="PAI_TOWN_LOYALTY_THRESHOLD" text="忠诚紧急阈值"/>
+    <string id="PAI_TOWN_LOYALTY_THRESHOLD_HINT" text="忠诚低于此数值时，稳定类项目会优先于所选策略。"/>
+    <string id="PAI_TOWN_MANAGEMENT_STATUS_HINT" text="全局启用是总开关。每个封地可以跟随全局默认设置，也可以保留明确的本地设置。"/>
+    <string id="PAI_TOWN_MAX_DEFENDERS" text="每个封地最多派防部队"/>
+    <string id="PAI_TOWN_MAX_DEFENDERS_HINT" text="城镇 AI 同时可向单个定居点派遣的家族部队上限。"/>
+    <string id="PAI_TOWN_MAX_DONATION_RATIO" text="最大移交比例"/>
+    <string id="PAI_TOWN_MAX_DONATION_RATIO_HINT" text="一次驻守任务中最多可从被派遣部队移交的士兵比例。"/>
+    <string id="PAI_TOWN_MIN_ASSIGNMENT_DAYS" text="最短驻守天数"/>
+    <string id="PAI_TOWN_MIN_ASSIGNMENT_DAYS_HINT" text="除非命令失效，否则防守部队至少驻守这些天数。"/>
+    <string id="PAI_TOWN_MIN_PARTY_RATIO" text="最低部队兵力"/>
+    <string id="PAI_TOWN_MIN_PARTY_RATIO_HINT" text="只有人数达到部队上限此比例的部队才会被自动派防。"/>
+    <string id="PAI_TOWN_MIN_REMAINING_TROOPS" text="部队最低留兵"/>
+    <string id="PAI_TOWN_MIN_REMAINING_TROOPS_HINT" text="向驻军移交士兵时，绝不会让被派遣部队低于此人数。"/>
+    <string id="PAI_TOWN_NO_GARRISON" text="无驻军"/>
+    <string id="PAI_TOWN_NO_GOVERNOR" text="无总督"/>
+    <string id="PAI_TOWN_OPTIONS_TITLE" text="城镇管理"/>
+    <string id="PAI_TOWN_REASSIGNMENT_COOLDOWN" text="部队再次派防冷却"/>
+    <string id="PAI_TOWN_REASSIGNMENT_COOLDOWN_HINT" text="解除驻守后，经过这些天数才能再次自动调遣同一支部队。"/>
+    <string id="PAI_TOWN_RELEASE_THRESHOLD" text="解除派防比例"/>
+    <string id="PAI_TOWN_RELEASE_THRESHOLD_HINT" text="威胁低于此比例后恢复防守部队的原有命令。应低于派防比例。"/>
+    <string id="PAI_TOWN_RESERVE_PARTIES" text="机动预备部队"/>
+    <string id="PAI_TOWN_RESERVE_PARTIES_HINT" text="城镇 AI 必须保留且不派防的合适家族部队数量。"/>
+    <string id="PAI_TOWN_RESERVE_TARGET" text="建设储备目标"/>
+    <string id="PAI_TOWN_ROW_HINT" text="{SETTLEMENT} 管理：{MANAGEMENT} 总督：{GOVERNOR} 繁荣：{PROSPERITY} 忠诚：{LOYALTY} 粮食：{FOOD} 驻军工资：{WAGE}"/>
+    <string id="PAI_TOWN_ROW_SUMMARY" text="{MANAGEMENT} | {GOVERNOR} | 繁荣 {PROSPERITY}"/>
+    <string id="PAI_TOWN_SETTLEMENT_AUTO_DEFENSE" text="自动防守此封地"/>
+    <string id="PAI_TOWN_SETTLEMENT_AUTO_DEFENSE_HINT" text="此定居点受到威胁时，允许城镇 AI 调遣合适的玩家家族部队。"/>
+    <string id="PAI_TOWN_SETTLEMENT_ENABLED" text="为此封地启用城镇 AI"/>
+    <string id="PAI_TOWN_SETTLEMENT_ENABLED_HINT" text="全局城镇管理开启时，允许城镇 AI 管理此定居点。"/>
+    <string id="PAI_TOWN_SETTLEMENT_RESERVE_TARGET_HINT" text="此定居点的建设储备达到该数值后停止投入。"/>
+    <string id="PAI_TOWN_STATUS_CUSTOM_ACTIVE" text="运行中：正在使用封地自定义设置。"/>
+    <string id="PAI_TOWN_STATUS_DISABLED" text="城镇 AI 已关闭"/>
+    <string id="PAI_TOWN_STATUS_ECONOMY" text="繁荣 {PROSPERITY}；粮食变化 {FOOD}；关税 {TARIFFS}，项目收入 {PROJECTS}，村庄收入 {VILLAGES}，驻军工资 {WAGE}；参考净收益 {NET}。"/>
+    <string id="PAI_TOWN_STATUS_FOOD_EMERGENCY" text="粮食危机：库存 {FOOD}，每日变化 {CHANGE}，预计剩余天数：{DAYS}。稳定措施优先。"/>
+    <string id="PAI_TOWN_STATUS_GLOBAL_ACTIVE" text="运行中：正在跟随全局默认设置。"/>
+    <string id="PAI_TOWN_STATUS_GLOBAL_PAUSED" text="已暂停：全局城镇管理已关闭。"/>
+    <string id="PAI_TOWN_STATUS_GOVERNOR_ASSIGNED" text="总督：{HERO}。"/>
+    <string id="PAI_TOWN_STATUS_GOVERNOR_PENDING" text="没有总督；{HERO}将在下次每日更新时被任命。"/>
+    <string id="PAI_TOWN_STATUS_GOVERNOR_RECOMMENDED" text="无总督；推荐人选：{HERO}。切换为“自动任命”即可自动任命。"/>
+    <string id="PAI_TOWN_STATUS_LOCAL_PAUSED" text="此封地的城镇管理已暂停。"/>
+    <string id="PAI_TOWN_STATUS_LOYALTY_EMERGENCY" text="忠诚危机：当前忠诚 {LOYALTY}。稳定措施优先于收益。"/>
+    <string id="PAI_TOWN_STATUS_NO_GOVERNOR_CANDIDATE" text="无总督；当前没有符合条件且未任职的家族英雄。"/>
+    <string id="PAI_TOWN_STATUS_NO_GOVERNOR_OFF" text="无总督；总督管理已关闭。"/>
+    <string id="PAI_TOWN_STATUS_NO_GOVERNOR_PAUSED" text="无总督；城镇 AI 已暂停。"/>
+    <string id="PAI_TOWN_STRATEGY" text="管理策略"/>
+    <string id="PAI_TOWN_STRATEGY_BALANCED" text="均衡"/>
+    <string id="PAI_TOWN_STRATEGY_ECONOMY" text="经济"/>
+    <string id="PAI_TOWN_STRATEGY_HINT" text="均衡兼顾粮食、治安、繁荣与防务；稳定侧重忠诚、治安与粮食；经济侧重繁荣，以及税收、关税、工坊和村庄带来的收益；军事侧重城墙、民兵与驻军。忠诚或粮食危机会优先于所选方向。"/>
+    <string id="PAI_TOWN_STRATEGY_MILITARY" text="军事"/>
+    <string id="PAI_TOWN_STRATEGY_STABILITY" text="稳定"/>
+    <string id="PAI_TOWN_TARGET_DEFENSE_STRENGTH" text="目标防御战力"/>
+    <string id="PAI_TOWN_TARGET_DEFENSE_STRENGTH_HINT" text="期望的本地总防御战力。设为 0 由城镇 AI 自动计算。"/>
+    <string id="PAI_TOWN_TARGET_GARRISON_TROOPS" text="目标驻军人数"/>
+    <string id="PAI_TOWN_TARGET_GARRISON_TROOPS_HINT" text="自动补充驻军的目标人数。设为 0 关闭固定人数目标。"/>
+    <string id="PAI_TOWN_THREAT_RADIUS" text="威胁半径"/>
+    <string id="PAI_TOWN_THREAT_RADIUS_HINT" text="统计定居点附近敌军时采用的地图半径。"/>
+    <string id="PAI_TOWN_USE_GLOBAL_DEFAULTS" text="跟随全局城镇默认设置"/>
+    <string id="PAI_TOWN_USE_GLOBAL_DEFAULTS_HINT" text="让此封地与全局建设、总督和防务默认设置保持同步。此封地的启用开关仍独立生效。"/>
+    <string id="PAI_TOWN_VISITS_HEADER" text="进城事务"/>
+    <string id="PAI_TRADE_HEADER" text="贸易"/>
+    <string id="PAI_TRADE_TOWNS" text="贸易城镇"/>
+    <string id="PAI_TROOPS_HEADER" text="兵员"/>
+    <string id="PAI_UI_COPY" text="复制设置"/>
+    <string id="PAI_UI_COPY_READY" text="复制此条目的设置，即可应用到其他条目。"/>
+    <string id="PAI_UI_EMPTY_FIEFS" text="目前没有可管理的领地。获得一座城镇或城堡，或在“设置”中启用驻军管理。"/>
+    <string id="PAI_UI_EMPTY_PARTIES" text="没有可管理的部队。创建一支家族部队，或在“设置”中启用商队管理。"/>
+    <string id="PAI_UI_EMPTY_TEMPLATES" text="还没有模板。可从游戏兵种树创建，或从网址导入。"/>
+    <string id="PAI_UI_PASTE" text="粘贴到已勾选"/>
+    <string id="PAI_UI_PASTE_IDLE" text="已从{SOURCE}复制。勾选要粘贴到的条目。"/>
+    <string id="PAI_UI_PASTE_READY" text="已从{SOURCE}复制。已勾选 {COUNT} 个条目。"/>
+    <string id="PAI_WAR_HEADER" text="进攻"/>
+    <string id="PAI_WORKSHOP_AUTO" text="自动"/>
+    <string id="PAI_WORKSHOP_BETTER" text="更适合这里：{TYPE}（转产需 {COST} 金币）"/>
+    <string id="PAI_WORKSHOP_BOUGHT" text="已花费 {COST} 金币购买{TOWN}的{TYPE}。"/>
+    <string id="PAI_WORKSHOP_BUY_ADVICE" text="购买建议"/>
+    <string id="PAI_WORKSHOP_BUY_AFFORDABLE" text="财政策略允许购买"/>
+    <string id="PAI_WORKSHOP_BUY_BEST" text="{TOWN}的{TYPE}，售价 {COST} 金币（{AFFORD}）。"/>
+    <string id="PAI_WORKSHOP_BUY_BUTTON" text="买入"/>
+    <string id="PAI_WORKSHOP_BUY_CANNOT_AFFORD" text="购买{TOWN}的{TYPE}（{COST} 金币）会占用储备之上过多的金币。"/>
+    <string id="PAI_WORKSHOP_BUY_LIMIT" text="你的家族等级允许拥有 {MAX} 座工坊，目前已有 {COUNT} 座。"/>
+    <string id="PAI_WORKSHOP_BUY_MODE" text="购买工坊"/>
+    <string id="PAI_WORKSHOP_BUY_MODE_HINT" text="考察你自己城镇以及你正在访问的城镇中显贵拥有的工坊。生产类型在该城评分靠前的工坊才算合格。“仅推荐”只提示；“自动”会在价格不超过储备之上金币的一半、且家族等级允许再拥有一座时买入。"/>
+    <string id="PAI_WORKSHOP_BUY_NONE" text="你的城镇和所在城镇没有值得买的工坊。前往城镇可查看那里的工坊。"/>
+    <string id="PAI_WORKSHOP_BUY_NOW" text="买入推荐的工坊"/>
+    <string id="PAI_WORKSHOP_BUY_RECOMMEND" text="{TOWN}的{TYPE}值得买入（{COST} 金币），详见“经济”标签页。"/>
+    <string id="PAI_WORKSHOP_BUY_TOO_DEAR" text="目前对财政策略来说太贵"/>
+    <string id="PAI_WORKSHOP_CANNOT_AFFORD" text="无法把{TOWN}的{WORKSHOP}改为{TYPE}：需要 {COST} 金币，会突破金币储备。"/>
+    <string id="PAI_WORKSHOP_CANNOT_SELL" text="这个工坊现在无法出售。"/>
+    <string id="PAI_WORKSHOP_CAPITAL" text="资本 {CAPITAL}"/>
+    <string id="PAI_WORKSHOP_IDLE" text="已停工 {DAYS} 天"/>
+    <string id="PAI_WORKSHOP_INCOME" text="{INCOME}/天"/>
+    <string id="PAI_WORKSHOP_MODE" text="工坊管理"/>
+    <string id="PAI_WORKSHOP_MODE_HINT" text="“仅推荐”会为持续亏损的工坊提示更合适的生产类型；“自动切换”会在储备允许时直接支付转产费用。"/>
+    <string id="PAI_WORKSHOP_RECOMMEND" text="{TOWN}的{WORKSHOP}已连续 {DAYS} 天亏损。改为{TYPE}更适合这座城镇（转产需 {COST} 金币）。"/>
+    <string id="PAI_WORKSHOP_REVIEW_DAYS" text="工坊评估周期"/>
+    <string id="PAI_WORKSHOP_REVIEW_DAYS_HINT" text="资本持续下降且没有收入达到多少天后，工坊才被判定为亏损。"/>
+    <string id="PAI_WORKSHOP_RUNNING" text="生产中"/>
+    <string id="PAI_WORKSHOP_SELL" text="出售（{PRICE}）"/>
+    <string id="PAI_WORKSHOP_SELL_HINT" text="按显贵收购价卖给本地显贵。此操作不可撤销。"/>
+    <string id="PAI_WORKSHOP_SELL_PROMPT" text="以 {PRICE} 金币出售{TOWN}的{TYPE}？"/>
+    <string id="PAI_WORKSHOP_SELL_TITLE" text="出售工坊"/>
+    <string id="PAI_WORKSHOP_SOLD" text="已将{TOWN}的工坊以 {PRICE} 金币卖给了{BUYER}。"/>
+    <string id="PAI_WORKSHOP_SUITED" text="很适合这座城镇"/>
+    <string id="PAI_WORKSHOP_SWITCH" text="改为{TYPE}"/>
+    <string id="PAI_WORKSHOP_SWITCH_HINT" text="转换生产类型。费用从你的金币中扣除，且不能突破储备。"/>
+    <string id="PAI_WORKSHOP_SWITCHED" text="{TOWN}的{WORKSHOP}已改为{TYPE}（花费 {COST} 金币）。"/>
+    <string id="PAI_WORKSHOP_TREND" text="{DAYS} 天内 {TREND}"/>
+    <string id="PAI_WORKSHOP_TREND_UNKNOWN" text="正在收集数据..."/>
+    <string id="PAI_WORKSHOPS_HEADER" text="工坊"/>
+    <string id="PAI_YOUR_PARTY" text="你的部队"/>
+    <string id="PAI0oBFsSJO" text="正在巡逻家族领地"/>
+    <string id="PAI1Et6heEa" text="护送部队"/>
+    <string id="PAI1HObVpcg" text="为 {SETTLEMENT} 的驻军选择新模板"/>
+    <string id="PAI2Kzocn92" text="管理范围"/>
+    <string id="PAI42PrfM04" text="部队构成"/>
+    <string id="PAI5AWANWod" text="必须输入数字"/>
+    <string id="PAI5D5Ofcoo" text="{CHARACTER} 与 {TARGET} 之间没有升级路线"/>
+    <string id="PAI68ZMWYZS" text="商队"/>
+    <string id="PAI6hwc2LSt" text="为 {LEADER} 的部队选择新模板"/>
+    <string id="PAI6XKZojTt" text="命令"/>
+    <string id="PAI7L3x9T3p" text="筛选贸易定居点"/>
+    <string id="PAI7v81Hher" text="目前位于你的{DIRECTION}。"/>
+    <string id="PAI8l5Lt9g3" text="如果你是王国统治者，则管理整个王国的部队，而不只是家族部队。"/>
+    <string id="PAI8qha4sZa" text="该英雄是军团领袖，对其部队下达的命令将作用于整个军团。"/>
+    <string id="PAI91kcf3yB" text="必须至少选择一个可升级为 {CHARACTER} 的兵种"/>
+    <string id="PAI9BPfqnUx" text="主动巡逻"/>
+    <string id="PAI9HyjJ7ss" text="选择新模板"/>
+    <string id="PAI9PHY91SP" text="添加命令"/>
+    <string id="PAIAAm1PQy1" text="模板中的兵种不足。"/>
+    <string id="PAIAbEyy75G" text="选择可自动创建部队的英雄"/>
+    <string id="PAIaOu88dqT" text="区域巡逻"/>
+    <string id="PAIb2F6Hyfs" text="巡逻家族领地"/>
+    <string id="PAIBKfwhLn2" text="允许自动创建部队的领队英雄。留空则会考虑所有可用英雄。"/>
+    <string id="PAIBMzCXm1l" text="允许招募士兵"/>
+    <string id="PAIc1pTxSOA" text="{NAME} 超出直接指挥范围"/>
+    <string id="PAIc99C3VmP" text="允许驻军转换兵种。目前必须启用此项才能管理驻军的兵种构成。"/>
+    <string id="PAIcd2NB574" text="每日转换士兵数"/>
+    <string id="PAIcyDMxg8t" text="每日买马预算。"/>
+    <string id="PAId8ZsX3ID" text="家族商队"/>
+    <string id="PAIDJ1aQnLC" text="部队不在军团中且没有当前命令时执行的命令。"/>
+    <string id="PAIdjKjbD9Y" text="选择要直接指挥的部队。默认按 ALT+X 选择附近部队，再按住 ALT 对其下令。"/>
+    <string id="PAIdJOXgi68" text="启用或停用对各类部队的管理。可随时更改；停用曾管理过的类别后，其设置会被忽略，重新启用后恢复生效。"/>
+    <string id="PAIdpT9SuVN" text="当部队人数低于人数上限的该百分比时，会开始招募。"/>
+    <string id="PAIdTWGYLu0" text="驻留于 {TARGET_SETTLEMENT}"/>
+    <string id="PAIDycETWvm" text="攻击 {TARGET_SETTLEMENT}"/>
+    <string id="PAIe2AmH8ga" text="部队 AI 控制"/>
+    <string id="PAIEI3gTLMP" text="护送一支部队"/>
+    <string id="PAIeJ3goSqx" text="王国部队"/>
+    <string id="PAIekKoDXkq" text="选择按键"/>
+    <string id="PAIEUwVpMPm" text="感谢使用部队 AI 控制！按 {KEYBIND} 打开设置面板。"/>
+    <string id="PAIEv0gLuYi" text="选择要复制的设置。"/>
+    <string id="PAIFHytp3D7" text="选择要直接指挥的部队"/>
+    <string id="PAIFQeuWjXA" text="家族驻军"/>
+    <string id="PAIFxvrVYlD" text="启用后，所有 AI 巡逻队都会主动攻击进入范围且能够追上的目标。此项会让“巡逻某地周边”的 AI 行为主动搜寻目标，而不是漫无目的地移动。该效果会应用于所有相关部队，建议等到附庸或王国阶段、地图上强盗较多时再启用。"/>
+    <string id="PAIG8Ela5BJ" text="允许此部队劫掠敌对村庄。关闭后，部队会离开正在劫掠的军团，并将影响力返还给军团领袖。"/>
+    <string id="PAIgE8T3Qxh" text="允许此部队在战后俘虏敌方领主。关闭后，部队会释放俘获的领主。"/>
+    <string id="PAIGHyxwrgx" text="巡逻半径"/>
+    <string id="PAIGJEcA4MB" text="王国驻军"/>
+    <string id="PAIgNGL6W5j" text="防守定居点"/>
+    <string id="PAIgvZTEG1V" text="巡逻家族领地"/>
+    <string id="PAIgXDbzpdD" text="围攻定居点"/>
+    <string id="PAIHANhrppA" text="允许此部队围攻城镇和城堡。关闭后，部队会离开正在围城的军团，并将影响力返还给军团领袖。"/>
+    <string id="PAIhBXucHBM" text="招募士兵"/>
+    <string id="PAIHJFAtbk8" text="命令部队领袖专注于招募士兵。如果分配了兵种模板，部队只会前往提供模板兵种的定居点；这些定居点可能非常遥远。"/>
+    <string id="PAIhmt3dhI6" text="领主部队"/>
+    <string id="PAIHQQPyo2M" text="东方"/>
+    <string id="PAIhSoz6d1X" text="允许此部队招募士兵。若关闭此项，你必须手动补充兵员，否则 AI 可能作出很不合理的行为。"/>
+    <string id="PAIi4vuS6na" text="限制自动创建的家族部队最大数量。"/>
+    <string id="PAIIAZIrPw0" text="除非在模组选项中启用商队兵种转换，否则这些数值对商队无效。"/>
+    <string id="PAIIL6JG6Na" text="前往定居点"/>
+    <string id="PAIImuFNGIe" text="正在招募士兵"/>
+    <string id="PAIIqVpFFAi" text="上限"/>
+    <string id="PAIIraDmoi5" text="商队"/>
+    <string id="PAIj66iTjmT" text="驻留于 {TARGET_SETTLEMENT}"/>
+    <string id="PAIJB8EuhJN" text="允许围城"/>
+    <string id="PAIJkUlgNUw" text="王国驻军"/>
+    <string id="PAIJPxU5978" text="{HERO} 已在 {SETTLEMENT} 附近创建一支新部队"/>
+    <string id="PAIK3xNilPb" text="购买足够的马匹供步行士兵使用，以提高地图移动速度。将预算设为 0 仍可阻止部队不必要地出售马匹。请注意，部分马匹（如原版的驮马）不计入速度加成；只有游戏本身或当前大型模组认可的马匹才会被本功能视为提供速度加成。"/>
+    <string id="PAIKbIc509P" text="快捷键"/>
+    <string id="PAIKeTFa2PX" text="士兵可升级到的最高等级。若降低此设置，部队中超出等级的士兵会被降级。"/>
+    <string id="PAIKf5y8Z4K" text="家族驻军"/>
+    <string id="PAIl7GEAaaD" text="清空队列"/>
+    <string id="PAIlflf9B0n" text="允许领主部队转换兵种。管理领主部队构成已不再依赖此选项；请使用招募命令确保部队招募你需要的兵种。"/>
+    <string id="PAILiYi3RTj" text="全部"/>
+    <string id="PAIljAEpAKF" text="前往定居点，但不在其中驻留。"/>
+    <string id="PAIlKT8heH9" text="显示所有英雄"/>
+    <string id="PAIlZXTnEd8" text="管理家族商队。商队设置与普通部队设置分别保存，因此同一英雄可同时拥有两套设置。要正确管理商队兵员，必须启用商队兵种转换。"/>
+    <string id="PAIMaf6ECHe" text="调整巡逻命令的半径，直到得到满意效果。百分比以默认巡逻半径为基准。"/>
+    <string id="PAIMah8wd6z" text="当部队人数低于上限的指定百分比时，自动添加招募命令。仅当命令队列中没有现有招募命令，且你未直接指挥该部队时才会添加。"/>
+    <string id="PAImajjVs8d" text="北方"/>
+    <string id="PAImiSXBh3N" text="每天转换到部队模板的士兵数量。该数值按每支部队分别计算，适用于所有受管理的部队、商队和驻军，可避免更换模板时费用突然暴增，也不会瞬间凭空转换数百名士兵。"/>
+    <string id="PAIn0vtnqMG" text="允许将士兵自动转换为指定部队模板中的兵种；所需费用会相应调整。"/>
+    <string id="PAIn4UJJg3a" text="最高兵种等级"/>
+    <string id="PAINt8jD9tc" text="跟随 {TARGET_PARTY}"/>
+    <string id="PAIObdiWWBa" text="王国部队"/>
+    <string id="PAIOEWao2aI" text="{PARTY} 因被召集至 {ARMY}，已停止执行“{ORDER}”"/>
+    <string id="PAIoLtvzpKU" text="部队 AI 控制：无需成为附庸即可组建军团的功能与 Banner Kings 不兼容。"/>
+    <string id="PAIOMxOAsTY" text="家族部队"/>
+    <string id="PAIOzsG1s1J" text="驻留定居点"/>
+    <string id="PAIpc5Yu18Z" text="巡逻 {TARGET_SETTLEMENT} 周边"/>
+    <string id="PAIPMS0nSSq" text="围攻 {TARGET_SETTLEMENT}"/>
+    <string id="PAIPQxGUfhd" text="巡逻目标定居点周边。部队会前往村庄和城镇补充兵员与物资；若领队认为能够追上强盗或其他敌人，就会主动追击，并保护巡逻半径内的村庄、城堡和城镇免遭劫掠或围攻。"/>
+    <string id="PAIqGqAFj9G" text="后备命令："/>
+    <string id="PAIqJ0819Nl" text="显示所有能够带领部队的英雄，便于提前为潜在领队分配设置。"/>
+    <string id="PAIQNbMherW" text="打开此控制面板的快捷键。如果按键组合失效导致无法打开，可在控制台输入 partyai.open 返回此处修改。"/>
+    <string id="PAIQNUqwt4C" text="编辑"/>
+    <string id="PAIQnwbXcqc" text="选项"/>
+    <string id="PAIr1WS36dp" text="可前往的定居点"/>
+    <string id="PAIr7ucbc6X" text="允许商队转换兵种。目前必须启用此项才能管理商队的兵种构成。"/>
+    <string id="PAirAdxXSc5" text="可选兵种"/>
+    <string id="PAIRCSZxGNl" text="允许此部队从你的驻军中带走士兵。"/>
+    <string id="PAIrFBBz1kW" text="遣散不符合部队模板或指定兵种比例的士兵。只有当部队人数超过指定比例后才会执行，以免部队陷入兵力不足。"/>
+    <string id="PAIrJoL4fjj" text="兵种转换"/>
+    <string id="PAIrkbpwijb" text="模板"/>
+    <string id="PAIRrqrDxYm" text="商队只会前往此列表中的定居点。"/>
+    <string id="PAIRyxa5pnP" text="前往 {SETTLEMENT}"/>
+    <string id="PAIRzSgh49H" text="只有可管理且在视野范围内的部队才会显示于此。"/>
+    <string id="PAIsBxGgiYZ" text="领队名单"/>
+    <string id="PAIsUcGJNnV" text="自动创建家族部队"/>
+    <string id="PAISXYCwfO9" text="命令队列为空"/>
+    <string id="PAISzVDwcWu" text="南方"/>
+    <string id="PAIt2WLwtca" text="部队数量上限"/>
+    <string id="PAITOricrPO" text="防守 {TARGET_SETTLEMENT}"/>
+    <string id="PAItU2CGhot" text="当部队人数超过人数上限的该百分比后，开始遣散不符合模板的士兵。"/>
+    <string id="PAITZmUFJSB" text="驻留在定居点的驻军中。如果当地食物不足，部队可能偶尔前往其他定居点购买食物。"/>
+    <string id="PAIu0g5Z5Yk" text="允许此部队从敌方定居点招募士兵。这对深入敌后的部队可能有用，但也有风险。"/>
+    <string id="PAIuPlFS64X" text="排序"/>
+    <string id="PAIUq8Q1n8k" text="选择要添加的命令类型"/>
+    <string id="PAIv3zQDvLn" text="允许俘虏领主"/>
+    <string id="PAIv8ekJ4gs" text="确定吗？"/>
+    <string id="PAIVeQlQhCC" text="驻留在定居点内。如果定居点遭到围攻，而部队仍在城墙外，则不会参与防守。"/>
+    <string id="PAIVTBDYD5s" text="创建模板"/>
+    <string id="PAIWGp1Ti1N" text="西方"/>
+    <string id="PAIwK2enPSp" text="微调模板"/>
+    <string id="PAIwNqKC63z" text="AI 调整"/>
+    <string id="PAIWXzJxqgi" text="购买马匹"/>
+    <string id="PAIxcNer6Hm" text="驻军"/>
+    <string id="PAIxE5LIta2" text="微调模板"/>
+    <string id="PAIXIv9UgAt" text="更改"/>
+    <string id="PAIxKOXkgPU" text="全选"/>
+    <string id="PAIy0nVMLXY" text="如果你是王国统治者，则管理整个王国的驻军，而不只是家族驻军。"/>
+    <string id="PAIY2oX1c1Y" text="从敌方定居点招募"/>
+    <string id="PAIY9zrtsqV" text="指挥附近部队的快捷键。默认按 ALT+X 选择附近部队，再按住 ALT 对其下令。"/>
+    <string id="PAIYcYomRnV" text="允许此部队向友方驻军捐赠士兵。"/>
+    <string id="PAIYkuWNX8E" text="管理家族驻军。"/>
+    <string id="PAIyzzBSM4P" text="招募"/>
+    <string id="PAIzjCcuvQw" text="从已选择的升级路线中指定要纳入部队模板的兵种。列表最上方的兵种会作为模板旁的头像。"/>
+    <string id="PAIzp4R8TTM" text="正在前往 {SETTLEMENT}"/>
+    <string id="PAIZScpdz8d" text="选择目标"/>
+    <string id="PAIzxQXNul8" text="部队或军团将围攻目标定居点。占领目标或进攻军团被击败后，此命令会被清除。"/>
+    <string id="PAIZZ1tGdbA" text="无执行中命令"/>
+    <string id="PAIZZEi6e9F" text="可以选择多个选项。"/>
+    <string id="PAkCYmU0Qtl" text="查看"/>
+    <string id="PAO0HGBsJZd" text="输入新部队兵种模板的名称。"/>
+    <string id="PAoNJx6fAYq" text="查看模板"/>
+    <string id="PAR1D0VvXKZ" text="删除模板"/>
+    <string id="PArB6kGmInk" text="允许劫掠村庄"/>
+    <string id="PATZD6SvrZr" text="无模板"/>
+    <string id="PAuu16DcbWX" text="已存在同名模板。"/>
+    <string id="PAZ8yCnPyxh" text="创建新兵种模板"/>
   </strings>
 </base>

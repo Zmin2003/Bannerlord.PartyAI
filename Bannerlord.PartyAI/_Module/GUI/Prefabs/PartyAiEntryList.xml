@@ -1,0 +1,68 @@
+﻿<Prefab>
+  <Window>
+    <!-- Left column of a list page: copy/paste bar + scrollable entry list + empty state. DataSource: a ListPageVM. -->
+    <Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent">
+      <Children>
+
+        <!-- Copy / paste bar -->
+        <ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="40" VerticalAlignment="Top" StackLayout.LayoutMethod="HorizontalLeftToRight">
+          <Children>
+            <ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="150" Brush="ButtonBrush2" IsEnabled="@CanCopy" IsHidden="@IsPasteMode" UpdateChildrenStates="true" Command.Click="ExecuteCopy">
+              <Children>
+                <BrushWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="22" SuggestedHeight="22" MarginLeft="10" VerticalAlignment="Center" Brush="PartyAI.Menu.CopyButton" />
+                <TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginLeft="34" Brush="Kingdom.GeneralButtons.Text" Text="@CopyText" />
+                <HintWidget DataSource="{CopyHint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" />
+              </Children>
+            </ButtonWidget>
+            <ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="150" Brush="ButtonBrush2" IsEnabled="@CanPaste" IsVisible="@IsPasteMode" UpdateChildrenStates="true" Command.Click="ExecutePaste">
+              <Children>
+                <BrushWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="22" SuggestedHeight="22" MarginLeft="10" VerticalAlignment="Center" Brush="PartyAI.Menu.PasteButton" />
+                <TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginLeft="34" Brush="Kingdom.GeneralButtons.Text" Text="@PasteText" />
+                <HintWidget DataSource="{PasteHint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" />
+              </Children>
+            </ButtonWidget>
+            <ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="110" MarginLeft="6" Brush="ButtonBrush2" IsVisible="@IsPasteMode" UpdateChildrenStates="true" Command.Click="ExecuteSelectAll">
+              <Children>
+                <TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="Kingdom.GeneralButtons.Text" Text="@SelectAllText" />
+              </Children>
+            </ButtonWidget>
+            <ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="100" MarginLeft="6" Brush="ButtonBrush2" IsVisible="@IsPasteMode" UpdateChildrenStates="true" Command.Click="ExecuteCancelPaste">
+              <Children>
+                <TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="Kingdom.GeneralButtons.Text" Text="@CancelText" />
+              </Children>
+            </ButtonWidget>
+            <ScrollingRichTextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginLeft="12" Brush="PartyAI.Menu.SecondaryText" Text="@SelectionStatus" IsAutoScrolling="false" ScrollOnHoverWidget=".." />
+          </Children>
+        </ListPanel>
+
+        <!-- List -->
+        <ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginTop="48" StackLayout.LayoutMethod="HorizontalLeftToRight" IsHidden="@IsEmpty">
+          <Children>
+            <ScrollablePanel WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" AutoHideScrollBars="true" ClipRect="ClipRect" InnerPanel="ClipRect\List" VerticalScrollbar="..\Scrollbar\Scrollbar" MouseScrollAxis="Vertical">
+              <Children>
+                <Widget Id="ClipRect" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" ClipContents="true">
+                  <Children>
+                    <ListPanel Id="List" DataSource="{Entries}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginRight="6" StackLayout.LayoutMethod="VerticalTopToBottom">
+                      <ItemTemplate>
+                        <PartyAiEntryRow />
+                      </ItemTemplate>
+                    </ListPanel>
+                  </Children>
+                </Widget>
+              </Children>
+            </ScrollablePanel>
+            <Standard.VerticalScrollbar Id="Scrollbar" HeightSizePolicy="StretchToParent" HorizontalAlignment="Right" MarginLeft="4" />
+          </Children>
+        </ListPanel>
+
+        <!-- Empty state -->
+        <Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginTop="48" IsVisible="@IsEmpty">
+          <Children>
+            <RichTextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginLeft="40" MarginRight="40" VerticalAlignment="Center" Brush="PartyAI.Menu.SecondaryText" Brush.TextHorizontalAlignment="Center" Text="@EmptyText" />
+          </Children>
+        </Widget>
+
+      </Children>
+    </Widget>
+  </Window>
+</Prefab>

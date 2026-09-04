@@ -1,0 +1,125 @@
+<Prefab>
+  <Parameters>
+    <Parameter Name="DataSource" DefaultValue="" />
+  </Parameters>
+  <Window>
+    <Widget DataSource="*DataSource" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent">
+      <Children>
+        <BrushWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="PartyAI.Menu.Summary.Background" IsEnabled="false" />
+
+        <!-- Header -->
+        <ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="84" MarginLeft="14" MarginRight="14" MarginTop="8" VerticalAlignment="Top" StackLayout.LayoutMethod="HorizontalLeftToRight">
+          <Children>
+            <Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="72" SuggestedHeight="72" MarginRight="12" VerticalAlignment="Center" IsVisible="@ShowPortrait">
+              <Children>
+                <ImageIdentifierWidget DataSource="{Visual}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" AdditionalArgs="@AdditionalArgs" ImageId="@Id" ImageTypeCode="@ImageTypeCode" TextureProviderName="@TextureProviderName" />
+              </Children>
+            </Widget>
+            <Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="52" SuggestedHeight="72" MarginRight="12" VerticalAlignment="Center" IsVisible="@ShowBanner">
+              <Children>
+                <MaskedTextureWidget DataSource="{Banner}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="Kingdom.OtherWars.Faction.Small.Banner" AdditionalArgs="@AdditionalArgs" ImageId="@Id" ImageTypeCode="@ImageTypeCode" IsDisabled="true" />
+              </Children>
+            </Widget>
+            <ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" StackLayout.LayoutMethod="VerticalTopToBottom">
+              <Children>
+                <TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="36" Brush="PartyAI.Menu.SectionHeader" Brush.FontSize="30" Text="@Title" />
+                <TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="24" Brush="PartyAI.Menu.SecondaryText" Text="@Subtitle" />
+                <ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="24" StackLayout.LayoutMethod="HorizontalLeftToRight">
+                  <Children>
+                    <Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="4" SuggestedHeight="18" MarginRight="6" VerticalAlignment="Center" Sprite="BlankWhiteSquare_9" Color="#E2664FFF" IsVisible="@StatusNeedsAttention" IsEnabled="false" />
+                    <TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="PartyAI.Menu.StatusText" Text="@StatusText" />
+                  </Children>
+                </ListPanel>
+              </Children>
+            </ListPanel>
+          </Children>
+        </ListPanel>
+
+        <Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="2" MarginLeft="14" MarginRight="14" MarginTop="96" VerticalAlignment="Top" Sprite="BlankWhiteSquare_9" Color="#7A5F3A99" IsEnabled="false" />
+
+        <!-- Scrollable body -->
+        <ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginLeft="14" MarginRight="8" MarginTop="104" MarginBottom="10" StackLayout.LayoutMethod="HorizontalLeftToRight">
+          <Children>
+            <ScrollablePanel WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" AutoHideScrollBars="true" ClipRect="ClipRect" InnerPanel="ClipRect\Body" VerticalScrollbar="..\Scrollbar\Scrollbar" MouseScrollAxis="Vertical">
+              <Children>
+                <Widget Id="ClipRect" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" ClipContents="true">
+                  <Children>
+                    <ListPanel Id="Body" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginRight="6" StackLayout.LayoutMethod="VerticalTopToBottom">
+                      <Children>
+
+                        <!-- Orders -->
+                        <Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" IsVisible="@HasOrders">
+                          <Children>
+                            <PartyAiOrderQueue Parameter.DataSource="{Orders}" />
+                          </Children>
+                        </Widget>
+
+                        <!-- Troops: template + composition -->
+                        <ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" IsVisible="@HasTroops" StackLayout.LayoutMethod="VerticalTopToBottom">
+                          <Children>
+                            <Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="46">
+                              <Children>
+                                <TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginLeft="8" MarginTop="12" Brush="PartyAI.Menu.SectionHeader" Text="@TroopsHeader" />
+                                <Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="2" VerticalAlignment="Bottom" Sprite="BlankWhiteSquare_9" Color="#7A5F3A99" IsEnabled="false" />
+                              </Children>
+                            </Widget>
+
+                            <Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="56" MarginTop="3">
+                              <Children>
+                                <BrushWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="PartyAI.Menu.Row.Background" IsEnabled="false" />
+                                <ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginLeft="10" MarginRight="10" StackLayout.LayoutMethod="HorizontalLeftToRight">
+                                  <Children>
+                                    <Widget WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="300">
+                                      <Children>
+                                        <TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="PartyAI.Menu.PartyRowText" Text="@TemplateLabel" />
+                                        <HintWidget DataSource="{TemplateHint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" />
+                                      </Children>
+                                    </Widget>
+                                    <Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="44" SuggestedHeight="44" MarginLeft="10" MarginRight="8" VerticalAlignment="Center" IsVisible="@HasTemplate">
+                                      <Children>
+                                        <ImageIdentifierWidget DataSource="{TemplatePortrait}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" AdditionalArgs="@AdditionalArgs" ImageId="@Id" ImageTypeCode="@ImageTypeCode" TextureProviderName="@TextureProviderName" />
+                                      </Children>
+                                    </Widget>
+                                    <ScrollingRichTextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginLeft="4" Brush="PartyAI.Menu.PartyRowText" Text="@TemplateName" IsAutoScrolling="false" ScrollOnHoverWidget=".." />
+                                    <ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="34" SuggestedHeight="34" MarginRight="6" VerticalAlignment="Center" Command.Click="ExecuteViewTemplate" IsVisible="@HasTemplate" UpdateChildrenStates="true">
+                                      <Children>
+                                        <BrushWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="26" SuggestedHeight="26" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="InventoryInspectButton" />
+                                        <HintWidget DataSource="{ViewHint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" />
+                                      </Children>
+                                    </ButtonWidget>
+                                    <ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="34" SuggestedHeight="34" VerticalAlignment="Center" Command.Click="ExecuteChangeTemplate" UpdateChildrenStates="true">
+                                      <Children>
+                                        <BrushWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="26" SuggestedHeight="26" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="PartyAI.Menu.EditButton" />
+                                        <HintWidget DataSource="{ChangeHint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" />
+                                      </Children>
+                                    </ButtonWidget>
+                                  </Children>
+                                </ListPanel>
+                              </Children>
+                            </Widget>
+
+                            <PartyAiCompositionEditor Parameter.DataSource="{Composition}" />
+                          </Children>
+                        </ListPanel>
+
+                        <!-- Everything else -->
+                        <ListPanel DataSource="{Rows}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalTopToBottom">
+                          <ItemTemplate>
+                            <PartyAiSettingRow />
+                          </ItemTemplate>
+                        </ListPanel>
+
+                        <Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="12" />
+                      </Children>
+                    </ListPanel>
+                  </Children>
+                </Widget>
+              </Children>
+            </ScrollablePanel>
+            <Standard.VerticalScrollbar Id="Scrollbar" HeightSizePolicy="StretchToParent" HorizontalAlignment="Right" MarginLeft="4" />
+          </Children>
+        </ListPanel>
+      </Children>
+    </Widget>
+  </Window>
+</Prefab>

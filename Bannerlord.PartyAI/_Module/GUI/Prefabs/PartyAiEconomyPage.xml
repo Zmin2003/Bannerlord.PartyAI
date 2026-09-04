@@ -1,0 +1,166 @@
+<Prefab>
+  <Parameters>
+    <Parameter Name="DataSource" DefaultValue="" />
+  </Parameters>
+  <Window>
+    <Widget DataSource="*DataSource" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" IsVisible="@IsVisible">
+      <Children>
+        <ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" StackLayout.LayoutMethod="HorizontalLeftToRight">
+          <Children>
+
+            <!-- Left: balance + policy -->
+            <Widget WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="700">
+              <Children>
+                <BrushWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="PartyAI.Menu.Summary.Background" IsEnabled="false" />
+                <ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginLeft="14" MarginRight="8" MarginTop="8" MarginBottom="10" StackLayout.LayoutMethod="HorizontalLeftToRight">
+                  <Children>
+                    <ScrollablePanel WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" AutoHideScrollBars="true" ClipRect="ClipRect" InnerPanel="ClipRect\Body" VerticalScrollbar="..\Scrollbar\Scrollbar" MouseScrollAxis="Vertical">
+                      <Children>
+                        <Widget Id="ClipRect" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" ClipContents="true">
+                          <Children>
+                            <ListPanel Id="Body" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginRight="6" StackLayout.LayoutMethod="VerticalTopToBottom">
+                              <Children>
+
+                                <TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="40" Brush="PartyAI.Menu.SectionHeader" Brush.FontSize="30" Text="@GoldText" />
+                                <ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="30" StackLayout.LayoutMethod="HorizontalLeftToRight">
+                                  <Children>
+                                    <Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="4" SuggestedHeight="20" MarginRight="6" VerticalAlignment="Center" Sprite="BlankWhiteSquare_9" Color="#E2664FFF" IsVisible="@IsDeficit" IsEnabled="false" />
+                                    <TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="PartyAI.Menu.StatusText" Text="@DailyChangeText" />
+                                  </Children>
+                                </ListPanel>
+                                <ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="30" StackLayout.LayoutMethod="HorizontalLeftToRight">
+                                  <Children>
+                                    <Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="4" SuggestedHeight="20" MarginRight="6" VerticalAlignment="Center" Sprite="BlankWhiteSquare_9" Color="#E2664FFF" IsVisible="@IsBelowReserve" IsEnabled="false" />
+                                    <TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="PartyAI.Menu.SecondaryText" Text="@ReserveText" />
+                                  </Children>
+                                </ListPanel>
+
+                                <Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="46">
+                                  <Children>
+                                    <TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginLeft="8" MarginTop="12" Brush="PartyAI.Menu.SectionHeader" Text="@BalanceHeader" />
+                                    <Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="2" VerticalAlignment="Bottom" Sprite="BlankWhiteSquare_9" Color="#7A5F3A99" IsEnabled="false" />
+                                  </Children>
+                                </Widget>
+                                <ListPanel DataSource="{Lines}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalTopToBottom">
+                                  <ItemTemplate>
+                                    <Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="34" MarginTop="2">
+                                      <Children>
+                                        <BrushWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="PartyAI.Menu.Row.Background" IsEnabled="false" />
+                                        <ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginLeft="10" MarginRight="10" StackLayout.LayoutMethod="HorizontalLeftToRight">
+                                          <Children>
+                                            <ScrollingRichTextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="PartyAI.Menu.PartyRowText" Brush.FontSize="22" Text="@Name" IsAutoScrolling="false" ScrollOnHoverWidget=".." />
+                                            <TextWidget WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="120" Brush="PartyAI.Menu.PartyRowText" Brush.FontSize="22" Brush.TextHorizontalAlignment="Right" Text="@Amount" IsHidden="@IsNegative" />
+                                            <TextWidget WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="120" Brush="PartyAI.Menu.WarningText" Brush.TextHorizontalAlignment="Right" Text="@Amount" IsVisible="@IsNegative" />
+                                          </Children>
+                                        </ListPanel>
+                                      </Children>
+                                    </Widget>
+                                  </ItemTemplate>
+                                </ListPanel>
+
+                                <Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="46">
+                                  <Children>
+                                    <TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginLeft="8" MarginTop="12" Brush="PartyAI.Menu.SectionHeader" Text="@PolicyHeader" />
+                                    <Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="2" VerticalAlignment="Bottom" Sprite="BlankWhiteSquare_9" Color="#7A5F3A99" IsEnabled="false" />
+                                  </Children>
+                                </Widget>
+                                <ListPanel DataSource="{Policy}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalTopToBottom">
+                                  <ItemTemplate>
+                                    <PartyAiSettingRow />
+                                  </ItemTemplate>
+                                </ListPanel>
+                                <Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="12" />
+                              </Children>
+                            </ListPanel>
+                          </Children>
+                        </Widget>
+                      </Children>
+                    </ScrollablePanel>
+                    <Standard.VerticalScrollbar Id="Scrollbar" HeightSizePolicy="StretchToParent" HorizontalAlignment="Right" MarginLeft="4" />
+                  </Children>
+                </ListPanel>
+              </Children>
+            </Widget>
+
+            <!-- Right: workshops -->
+            <Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginLeft="14">
+              <Children>
+                <BrushWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="PartyAI.Menu.Summary.Background" IsEnabled="false" />
+                <Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="46" MarginLeft="14" MarginRight="14" MarginTop="8" VerticalAlignment="Top">
+                  <Children>
+                    <TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginLeft="8" Brush="PartyAI.Menu.SectionHeader" Brush.FontSize="30" Text="@WorkshopsHeader" />
+                    <Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="2" VerticalAlignment="Bottom" Sprite="BlankWhiteSquare_9" Color="#7A5F3A99" IsEnabled="false" />
+                  </Children>
+                </Widget>
+                <RichTextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginLeft="40" MarginRight="40" VerticalAlignment="Center" Brush="PartyAI.Menu.SecondaryText" Brush.TextHorizontalAlignment="Center" Text="@NoWorkshopsText" IsHidden="@HasWorkshops" />
+
+                <ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginLeft="14" MarginRight="8" MarginTop="62" MarginBottom="10" StackLayout.LayoutMethod="HorizontalLeftToRight" IsVisible="@HasWorkshops">
+                  <Children>
+                    <ScrollablePanel WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" AutoHideScrollBars="true" ClipRect="ClipRect" InnerPanel="ClipRect\List" VerticalScrollbar="..\Scrollbar\Scrollbar" MouseScrollAxis="Vertical">
+                      <Children>
+                        <Widget Id="ClipRect" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" ClipContents="true">
+                          <Children>
+                            <ListPanel Id="List" DataSource="{Workshops}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginRight="6" StackLayout.LayoutMethod="VerticalTopToBottom">
+                              <ItemTemplate>
+                                <Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="126" MarginTop="4">
+                                  <Children>
+                                    <BrushWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="PartyAI.Menu.Row.Background" IsEnabled="false" />
+                                    <Widget WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="4" HorizontalAlignment="Left" Sprite="BlankWhiteSquare_9" Color="#E2664FFF" IsVisible="@IsUnderperforming" IsEnabled="false" />
+                                    <ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginLeft="14" MarginRight="10" MarginTop="6" StackLayout.LayoutMethod="VerticalTopToBottom">
+                                      <Children>
+                                        <ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="32" StackLayout.LayoutMethod="HorizontalLeftToRight">
+                                          <Children>
+                                            <Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="26" SuggestedHeight="26" MarginRight="8" VerticalAlignment="Center" Sprite="Clan\change_workshop_production_icon" Color="#BE945BFF" />
+                                            <TextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" Brush="PartyAI.Menu.PartyRowText" Text="@TypeName" />
+                                            <TextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" MarginLeft="10" Brush="PartyAI.Menu.SecondaryText" Text="@Town" />
+                                            <Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" />
+                                            <TextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" Brush="PartyAI.Menu.StatusText" Text="@Income" />
+                                          </Children>
+                                        </ListPanel>
+                                        <ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="26" StackLayout.LayoutMethod="HorizontalLeftToRight">
+                                          <Children>
+                                            <TextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" Brush="PartyAI.Menu.SecondaryText" Text="@Capital" IsHidden="@IsNearBankruptcy" />
+                                            <TextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" Brush="PartyAI.Menu.WarningText" Text="@Capital" IsVisible="@IsNearBankruptcy" />
+                                            <TextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" MarginLeft="16" Brush="PartyAI.Menu.SecondaryText" Text="@Trend" />
+                                            <TextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" MarginLeft="16" Brush="PartyAI.Menu.SecondaryText" Text="@Activity" />
+                                          </Children>
+                                        </ListPanel>
+                                        <ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="44" MarginTop="4" StackLayout.LayoutMethod="HorizontalLeftToRight">
+                                          <Children>
+                                            <TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="PartyAI.Menu.StatusText" Text="@Recommendation" />
+                                            <ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="210" SuggestedHeight="36" MarginRight="8" VerticalAlignment="Center" Brush="ButtonBrush2" Command.Click="ExecuteSwitch" IsVisible="@HasRecommendation" UpdateChildrenStates="true">
+                                              <Children>
+                                                <ScrollingRichTextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginLeft="6" MarginRight="6" Brush="Kingdom.GeneralButtons.Text" Text="@SwitchText" IsAutoScrolling="false" ScrollOnHoverWidget=".." />
+                                                <HintWidget DataSource="{SwitchHint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" />
+                                              </Children>
+                                            </ButtonWidget>
+                                            <ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="140" SuggestedHeight="36" VerticalAlignment="Center" Brush="ButtonBrush2" Command.Click="ExecuteSell" IsEnabled="@CanSell" UpdateChildrenStates="true">
+                                              <Children>
+                                                <TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="Kingdom.GeneralButtons.Text" Text="@SellText" />
+                                                <HintWidget DataSource="{SellHint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" />
+                                              </Children>
+                                            </ButtonWidget>
+                                          </Children>
+                                        </ListPanel>
+                                      </Children>
+                                    </ListPanel>
+                                  </Children>
+                                </Widget>
+                              </ItemTemplate>
+                            </ListPanel>
+                          </Children>
+                        </Widget>
+                      </Children>
+                    </ScrollablePanel>
+                    <Standard.VerticalScrollbar Id="Scrollbar" HeightSizePolicy="StretchToParent" HorizontalAlignment="Right" MarginLeft="4" />
+                  </Children>
+                </ListPanel>
+              </Children>
+            </Widget>
+
+          </Children>
+        </ListPanel>
+      </Children>
+    </Widget>
+  </Window>
+</Prefab>

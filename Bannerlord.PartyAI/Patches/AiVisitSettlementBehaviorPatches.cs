@@ -1,6 +1,5 @@
-﻿using Bannerlord.PartyAI.Domain;
-using Bannerlord.PartyAI.Domain.Models;
-using Bannerlord.PartyAI.Models;
+﻿using Bannerlord.PartyAI.Parties;
+using Bannerlord.PartyAI.Parties.Recruitment;
 using HarmonyLib;
 using HarmonyLib.PatchBuilder;
 using TaleWorlds.CampaignSystem;
@@ -10,78 +9,66 @@ using TaleWorlds.CampaignSystem.Settlements;
 
 namespace Bannerlord.PartyAI.Patches;
 
-internal class AiVisitSettlementBehaviorPatches
+/// <summary>
+/// Makes the vanilla "go recruit" AI count only volunteers the party actually wants, so managed
+/// parties do not travel to settlements full of off-template troops.
+/// </summary>
+internal static class AiVisitSettlementBehaviorPatches
 {
     public static void Apply(Harmony harmony)
-    {
-        harmony.Patch<AiVisitSettlementBehavior>()
+        => harmony.Patch<AiVisitSettlementBehavior>()
             .Method("GetApproximateVolunteersCanBeRecruitedDataFromSettlement")
-                .Postfix(GetApproximateVolunteersCanBeRecruitedDataFromSettlementPostfix);
-    }
+                .Postfix(VolunteerEstimatePostfix);
 
-    private static void GetApproximateVolunteersCanBeRecruitedDataFromSettlementPostfix(ref (int, float) __result, Hero hero, Settlement settlement)
+    private static void VolunteerEstimatePostfix(ref (int, float) __result, Hero hero, Settlement settlement)
     {
-        if (!SubModule.PartySettingsManager.IsHeroManageable(hero) ||
-            hero.PartyBelongedTo == null ||
-            hero.PartyBelongedTo.LeaderHero != hero)
+        if (!PartyAi.IsActive
+            || !PartyAi.Parties.IsHeroManageable(hero)
+            || hero.PartyBelongedTo is not MobileParty party
+            || party.LeaderHero != hero)
         {
             return;
         }
 
-        MobileParty mobileParty = hero.PartyBelongedTo;
-        PartyAiEntitySettings heroSettings = SubModule.PartySettingsManager.Settings(hero);
-
-        if (!heroSettings.AllowRecruitment)
+        PartyProfile profile = PartyAi.Parties.Profile(hero);
+        if (!profile.AllowRecruitment)
         {
             __result = (0, 0f);
             return;
         }
 
-        // if we're going to convert the troop anyway, it doesn't matter
-        if (SubModule.PartySettingsManager.AllowTroopConversion && heroSettings.PartyTemplate != null)
+        // Conversion will fix whatever gets recruited, so the vanilla estimate is fine.
+        if (PartyAi.Parties.AllowsConversion(profile))
         {
             return;
         }
 
-        PartyComposition comp = Recruitment.GetPartyComposition(mobileParty.Party, heroSettings);
-
-        int allowedCount = 0;
+        PartyComposition composition = RecruitmentRules.GetPartyComposition(party.Party, profile);
+        int count = 0;
         int totalWage = 0;
-
-        int maxSlotsPerNotable = (hero.MapFaction != settlement.MapFaction) ? 2 : 4;
 
         foreach (Hero notable in settlement.Notables)
         {
             if (!notable.IsAlive)
+            {
                 continue;
+            }
 
             int maxIndex = Campaign.Current.Models.VolunteerModel.MaximumIndexHeroCanRecruitFromHero(
-              mobileParty.IsGarrison ? mobileParty.Party.Owner : mobileParty.LeaderHero,
-              notable
-            );
+                party.IsGarrison ? party.Party.Owner : party.LeaderHero,
+                notable);
 
-            for (int i = 0; i <= maxIndex && i < notable.VolunteerTypes.Length; i++)
+            for (int index = 0; index <= maxIndex && index < notable.VolunteerTypes.Length; index++)
             {
-                CharacterObject troop = notable.VolunteerTypes[i];
-                if (troop == null)
-                    continue;
-
-                if (Recruitment.ShouldRecruit(comp, heroSettings, troop, mobileParty.Party))
+                CharacterObject? troop = notable.VolunteerTypes[index];
+                if (troop is not null && RecruitmentRules.ShouldRecruit(composition, profile, troop, party.Party))
                 {
-                    allowedCount++;
+                    count++;
                     totalWage += Campaign.Current.Models.PartyWageModel.GetCharacterWage(troop);
                 }
             }
         }
 
-        if (allowedCount > 0)
-        {
-            float avgWage = (float)totalWage / allowedCount;
-            __result = (allowedCount, avgWage);
-        }
-        else
-        {
-            __result = (0, 0f);
-        }
+        __result = count > 0 ? (count, totalWage / (float)count) : (0, 0f);
     }
 }

@@ -1,0 +1,24 @@
+<Prefab>
+  <Parameters>
+    <Parameter Name="DataSource" DefaultValue="" />
+  </Parameters>
+  <Window>
+    <ListPanel DataSource="*DataSource" WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="44" StackLayout.LayoutMethod="HorizontalLeftToRight" IsEnabled="@IsAvailable" UpdateChildrenStates="true">
+      <Children>
+        <Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="32" SuggestedHeight="32" VerticalAlignment="Center" Sprite="@Icon">
+          <Children>
+            <HintWidget DataSource="{LockHint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" />
+          </Children>
+        </Widget>
+        <TextWidget WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="130" MarginLeft="8" Brush="PartyAI.Menu.PartyRowText" Text="@Name" />
+        <Standard.Slider WidthSizePolicy="Fixed" SuggestedWidth="260" VerticalAlignment="Center" Parameter.ValueInt="@Value" Parameter.MinValue="0" Parameter.MaxValue="100" Parameter.IsDiscrete="true" IsEnabled="@IsSliderEnabled" />
+        <TextWidget WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="56" MarginLeft="10" Brush="PartyAI.Menu.PartyRowText" Text="@Percentage" />
+        <ButtonWidget DoNotPassEventsToChildren="true" UpdateChildrenStates="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="34" SuggestedHeight="34" VerticalAlignment="Center" ButtonType="Toggle" IsSelected="@IsLocked">
+          <Children>
+            <OrderOfBattleFormationClassLockBrushWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" LockedBrush="OrderOfBattle.Formation.Class.Locked" UnlockedBrush="OrderOfBattle.Formation.Class.Unlocked" IsLocked="@IsLocked" />
+          </Children>
+        </ButtonWidget>
+      </Children>
+    </ListPanel>
+  </Window>
+</Prefab>

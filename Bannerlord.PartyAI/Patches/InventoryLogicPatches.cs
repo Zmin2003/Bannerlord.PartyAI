@@ -7,7 +7,7 @@ using TaleWorlds.CampaignSystem.Roster;
 
 namespace Bannerlord.PartyAI.Patches;
 
-internal class InventoryLogicPatches
+internal static class InventoryLogicPatches
 {
     public static void Apply(Harmony harmony)
     {

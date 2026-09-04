@@ -1,4 +1,4 @@
-using Bannerlord.PartyAI.Models;
+﻿using Bannerlord.PartyAI.Parties;
 using HarmonyLib;
 using System;
 using System.Reflection;
@@ -79,7 +79,7 @@ internal static class PartyAiSaveCompatibilityPatches
         object? objectLoadData = _objectLoadDataProperty.GetValue(__instance);
         object? target = objectLoadData == null ? null : _targetProperty.GetValue(objectLoadData);
         object? savedMemberType = _savedMemberTypeField.GetValue(__instance);
-        if (target is not PartyAiEntitySettings
+        if (target is not PartyProfile
             || !string.Equals(savedMemberType?.ToString(), "CustomStruct", StringComparison.Ordinal))
         {
             return;

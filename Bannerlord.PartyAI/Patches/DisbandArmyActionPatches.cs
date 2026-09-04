@@ -5,7 +5,7 @@ using TaleWorlds.CampaignSystem.Actions;
 
 namespace Bannerlord.PartyAI.Patches;
 
-internal class DisbandArmyActionPatches
+internal static class DisbandArmyActionPatches
 {
     public static void Apply(Harmony harmony)
     {
@@ -17,7 +17,7 @@ internal class DisbandArmyActionPatches
     private static bool ApplyByUnknownReasonPrefix(Army army)
     {
         // this prevents disbanding for not having enough AI objectives which can be caused by the orders
-        if (SubModule.PartySettingsManager.HasActiveOrder(army?.LeaderParty?.LeaderHero))
+        if (PartyAi.IsActive && PartyAi.Parties.HasActiveOrder(army?.LeaderParty?.LeaderHero))
         {
             return false;
         }

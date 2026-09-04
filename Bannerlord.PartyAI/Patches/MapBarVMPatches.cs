@@ -6,7 +6,7 @@ using TaleWorlds.Localization;
 
 namespace Bannerlord.PartyAI.Patches;
 
-internal class MapBarVMPatches
+internal static class MapBarVMPatches
 {
     private static bool _bannerKingsLoaded;
 

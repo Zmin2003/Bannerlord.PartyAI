@@ -1,4 +1,4 @@
-﻿using Bannerlord.PartyAI.Models;
+﻿using Bannerlord.PartyAI.Parties;
 using HarmonyLib;
 using HarmonyLib.PatchBuilder;
 using System.Collections.Generic;
@@ -8,53 +8,40 @@ using TaleWorlds.CampaignSystem.Party;
 
 namespace Bannerlord.PartyAI.Patches;
 
-internal class AiMilitaryBehaviorPatches
+/// <summary>Zeroes raid and siege scores for parties that are not allowed to do either.</summary>
+internal static class AiMilitaryBehaviorPatches
 {
     public static void Apply(Harmony harmony)
-    {
-        harmony.Patch<AiMilitaryBehavior>()
+        => harmony.Patch<AiMilitaryBehavior>()
             .Method("AiHourlyTick")
                 .Postfix(AiHourlyTickPostfix);
-    }
 
     private static void AiHourlyTickPostfix(MobileParty mobileParty, PartyThinkParams p)
     {
-        PreventSoloRaidingAndSieging(mobileParty, p);
-    }
-
-    private static void PreventSoloRaidingAndSieging(MobileParty mobileParty, PartyThinkParams partyThinkParams)
-    {
-        if (!SubModule.PartySettingsManager.IsHeroManageable(mobileParty.LeaderHero))
+        if (!PartyAi.IsActive || !PartyAi.Parties.IsHeroManageable(mobileParty.LeaderHero))
         {
             return;
         }
 
-        PartyAiEntitySettings heroSettings = SubModule.PartySettingsManager.Settings(mobileParty.LeaderHero);
-
-        if (heroSettings.AllowRaidVillages && heroSettings.AllowSieging)
+        PartyProfile profile = PartyAi.Parties.Profile(mobileParty.LeaderHero);
+        if (profile.AllowRaidVillages && profile.AllowSieging)
         {
             return;
         }
 
-        List<AIBehaviorData> overrides = new();
-
-        for (int i = 0; i < partyThinkParams.AIBehaviorScores.Count; i++)
+        var forbidden = new List<AIBehaviorData>();
+        foreach ((AIBehaviorData data, float _) in p.AIBehaviorScores)
         {
-            (AIBehaviorData, float) score = partyThinkParams.AIBehaviorScores[i];
-            if (score.Item1.AiBehavior == AiBehavior.RaidSettlement && !heroSettings.AllowRaidVillages)
+            if ((data.AiBehavior == AiBehavior.RaidSettlement && !profile.AllowRaidVillages)
+                || (data.AiBehavior == AiBehavior.BesiegeSettlement && !profile.AllowSieging))
             {
-                overrides.Add(score.Item1);
-            }
-
-            if (score.Item1.AiBehavior == AiBehavior.BesiegeSettlement && !heroSettings.AllowSieging)
-            {
-                overrides.Add(score.Item1);
+                forbidden.Add(data);
             }
         }
 
-        foreach (AIBehaviorData o in overrides)
+        foreach (AIBehaviorData data in forbidden)
         {
-            partyThinkParams.SetBehaviorScore(o, 0f);
+            p.SetBehaviorScore(data, 0f);
         }
     }
 }

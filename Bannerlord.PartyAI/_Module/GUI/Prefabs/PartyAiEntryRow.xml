@@ -1,0 +1,99 @@
+﻿<Prefab>
+  <Constants>
+    <Constant Name="Row.Height" Value="66" />
+  </Constants>
+  <Window>
+    <ButtonWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="!Row.Height" MarginTop="4" Command.Click="ExecuteSelect" UpdateChildrenStates="true">
+      <Children>
+        <BrushWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="PartyAI.Menu.Row.Background" IsEnabled="false" />
+        <BrushWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="PartyAI.Menu.Row.Selected" IsVisible="@IsSelected" IsEnabled="false" />
+        <Widget WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="4" HorizontalAlignment="Left" Sprite="BlankWhiteSquare_9" Color="#E2664FFF" IsVisible="@StatusNeedsAttention" IsEnabled="false" />
+
+        <ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginLeft="10" MarginRight="8" StackLayout.LayoutMethod="HorizontalLeftToRight">
+          <Children>
+
+            <!-- Paste-target checkbox -->
+            <ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="32" SuggestedHeight="32" MarginRight="8" VerticalAlignment="Center" Brush="SPOptions.Checkbox.Empty.Button" ButtonType="Toggle" IsSelected="@IsChecked" IsVisible="@CanCheck" ToggleIndicator="ToggleIndicator" UpdateChildrenStates="true">
+              <Children>
+                <ImageWidget Id="ToggleIndicator" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="SPOptions.Checkbox.Full.Button" />
+              </Children>
+            </ButtonWidget>
+
+            <!-- Icon: portrait / banner / walls / defaults -->
+            <Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="52" SuggestedHeight="52" MarginRight="10" VerticalAlignment="Center">
+              <Children>
+                <ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.Click="ExecuteOpenEncyclopedia" IsVisible="@ShowPortrait">
+                  <Children>
+                    <ImageIdentifierWidget DataSource="{Visual}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" AdditionalArgs="@AdditionalArgs" ImageId="@Id" ImageTypeCode="@ImageTypeCode" TextureProviderName="@TextureProviderName" />
+                    <Widget Sprite="General\Icons\Coin@2x" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="20" SuggestedHeight="20" HorizontalAlignment="Right" VerticalAlignment="Top" IsVisible="@IsCaravan" />
+                  </Children>
+                </ButtonWidget>
+                <ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.Click="ExecuteOpenEncyclopedia" IsVisible="@ShowWalls">
+                  <Children>
+                    <SettlementOverlayWallIconBrushWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="SettlementWallsIconBrush" WallsLevel="@WallsLevel" />
+                  </Children>
+                </ButtonWidget>
+                <Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="40" SuggestedHeight="40" HorizontalAlignment="Center" VerticalAlignment="Center" Sprite="MPLobby\Generic\settings_icon" Color="#BE945BFF" IsVisible="@ShowDefaultsIcon" />
+              </Children>
+            </Widget>
+
+            <!-- Name / subtitle -->
+            <ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" StackLayout.LayoutMethod="VerticalTopToBottom">
+              <Children>
+                <ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="34" StackLayout.LayoutMethod="HorizontalLeftToRight">
+                  <Children>
+                    <Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="22" SuggestedHeight="30" MarginRight="6" VerticalAlignment="Center" IsVisible="@ShowBanner">
+                      <Children>
+                        <MaskedTextureWidget DataSource="{Banner}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="Kingdom.OtherWars.Faction.Small.Banner" AdditionalArgs="@AdditionalArgs" ImageId="@Id" ImageTypeCode="@ImageTypeCode" IsDisabled="true" />
+                      </Children>
+                    </Widget>
+                    <ScrollingRichTextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="PartyAI.Menu.PartyRowText" Text="@Name" IsAutoScrolling="false" ScrollOnHoverWidget=".." />
+                    <Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="26" SuggestedHeight="26" MarginLeft="4" VerticalAlignment="Center" IsVisible="@IsInArmy">
+                      <Children>
+                        <BrushWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="SPClan.Members.InArmyIcon" />
+                        <HintWidget DataSource="{InArmyHint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" />
+                      </Children>
+                    </Widget>
+                    <Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="26" SuggestedHeight="18" MarginLeft="4" VerticalAlignment="Center" Sprite="Clan\party_leader_crown" Color="#BE945BFF" IsVisible="@IsArmyLeader">
+                      <Children>
+                        <HintWidget DataSource="{ArmyLeaderHint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" />
+                      </Children>
+                    </Widget>
+                  </Children>
+                </ListPanel>
+                <ScrollingRichTextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="26" Brush="PartyAI.Menu.SecondaryText" Text="@Subtitle" IsAutoScrolling="false" ScrollOnHoverWidget=".." />
+              </Children>
+            </ListPanel>
+
+            <!-- Strength -->
+            <Widget WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="70" Command.HoverBegin="ExecuteBeginStrengthHint" Command.HoverEnd="ExecuteEndStrengthHint">
+              <Children>
+                <TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="PartyAI.Menu.PartyRowText" Brush.TextHorizontalAlignment="Right" Text="@Strength" />
+              </Children>
+            </Widget>
+
+            <!-- Status -->
+            <Widget WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="150" MarginLeft="10">
+              <Children>
+                <RichTextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" VerticalAlignment="Center" Brush="PartyAI.Menu.StatusText" Brush.FontSize="19" Text="@Status" />
+                <HintWidget DataSource="{StatusHint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" />
+              </Children>
+            </Widget>
+
+            <!-- Show on map -->
+            <Widget WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="38" MarginLeft="4">
+              <Children>
+                <ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="33" SuggestedHeight="19" VerticalAlignment="Center" Brush="ShowOnMap.Button" Command.Click="ExecuteShowOnMap" IsVisible="@CanShowOnMap" UpdateChildrenStates="true">
+                  <Children>
+                    <HintWidget DataSource="{ShowOnMapHint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" />
+                  </Children>
+                </ButtonWidget>
+              </Children>
+            </Widget>
+
+          </Children>
+        </ListPanel>
+      </Children>
+    </ButtonWidget>
+  </Window>
+</Prefab>

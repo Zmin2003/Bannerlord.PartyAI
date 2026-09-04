@@ -1,10 +1,8 @@
-﻿using Bannerlord.PartyAI.CampaignBehaviors;
-using Bannerlord.PartyAI.CampaignBehaviors.AiBehaviors;
-using Bannerlord.PartyAI.CampaignBehaviors.AiBehaviors.ControlAssumption;
-using Bannerlord.PartyAI.Domain;
-using Bannerlord.PartyAI.Models;
-using Bannerlord.PartyAI.MissionBehaviors;
+﻿using Bannerlord.PartyAI.Battle;
+using Bannerlord.PartyAI.Core;
+using Bannerlord.PartyAI.GameModels;
 using Bannerlord.PartyAI.Patches;
+using Bannerlord.PartyAI.UI;
 using Bannerlord.UIExtenderEx;
 using HarmonyLib;
 using TaleWorlds.CampaignSystem;
@@ -12,29 +10,22 @@ using TaleWorlds.CampaignSystem.ComponentInterfaces;
 using TaleWorlds.CampaignSystem.GameState;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
-using TaleWorlds.Localization;
 using TaleWorlds.MountAndBlade;
 
 namespace Bannerlord.PartyAI;
 
-public class SubModule : MBSubModuleBase
+public sealed class SubModule : MBSubModuleBase
 {
-    private static readonly string Namespace = typeof(SubModule).Namespace;
-    private static bool Applied = false;
+    private static readonly string HarmonyId = typeof(SubModule).Namespace!;
 
-    private Harmony _harmony = new(Namespace);
-
-    internal static PartyAIClanPartySettingsManager PartySettingsManager = null!;
-    internal static TownManagementBehavior TownManagementBehavior = null!;
-    internal static AutoDefenseBehavior AutoDefenseBehavior = null!;
-    internal static PAInformationManager InformationManager = null!;
-    internal static ControlAssumptionBehavior ControlAssumptionBehavior = null!;
+    private readonly Harmony _harmony = new(HarmonyId);
+    private bool _lateInitDone;
 
     protected override void OnSubModuleLoad()
     {
-        ApplyPatches(_harmony);
+        PatchSet.ApplyOnLoad(_harmony);
 
-        var extender = UIExtender.Create(Namespace);
+        UIExtender extender = UIExtender.Create(HarmonyId);
         extender.Register(typeof(SubModule).Assembly);
         extender.Enable();
 
@@ -43,80 +34,34 @@ public class SubModule : MBSubModuleBase
 
     protected override void OnBeforeInitialModuleScreenSetAsRoot()
     {
-        if (!Applied) // TODO: Figure out a better way
+        if (!_lateInitDone)
         {
-            TryApplyBannerKingsConflictPatches(_harmony);
-            Applied = true;
+            PatchSet.ApplyAfterModulesLoaded(_harmony);
+            _lateInitDone = true;
         }
 
         base.OnBeforeInitialModuleScreenSetAsRoot();
     }
 
-    protected override void OnGameStart(Game game, IGameStarter gameStarterObject)
+    protected override void OnGameStart(Game game, IGameStarter gameStarter)
     {
-        if (game.GameType is not Campaign)
+        if (game.GameType is not Campaign || gameStarter is not CampaignGameStarter starter)
         {
             return;
         }
 
-        CampaignGameStarter campaignGameStarter = (CampaignGameStarter)gameStarterObject;
-        RegisterBehaviors(campaignGameStarter);
-        AddGameModels(campaignGameStarter);
+        PartyAi.Bind(starter);
 
-        InformationManager = new();
+        AddModel<PartyTroopUpgradeModel, TroopUpgradeModel>(starter);
+        AddModel<ArmyManagementCalculationModel, ArmyManagementModel>(starter);
+        AddModel<PrisonerRecruitmentCalculationModel, PrisonerRecruitmentModel>(starter);
+        AddModel<PartyFoodBuyingModel, FoodBuyingModel>(starter);
     }
 
-    public override void OnMissionBehaviorInitialize(Mission mission)
+    public override void OnGameEnd(Game game)
     {
-        if (!GameNetwork.IsSessionActive)
-        {
-            var settings = Game.Current?.GameType is Campaign
-                ? PartySettingsManager
-                : null;
-            mission.AddMissionBehavior(new BattleAICommanderBehavior(settings));
-            mission.AddMissionBehavior(new SiegeArtilleryAvoidanceBehavior(settings));
-        }
-
-        base.OnMissionBehaviorInitialize(mission);
-    }
-
-    private static void RegisterBehaviors(CampaignGameStarter campaignGameStarter)
-    {
-        ControlAssumptionBehavior = new ControlAssumptionBehavior();
-        campaignGameStarter.AddBehavior(ControlAssumptionBehavior);
-
-        PartySettingsManager = new PartyAIClanPartySettingsManager();
-        campaignGameStarter.AddBehavior(PartySettingsManager);
-
-        var troopRecruiter = new PartyAITroopRecruiter();
-        campaignGameStarter.AddBehavior(troopRecruiter);
-        campaignGameStarter.AddBehavior(new SettlementAutomationBehavior(troopRecruiter));
-
-        TownManagementBehavior = new TownManagementBehavior();
-        campaignGameStarter.AddBehavior(TownManagementBehavior);
-
-        AutoDefenseBehavior = new AutoDefenseBehavior();
-        campaignGameStarter.AddBehavior(AutoDefenseBehavior);
-
-        campaignGameStarter.AddBehavior(new FallbackOrderBehavior());
-        campaignGameStarter.AddBehavior(new PartyAutoCreationBehavior());
-        campaignGameStarter.AddBehavior(new RecruitmentBehavior());
-        campaignGameStarter.AddBehavior(new EscortBehavior());
-        campaignGameStarter.AddBehavior(new AttackPartyBehavior());
-        var visitSettlementBehavior = new VisitSettlementBehavior();
-        campaignGameStarter.AddBehavior(visitSettlementBehavior);
-        var stayInSettlementBehavior = new StayInSettlementBehavior(visitSettlementBehavior);
-        campaignGameStarter.AddBehavior(stayInSettlementBehavior);
-        campaignGameStarter.AddBehavior(new DefendSettlementBehavior(stayInSettlementBehavior));
-        campaignGameStarter.AddBehavior(new BesiegeSettlementBehavior());
-        campaignGameStarter.AddBehavior(new ResetPartyAiBehavior());
-        campaignGameStarter.AddBehavior(new JoiningArmyClearOrdersBehavior());
-        campaignGameStarter.AddBehavior(new PreventIllegalMovesInArmyBehavior());
-        campaignGameStarter.AddBehavior(new PrisonerClearOrdersBehavior());
-        campaignGameStarter.AddBehavior(new PatrolAroundSettlementBehavior());
-        campaignGameStarter.AddBehavior(new PatrolClanLandsBehavior());
-        campaignGameStarter.AddBehavior(new NewPartySetupBehavior());
-        campaignGameStarter.AddBehavior(new PartyDestroyedClearOrdersBehavior());
+        PartyAi.Unbind();
+        base.OnGameEnd(game);
     }
 
     public override void OnGameInitializationFinished(Game game)
@@ -126,122 +71,77 @@ public class SubModule : MBSubModuleBase
             return;
         }
 
-        ValidateGameModel(Campaign.Current.Models.PartyTroopUpgradeModel);
-        ValidateGameModel(Campaign.Current.Models.ArmyManagementCalculationModel);
-        ValidateGameModel(Campaign.Current.Models.PrisonerRecruitmentCalculationModel);
-        ValidateGameModel(Campaign.Current.Models.SettlementGarrisonModel);
-        ValidateGameModel(Campaign.Current.Models.PartyFoodBuyingModel);
+        WarnIfModelOverridden(Campaign.Current.Models.PartyTroopUpgradeModel);
+        WarnIfModelOverridden(Campaign.Current.Models.ArmyManagementCalculationModel);
+        WarnIfModelOverridden(Campaign.Current.Models.PrisonerRecruitmentCalculationModel);
+        WarnIfModelOverridden(Campaign.Current.Models.PartyFoodBuyingModel);
 
-        string keycombo = PartySettingsManager.ControlPanelModiferKey.ToString() + "+" + PartySettingsManager.ControlPanelKey.ToString();
-        TaleWorlds.Library.InformationManager.DisplayMessage(new InformationMessage(new TextObject("{=PAIEUwVpMPm}Thank you for using Party AI Controls! To access the configuration panel, press {KEYBIND}!").SetTextVariable("KEYBIND", keycombo).ToString(), Colors.Green));
+        Notify.Success(L.T("{=PAIEUwVpMPm}Thank you for using Party AI Controls! To access the configuration panel, press {KEYBIND}!",
+            "KEYBIND", PartyAi.Settings.OpenControlPanel));
+    }
+
+    public override void OnMissionBehaviorInitialize(Mission mission)
+    {
+        if (!GameNetwork.IsSessionActive)
+        {
+            ModSettings? settings = Game.Current?.GameType is Campaign ? PartyAi.Settings : null;
+            mission.AddMissionBehavior(new BattleCommanderBehavior(settings));
+            mission.AddMissionBehavior(new SiegeArtilleryAvoidanceBehavior(settings));
+        }
+
+        base.OnMissionBehaviorInitialize(mission);
     }
 
     protected override void OnApplicationTick(float dt)
     {
-        TemplateImportService.Tick();
+        PartyAi.TemplateImport.Tick();
 
-        var activeState = Game.Current?.GameStateManager?.ActiveState;
-
-        if (activeState == null
-            || activeState is not MapState
-            || activeState.IsMenuState
-            || activeState is MissionState
-            || Mission.Current != null)
+        if (!PartyAi.IsActive)
         {
             return;
         }
 
-        if (ControlPanel.IsKeyCombinationDown())
+        GameState? state = Game.Current?.GameStateManager?.ActiveState;
+        if (state is not MapState || Mission.Current is not null)
         {
-            ControlPanel.Open();
             return;
         }
 
-        if (ControlAssumptionBehavior.IsKeyCombinationDown())
+        // The autopilot has to see menu frames too: it leaves settlements it entered on its own.
+        PartyAi.Autopilot.ApplicationTick(dt);
+
+        if (state.IsMenuState)
         {
-            ControlAssumptionBehavior.OpenPopup();
             return;
+        }
+
+        if (PartyAi.Settings.OpenControlPanel.IsDown())
+        {
+            ControlPanelState.Open();
+        }
+        else if (PartyAi.Settings.SelectCommandedParties.IsDown())
+        {
+            PartyAi.DirectCommand.OpenPicker();
         }
     }
 
-    private static void ApplyPatches(Harmony harmony)
-    {
-        PartyAiSaveCompatibilityPatches.Apply(harmony);
-        AiMilitaryBehaviorPatches.Apply(harmony);
-        AiVisitSettlementBehaviorPatches.Apply(harmony);
-        ArmyPatches.Apply(harmony);
-        CaravansCampaignBehaviorPatches.Apply(harmony);
-        DisbandArmyActionPatches.Apply(harmony);
-        FixModdedGameStateScreenCrashOnShow.Apply(harmony);
-        GauntletClanScreenPatches.Apply(harmony);
-        InventoryLogicPatches.Apply(harmony);
-        LeaveTroopsToSettlementActionPatch.Apply(harmony);
-        MobilePartyAiPatches.Apply(harmony);
-        MobilePartyPatches.Apply(harmony);
-        PartiesBuyHorseCampaignBehaviorPatch.Apply(harmony);
-        PartyVMPatches.Apply(harmony);
-        RecruitmentCampaignBehaviorPatches.Apply(harmony);
-        TakePrisonerActionPatches.Apply(harmony);
-
-#if !LOWER_THAN_1_5
-        GarrisonTroopsCampaginBehaviorPatches.Apply(harmony);
-#endif
-
-    }
-
-    private static void AddGameModels(CampaignGameStarter starter)
-    {
-        AddModel<PartyTroopUpgradeModel, PAITroopUpgradeModel>(starter);
-        AddModel<ArmyManagementCalculationModel, PAIArmyManagementCalculationModel>(starter);
-        AddModel<PrisonerRecruitmentCalculationModel, PAIPrisonerRecruitmentCalculationModel>(starter);
-#if LOWER_THAN_1_5
-        AddModel<SettlementGarrisonModel, PAISettlementGarrisonModel>(starter);
-#endif
-        AddModel<PartyFoodBuyingModel, PAIPartyFoodBuyingModel>(starter);
-    }
-
-    private static void AddModel<TModel, TDecorator>(CampaignGameStarter starter)
+    private static void AddModel<TModel, TOverride>(CampaignGameStarter starter)
         where TModel : GameModel
-        where TDecorator : MBGameModel<TModel>, new()
-    {
-        // static analysis is suggesting to remove the generic argument from method
-        // but as of 1.4.5 the base GameModel isn't initialized in the non-generic method
-        // Great job as always TaleWorlds
-        starter.AddModel<TModel>(new TDecorator());
-    }
+        where TOverride : MBGameModel<TModel>, new()
+        // The generic overload is required: the non-generic AddModel leaves BaseModel uninitialized.
+        => starter.AddModel<TModel>(new TOverride());
 
-    private void ValidateGameModel(GameModel model)
+    private void WarnIfModelOverridden(GameModel model)
     {
-        var modelType = model.GetType();
         var modelAssembly = model.GetType().Assembly;
-        var thisAssembly = GetType().Assembly;
-
-        if (modelAssembly == thisAssembly)
+        var ownAssembly = GetType().Assembly;
+        if (modelAssembly == ownAssembly || model.GetType().BaseType?.IsAbstract == true)
         {
             return;
         }
 
-        if (!modelType.BaseType.IsAbstract)
-        {
-            var thisAssemblyName = thisAssembly.GetName().Name;
-            var modelAssemblyName = modelAssembly.GetName().Name;
-
-            TextObject error = new($"{{=I2LlBDKr}}Game Model Error: Please move {thisAssemblyName} "
-                + $"below {modelAssemblyName} in your load order to ensure mod compatibility");
-
-            TaleWorlds.Library.InformationManager.DisplayMessage(new InformationMessage(error.ToString(), Colors.Red));
-        }
-    }
-
-    private static void TryApplyBannerKingsConflictPatches(Harmony harmony)
-    {
-        var bannerKingsLoaded = AccessTools.TypeByName("BannerKings.Main") != null;
-
-        MapBarVMPatches.Apply(harmony, bannerKingsLoaded);
-
-        if (!bannerKingsLoaded)
-        {
-            ArmyManagementVMPatches.Apply(harmony);
-        }
+        Notify.Error(L.T("{=I2LlBDKr}Game Model Error: Please move {THIS} below {OTHER} in your load order to ensure mod compatibility")
+            .SetTextVariable("THIS", ownAssembly.GetName().Name)
+            .SetTextVariable("OTHER", modelAssembly.GetName().Name));
     }
 }

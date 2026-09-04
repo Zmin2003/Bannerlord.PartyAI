@@ -8,7 +8,7 @@ using TaleWorlds.Library;
 
 namespace Bannerlord.PartyAI.Patches;
 
-internal class MobilePartyAiPatches
+internal static class MobilePartyAiPatches
 {
     private const float AggroRadius = 15f;
     private const float MaxDistanceFromPatrolPoint = 100f;
@@ -32,7 +32,7 @@ internal class MobilePartyAiPatches
         MobileParty ____mobileParty)
     {
         // Feature disabled in settings
-        if (!SubModule.PartySettingsManager.AggressivePatrols)
+        if (!PartyAi.Settings.AggressivePatrols)
             return;
 
         if (____mobileParty?.LeaderHero == null || ____mobileParty.MapFaction == null)

@@ -1,55 +1,91 @@
 ﻿using HarmonyLib;
 using HarmonyLib.PatchBuilder;
 using TaleWorlds.CampaignSystem;
+using TaleWorlds.CampaignSystem.Map;
 using TaleWorlds.CampaignSystem.Party;
 using TaleWorlds.CampaignSystem.Settlements;
 
 namespace Bannerlord.PartyAI.Patches;
 
-internal class MobilePartyPatches
+/// <summary>
+/// Observes the player's map moves. Held-key commands are forwarded to
+/// <see cref="Parties.DirectCommandBehavior"/>; every move the autopilot did not issue itself
+/// hands control of the main party back to the player.
+/// </summary>
+internal static class MobilePartyPatches
 {
     public static void Apply(Harmony harmony)
-    {
-        // TODO: Instead of MobileParty, patch SandBox.View.Map.Visuals.MapEntityVisual<> types,
-        // patching SetMove(...) methods doesn't work for settlements
-        // or parties that are on water when we are on land or vice versa.
-        harmony.Patch<MobileParty>()
+        => harmony.Patch<MobileParty>()
             .Method(x => x.SetMoveGoToPoint(default, default))
-                .Postfix(SetMoveGoToPointPostfix)
+                .Postfix(GoToPointPostfix)
             .Method(x => x.SetMoveEngageParty(default, default))
-                .Postfix(SetMoveEngagePartyPostfix)
+                .Postfix(EngagePartyPostfix)
             .Method(x => x.SetMoveEscortParty(default, default, default))
-                .Postfix(SetMoveEscortPartyPostfix)
+                .Postfix(EscortPartyPostfix)
             .Method(x => x.SetMoveGoToSettlement(default, default, default))
-                .Postfix(SetMoveGoToSettlementPostfix);
+                .Postfix(GoToSettlementPostfix)
+            .Method(x => x.SetMoveGoToInteractablePoint(default, default))
+                .Postfix(InteractablePointPostfix)
+            .Method(x => x.SetMoveModeHold())
+                .Postfix(HoldPostfix);
+
+    private static void NoteSteering(MobileParty party)
+    {
+        if (PartyAi.IsActive && party.IsMainParty)
+        {
+            PartyAi.Autopilot.OnPlayerSteered();
+        }
     }
 
-    private static void SetMoveGoToPointPostfix(
-        MobileParty __instance,
-        CampaignVec2 point,
-        MobileParty.NavigationType navigationType)
+    private static void GoToPointPostfix(MobileParty __instance, CampaignVec2 point, MobileParty.NavigationType navigationType)
     {
-        SubModule.ControlAssumptionBehavior.EscortMainParty(__instance, point, navigationType);
+        if (PartyAi.IsActive)
+        {
+            NoteSteering(__instance);
+            PartyAi.DirectCommand.OnMainPartyMovesToPoint(__instance);
+        }
     }
 
-    private static void SetMoveEngagePartyPostfix(
-        MobileParty __instance,
-        MobileParty party)
+    private static void EngagePartyPostfix(MobileParty __instance, MobileParty party)
     {
-        SubModule.ControlAssumptionBehavior.AttackOrEscortParty(__instance, party);
+        if (PartyAi.IsActive && party is not null)
+        {
+            NoteSteering(__instance);
+            PartyAi.DirectCommand.OnMainPartyTargetsParty(__instance, party);
+        }
     }
 
-    private static void SetMoveEscortPartyPostfix(
-        MobileParty __instance,
-        MobileParty mobileParty)
+    private static void EscortPartyPostfix(MobileParty __instance, MobileParty mobileParty)
     {
-        SubModule.ControlAssumptionBehavior.AttackOrEscortParty(__instance, mobileParty);
+        if (PartyAi.IsActive && mobileParty is not null)
+        {
+            NoteSteering(__instance);
+            PartyAi.DirectCommand.OnMainPartyTargetsParty(__instance, mobileParty);
+        }
     }
 
-    private static void SetMoveGoToSettlementPostfix(
-        MobileParty __instance,
-        Settlement settlement)
+    private static void GoToSettlementPostfix(MobileParty __instance, Settlement settlement)
     {
-        SubModule.ControlAssumptionBehavior.TargetSettlement(__instance, settlement);
+        if (PartyAi.IsActive && settlement is not null)
+        {
+            NoteSteering(__instance);
+            PartyAi.DirectCommand.OnMainPartyTargetsSettlement(__instance, settlement);
+        }
+    }
+
+    private static void InteractablePointPostfix(MobileParty __instance, IInteractablePoint point)
+    {
+        if (PartyAi.IsActive)
+        {
+            NoteSteering(__instance);
+        }
+    }
+
+    private static void HoldPostfix(MobileParty __instance)
+    {
+        if (PartyAi.IsActive)
+        {
+            NoteSteering(__instance);
+        }
     }
 }

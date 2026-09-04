@@ -5,7 +5,7 @@ using TaleWorlds.CampaignSystem;
 
 namespace Bannerlord.PartyAI.Patches;
 
-internal class ArmyPatches
+internal static class ArmyPatches
 {
     private static FieldInfo HourlyTickEvent = default!;
     private static MethodInfo AddEventHandlers = default!;
